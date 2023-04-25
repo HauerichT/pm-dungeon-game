@@ -14,6 +14,7 @@ import controller.SystemController;
 import ecs.components.Component;
 import ecs.components.MissingComponentException;
 import ecs.components.PositionComponent;
+import ecs.entities.Chest;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
 import ecs.entities.Trap;
@@ -155,6 +156,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         addTraps();
         addMonsters();
         getHero().ifPresent(this::placeOnLevelStart);
+        Chest.createNewChest();
 
 
 
