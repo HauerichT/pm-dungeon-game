@@ -1,6 +1,7 @@
 package starter;
 
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
+import static com.badlogic.gdx.math.MathUtils.random;
 import static logging.LoggerConfig.initBaseLogger;
 
 import com.badlogic.gdx.Gdx;
@@ -52,6 +53,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     protected List<AbstractController<?>> controller;
 
     public static DungeonCamera camera;
+
     /** Draws objects */
     protected Painter painter;
 
@@ -75,6 +77,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public static ILevel currentLevel;
     private static PauseMenu<Actor> pauseMenu;
     private static Entity hero;
+    private static int levelCounter;
     private Logger gameLogger;
 
     public static void main(String[] args) {
@@ -134,11 +137,10 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     @Override
     public void onLevelLoad() {
+        levelCounter++;
         currentLevel = levelAPI.getCurrentLevel();
         entities.clear();
-        new Zombie();
-        new Tot();
-        new Skeleton();
+        addMonsters();
         getHero().ifPresent(this::placeOnLevelStart);
     }
 
@@ -204,6 +206,19 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         if (pauseMenu != null) {
             if (paused) pauseMenu.showMenu();
             else pauseMenu.hideMenu();
+        }
+    }
+
+    /** Adds Monsters to Dungeon based on level */
+    public void addMonsters() {
+        int randomMonster;
+        for (int i = 0; i < levelCounter; i++) {
+            randomMonster = random.nextInt(3);
+            switch (randomMonster) {
+                case 0 -> new Skeleton();
+                case 1 -> new Zombie();
+                case 2 -> new Tot();
+            }
         }
     }
 
