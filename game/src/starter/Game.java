@@ -1,8 +1,7 @@
 package starter;
-
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
+import static com.badlogic.gdx.math.MathUtils.random;
 import static logging.LoggerConfig.initBaseLogger;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
@@ -21,6 +20,9 @@ import ecs.entities.Trap;
 import ecs.entities.trap.SpawnTrap;
 import ecs.entities.trap.SpikeTrap;
 import ecs.entities.trap.TpTrap;
+import ecs.entities.monster.Tot;
+import ecs.entities.monster.Skeleton;
+import ecs.entities.monster.Zombie;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
@@ -54,6 +56,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     protected List<AbstractController<?>> controller;
 
     public static DungeonCamera camera;
+
     /** Draws objects */
     protected Painter painter;
 
@@ -77,10 +80,14 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public static ILevel currentLevel;
     private static PauseMenu<Actor> pauseMenu;
     private static Entity hero;
+
     private static Entity trap;
 
 
 
+
+
+    private static int levelCounter;
 
     private Logger gameLogger;
 
@@ -125,10 +132,12 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         controller.add(systems);
         pauseMenu = new PauseMenu<>();
         controller.add(pauseMenu);
+        hero = new Hero();
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
-        hero = new Hero();
+
+
 
     }
 
@@ -142,12 +151,12 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     @Override
     public void onLevelLoad() {
+        levelCounter++;
         currentLevel = levelAPI.getCurrentLevel();
         entities.clear();
+        addMonsters();
+        addTraps();
         getHero().ifPresent(this::placeOnLevelStart);
-        new SpikeTrap();
-        new TpTrap(hero);
-        new SpawnTrap();
 
     }
 
@@ -215,6 +224,44 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             else pauseMenu.hideMenu();
         }
     }
+
+    /** Adds Monsters to Dungeon based on level */
+    public void addMonsters() {
+        int randomMonster;
+        for (int i = 0; i < levelCounter; i++) {
+            randomMonster = random.nextInt(3);
+            switch (randomMonster) {
+                case 0 -> new Skeleton();
+                case 1 -> new Zombie();
+                case 2 -> new Tot();
+            }
+        }
+    }
+    /** Adds Traps to Dungeon based on level */
+    public void addTraps() {
+        int trapAmount = 0;
+        if (levelCounter >= 0 && levelCounter < 5) {
+            trapAmount = random.nextInt(0, 2);
+        } else if (levelCounter >= 5 && levelCounter < 10) {
+            trapAmount = random.nextInt(1, 3);
+        } else if (levelCounter >= 10 && levelCounter < 15) {
+            trapAmount = random.nextInt(1, 4);
+        }else {
+            trapAmount = random.nextInt(2, 4);
+        }
+        for (int i = 0; i < trapAmount; i++) {
+                int randomTraps = random.nextInt(3);
+                switch (randomTraps) {
+                    case 0 -> new SpikeTrap();
+                    case 1 -> new SpawnTrap();
+                    case 2 -> new TpTrap(hero);
+
+                }
+            }
+
+
+    }
+
 
     /**
      * Given entity will be added to the game in the next frame
