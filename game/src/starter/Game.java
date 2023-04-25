@@ -16,10 +16,13 @@ import ecs.components.MissingComponentException;
 import ecs.components.PositionComponent;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
+<<<<<<< HEAD
 import ecs.entities.Trap;
 import ecs.entities.trap.SpawnTrap;
 import ecs.entities.trap.SpikeTrap;
 import ecs.entities.trap.TpTrap;
+=======
+>>>>>>> 974540c1ff049f8ba1f58b431c048755dc607b81
 import ecs.entities.monster.Tot;
 import ecs.entities.monster.Skeleton;
 import ecs.entities.monster.Zombie;
@@ -80,6 +83,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public static ILevel currentLevel;
     private static PauseMenu<Actor> pauseMenu;
     private static Entity hero;
+<<<<<<< HEAD
 
     private static Entity trap;
 
@@ -89,6 +93,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     private static int levelCounter;
 
+=======
+    private static int levelCounter;
+>>>>>>> 974540c1ff049f8ba1f58b431c048755dc607b81
     private Logger gameLogger;
 
     public static void main(String[] args) {
@@ -155,7 +162,10 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         currentLevel = levelAPI.getCurrentLevel();
         entities.clear();
         addMonsters();
+<<<<<<< HEAD
         addTraps();
+=======
+>>>>>>> 974540c1ff049f8ba1f58b431c048755dc607b81
         getHero().ifPresent(this::placeOnLevelStart);
 
     }
@@ -237,6 +247,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             }
         }
     }
+<<<<<<< HEAD
     /** Adds Traps to Dungeon based on level */
     public void addTraps() {
         int trapAmount = 0;
@@ -262,6 +273,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     }
 
+=======
+>>>>>>> 974540c1ff049f8ba1f58b431c048755dc607b81
 
     /**
      * Given entity will be added to the game in the next frame
