@@ -81,10 +81,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private static PauseMenu<Actor> pauseMenu;
     private static Entity hero;
 
-
-    private static Entity trap;
-
-
+    /** Counter to save current level */
     private static int levelCounter;
 
     private Logger gameLogger;
@@ -134,9 +131,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
-
-
-
     }
 
     /** Called at the beginning of each frame. Before the controllers call <code>update</code>. */
@@ -225,42 +219,55 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
     }
 
-    /** Adds Monsters to Dungeon based on level */
+    /** Adds random Monsters to Dungeon based on level */
     public void addMonsters() {
-        int randomMonster;
-        for (int i = 0; i < levelCounter; i++) {
-            randomMonster = random.nextInt(3);
+
+        int monsterAmount;
+
+        if (levelCounter >= 0 && levelCounter < 5) {
+            monsterAmount = random.nextInt(1, 2);
+        } else if (levelCounter >= 5 && levelCounter < 10) {
+            monsterAmount = random.nextInt(1, 3);
+        } else if (levelCounter >= 10 && levelCounter < 15) {
+            monsterAmount = random.nextInt(3, 6);
+        } else {
+            monsterAmount = random.nextInt(4, 10);
+        }
+
+        for (int i = 0; i < monsterAmount; i++) {
+            int randomMonster = random.nextInt(3);
             switch (randomMonster) {
-                case 0 -> new Skeleton();
-                case 1 -> new Zombie();
+                case 0 -> new Zombie();
+                case 1 -> new Skeleton();
                 case 2 -> new Tot();
             }
         }
     }
 
-    /** Adds Traps to Dungeon based on level */
+    /** Adds random Traps to Dungeon based on level */
     public void addTraps() {
-        int trapAmount = 0;
+
+        int trapAmount;
+
         if (levelCounter >= 0 && levelCounter < 5) {
             trapAmount = random.nextInt(0, 2);
         } else if (levelCounter >= 5 && levelCounter < 10) {
             trapAmount = random.nextInt(1, 3);
         } else if (levelCounter >= 10 && levelCounter < 15) {
             trapAmount = random.nextInt(1, 4);
-        }else {
+        } else {
             trapAmount = random.nextInt(2, 4);
         }
+
         for (int i = 0; i < trapAmount; i++) {
-                int randomTraps = random.nextInt(3);
-                switch (randomTraps) {
-                    case 0 -> new SpikeTrap();
-                    case 1 -> new SpawnTrap();
-                    case 2 -> new TpTrap(hero);
+            int randomTraps = random.nextInt(3);
+            switch (randomTraps) {
+                case 0 -> new SpikeTrap();
+                case 1 -> new SpawnTrap();
+                case 2 -> new TpTrap(hero);
 
-                }
             }
-
-
+        }
     }
 
     /**
