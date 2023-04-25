@@ -1,7 +1,6 @@
 package ecs.entities.monster;
 
-import ecs.components.ai.idle.PatrouilleWalk;
-import ecs.components.ai.idle.RadiusWalk;
+import ecs.components.ai.idle.FollowHeroWalk;
 import ecs.entities.Monster;
 
 public class Tot extends Monster {
@@ -12,7 +11,7 @@ public class Tot extends Monster {
             "character/monster/tot/runRight",
             "character/monster/tot/runLeft",
             "character/monster/tot/runRight",
-            new PatrouilleWalk(2.0f,3,1, PatrouilleWalk.MODE.RANDOM),
+            new FollowHeroWalk(),
             0.02f,
             0.02f,
             0.2f,
