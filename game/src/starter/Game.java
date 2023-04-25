@@ -12,10 +12,15 @@ import configuration.Configuration;
 import configuration.KeyboardConfig;
 import controller.AbstractController;
 import controller.SystemController;
+import ecs.components.Component;
 import ecs.components.MissingComponentException;
 import ecs.components.PositionComponent;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
+import ecs.entities.Trap;
+import ecs.entities.trap.SpawnTrap;
+import ecs.entities.trap.SpikeTrap;
+import ecs.entities.trap.TpTrap;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
@@ -72,6 +77,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public static ILevel currentLevel;
     private static PauseMenu<Actor> pauseMenu;
     private static Entity hero;
+    private static Entity trap;
+
+
+
+
     private Logger gameLogger;
 
     public static void main(String[] args) {
@@ -115,10 +125,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         controller.add(systems);
         pauseMenu = new PauseMenu<>();
         controller.add(pauseMenu);
-        hero = new Hero();
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
+        hero = new Hero();
+
     }
 
     /** Called at the beginning of each frame. Before the controllers call <code>update</code>. */
@@ -134,6 +145,10 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         currentLevel = levelAPI.getCurrentLevel();
         entities.clear();
         getHero().ifPresent(this::placeOnLevelStart);
+        new SpikeTrap();
+        new TpTrap(hero);
+        new SpawnTrap();
+
     }
 
     private void manageEntitiesSets() {
@@ -246,6 +261,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public static Optional<Entity> getHero() {
         return Optional.ofNullable(hero);
     }
+
+
+
+
+
 
     /**
      * set the reference of the playable character careful: old hero will not be removed from the

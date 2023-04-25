@@ -18,6 +18,7 @@ public class Hero extends Entity {
     private final float xSpeed = 0.3f;
     private final float ySpeed = 0.3f;
 
+    private int counter = 0;
     private final String pathToIdleLeft = "knight/idleLeft";
     private final String pathToIdleRight = "knight/idleRight";
     private final String pathToRunLeft = "knight/runLeft";
@@ -36,6 +37,10 @@ public class Hero extends Entity {
         pc.setSkillSlot1(firstSkill);
     }
 
+    public void trapNewPosition(){
+        new PositionComponent(this);
+
+    }
     private void setupVelocityComponent() {
         Animation moveRight = AnimationBuilder.buildAnimation(pathToRunRight);
         Animation moveLeft = AnimationBuilder.buildAnimation(pathToRunLeft);

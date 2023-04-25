@@ -13,6 +13,7 @@ import starter.Game;
 import tools.Point;
 
 public class AITools {
+
     private static final Random random = new Random();
 
     /**
@@ -188,6 +189,7 @@ public class AITools {
         if (hero.isPresent()) return calculatePath(entity, hero.get());
         else return calculatePath(entity, entity);
     }
+
 
     /**
      * @param p1 Point A

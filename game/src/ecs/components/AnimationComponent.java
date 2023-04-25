@@ -1,6 +1,7 @@
 package ecs.components;
 
 import ecs.entities.Entity;
+import ecs.entities.trap.SpikeTrap;
 import graphic.Animation;
 import java.util.List;
 import java.util.logging.Logger;
@@ -19,6 +20,9 @@ public class AnimationComponent extends Component {
     private @DSLTypeMember(name = "idle_left") Animation idleLeft;
     private @DSLTypeMember(name = "idle_right") Animation idleRight;
     private @DSLTypeMember(name = "current_animation") Animation currentAnimation;
+
+    private @DSLTypeMember(name = "active") Animation active;
+    private @DSLTypeMember(name = "inactive") Animation inactive;
     private final Logger animCompLogger = Logger.getLogger(this.getClass().getName());
 
     /**
@@ -33,12 +37,14 @@ public class AnimationComponent extends Component {
         this.currentAnimation = idleLeft;
     }
 
+
+
     /**
      * @param entity associated entity
      * @param idle Idleanimation
      */
     public AnimationComponent(Entity entity, Animation idle) {
-        this(entity, idle, idle);
+        this(entity,idle,idle);
     }
 
     /**
@@ -49,12 +55,17 @@ public class AnimationComponent extends Component {
         this.idleLeft = new Animation(missingTexture, 100);
         this.idleRight = new Animation(missingTexture, 100);
         this.currentAnimation = new Animation(missingTexture, 100);
+        this.active = new Animation(missingTexture,100);
+        this.inactive = new Animation(missingTexture,100);
         animCompLogger.log(
                 CustomLogLevel.ERROR,
                 "The AnimationComponent for entity '"
                         + entity.getClass().getName()
                         + "' was created with default textures!");
     }
+
+
+
 
     /**
      * @param animation new current animation of the entity
@@ -109,4 +120,11 @@ public class AnimationComponent extends Component {
     public Animation getIdleRight() {
         return idleRight;
     }
+
+
+    public Animation getActive(){return active;}
+
+    public Animation getInactive(){return inactive;}
 }
+
+
