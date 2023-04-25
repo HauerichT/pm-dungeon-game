@@ -238,7 +238,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
     }
 
-
     /** Adds Traps to Dungeon based on level */
     public void addTraps() {
         int trapAmount = 0;
@@ -263,7 +262,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
 
     }
-
 
     /**
      * Given entity will be added to the game in the next frame
