@@ -85,12 +85,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private static Entity trap;
 
 
-
-
-
     private static int levelCounter;
-
-
 
     private Logger gameLogger;
 
@@ -157,9 +152,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         levelCounter++;
         currentLevel = levelAPI.getCurrentLevel();
         entities.clear();
-        addMonsters();
         addTraps();
+        addMonsters();
         getHero().ifPresent(this::placeOnLevelStart);
+
+
 
     }
 
@@ -240,6 +237,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             }
         }
     }
+
 
     /** Adds Traps to Dungeon based on level */
     public void addTraps() {
