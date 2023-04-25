@@ -16,6 +16,9 @@ import ecs.components.MissingComponentException;
 import ecs.components.PositionComponent;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
+import ecs.entities.monster.Tot;
+import ecs.entities.monster.Skeleton;
+import ecs.entities.monster.Zombie;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
@@ -133,6 +136,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public void onLevelLoad() {
         currentLevel = levelAPI.getCurrentLevel();
         entities.clear();
+        new Zombie();
+        new Tot();
+        new Skeleton();
         getHero().ifPresent(this::placeOnLevelStart);
     }
 
