@@ -37,10 +37,6 @@ public class Hero extends Entity {
         pc.setSkillSlot1(firstSkill);
     }
 
-    public void trapNewPosition(){
-        new PositionComponent(this);
-
-    }
     private void setupVelocityComponent() {
         Animation moveRight = AnimationBuilder.buildAnimation(pathToRunRight);
         Animation moveLeft = AnimationBuilder.buildAnimation(pathToRunLeft);
