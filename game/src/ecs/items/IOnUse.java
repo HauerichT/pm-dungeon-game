@@ -1,6 +1,7 @@
 package ecs.items;
 
 import ecs.entities.Entity;
+import ecs.entities.Hero;
 
 /** Interface for ItemUsable. Implements the callback for when the item is used. */
 public interface IOnUse {

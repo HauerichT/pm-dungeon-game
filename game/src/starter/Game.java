@@ -11,7 +11,6 @@ import configuration.Configuration;
 import configuration.KeyboardConfig;
 import controller.AbstractController;
 import controller.SystemController;
-import ecs.components.Component;
 import ecs.components.InventoryComponent;
 import ecs.components.MissingComponentException;
 import ecs.components.PositionComponent;
@@ -19,14 +18,13 @@ import ecs.entities.Chest;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
 import ecs.entities.Monster;
-import ecs.entities.Trap;
 import ecs.entities.trap.SpawnTrap;
 import ecs.entities.trap.SpikeTrap;
 import ecs.entities.trap.TpTrap;
 import ecs.entities.monster.Tot;
 import ecs.entities.monster.Skeleton;
 import ecs.entities.monster.Zombie;
-import ecs.items.swords.BigSword;
+import ecs.entities.swords.BigSword;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
@@ -134,7 +132,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         hero = new Hero();
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
-        new InventoryComponent(hero,10);
+        new InventoryComponent(hero,2);
         createSystems();
 
     }
@@ -157,7 +155,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         getHero().ifPresent(this::placeOnLevelStart);
         Chest.createNewChest();
         new BigSword();
-
 
     }
 
