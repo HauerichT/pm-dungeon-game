@@ -136,13 +136,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         levelAPI.loadLevel(LEVELSIZE);
         new InventoryComponent(hero,10);
         createSystems();
-<<<<<<< HEAD
-=======
 
-
-
-
->>>>>>> item
     }
 
     /** Called at the beginning of each frame. Before the controllers call <code>update</code>. */
