@@ -13,7 +13,7 @@ import graphic.Animation;
 import static com.badlogic.gdx.math.MathUtils.random;
 
 public class SpawnTrap extends Trap {
-    private final String inactive = "trap/spawntrap/inactive";
+    private final String active = "trap/spawntrap/active";
 
     private final float damage = 15;
 
@@ -25,9 +25,9 @@ public class SpawnTrap extends Trap {
     }
 
     void setupAnimationComponent(int a) {
-        Animation inactive = AnimationBuilder.buildAnimation(this.inactive);
+        Animation active = AnimationBuilder.buildAnimation(this.active);
         if (a == 0) {
-            new AnimationComponent(this, inactive);
+            new AnimationComponent(this, active);
         } else {
             int randomMonster = random.nextInt(3);
             switch (randomMonster) {

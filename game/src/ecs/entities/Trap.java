@@ -6,7 +6,9 @@ import ecs.components.HitboxComponent;
 import ecs.components.PositionComponent;
 import graphic.Animation;
 
-public class Trap extends Entity {
+public abstract class Trap extends Entity {
+
+
 
 
     public Trap() {
