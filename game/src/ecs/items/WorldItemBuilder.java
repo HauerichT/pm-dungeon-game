@@ -1,10 +1,8 @@
 package ecs.items;
 
-import ecs.components.AnimationComponent;
-import ecs.components.HitboxComponent;
-import ecs.components.ItemComponent;
-import ecs.components.PositionComponent;
+import ecs.components.*;
 import ecs.entities.Entity;
+import ecs.entities.Hero;
 import tools.Point;
 
 /** Class which creates all needed Components for a basic WorldItem */

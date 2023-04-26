@@ -57,9 +57,8 @@ public abstract class Monster extends Entity {
     private void setupHitboxComponent() {
         new HitboxComponent(
             this,
-            (you, other, direction) -> Inventory.addItemToInventory(new ItemData()),
-            (you, other, direction) -> Inventory.addItemToInventory(new ItemData())
-            );
+            (you, other, direction) -> System.out.println("Enter"),
+            (you, other, direction) -> System.out.println("Enter"));
     }
 
     private void setupAnimationComponent() {

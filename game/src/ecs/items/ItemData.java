@@ -8,6 +8,7 @@ import ecs.components.ItemComponent;
 import ecs.components.PositionComponent;
 import ecs.components.stats.DamageModifier;
 import ecs.entities.Entity;
+import ecs.entities.Hero;
 import graphic.Animation;
 import java.util.List;
 import starter.Game;
@@ -193,6 +194,7 @@ public class ItemData {
                                                                                             ::cast)
                                                                             .get()
                                                                             .getItemData()))
+
                                                         Game.removeEntity(worldItem);
                                                 });
                             }

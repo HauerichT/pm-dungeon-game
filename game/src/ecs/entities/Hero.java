@@ -9,13 +9,14 @@ import ecs.components.skill.*;
 import ecs.items.ItemData;
 import graphic.Animation;
 
+import java.util.List;
+
 /**
  * The Hero is the player character. It's entity in the ECS. This class helps to setup the hero with
  * all its components and attributes .
  */
 public class Hero extends Entity {
 
-    private ItemData usedItem;
     private float dmg = 3.0f;
     private final int fireballCoolDown = 5;
     private final float xSpeed = 0.3f;
@@ -28,16 +29,28 @@ public class Hero extends Entity {
     private final String pathToRunRight = "knight/runRight";
     private Skill firstSkill;
 
+    private InventoryComponent inventory;
+
+
     /** Entity with Components */
     public Hero() {
         super();
         new PositionComponent(this);
         setupVelocityComponent();
         setupAnimationComponent();
-        setupHitboxComponent();
         PlayableComponent pc = new PlayableComponent(this);
         setupFireballSkill();
         pc.setSkillSlot1(firstSkill);
+        setupInventoryComponent();
+        setupHitboxComponent();
+    }
+
+    private void setupHitboxComponent() {
+        new HitboxComponent(this);
+    }
+
+    private void setupInventoryComponent() {
+        inventory = new InventoryComponent(this, 3);
     }
 
     private void setupVelocityComponent() {
@@ -58,26 +71,4 @@ public class Hero extends Entity {
                         new FireballSkill(SkillTools::getCursorPositionAsPoint), fireballCoolDown);
     }
 
-    private void setupHitboxComponent() {
-        new HitboxComponent(
-                this,
-                (you, other, direction) -> System.out.println("heroCollisionEnter"),
-                (you, other, direction) -> System.out.println("heroCollisionLeave"));
-    }
-
-    public float getDmg() {
-        return dmg;
-    }
-
-    public void setDmg() {
-        this.dmg = dmg;
-    }
-
-    public ItemData getUsedItem() {
-        return usedItem;
-    }
-
-    public void setUsedItem(ItemData usedItem) {
-        this.usedItem = usedItem;
-    }
 }

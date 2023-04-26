@@ -19,13 +19,16 @@ import ecs.entities.Entity;
 import ecs.entities.Hero;
 import ecs.entities.Monster;
 import ecs.entities.*;
+import ecs.entities.items.Bag;
+import ecs.entities.items.HealPotion;
+import ecs.entities.items.StrengthPotion;
 import ecs.entities.trap.SpawnTrap;
 import ecs.entities.trap.SpikeTrap;
 import ecs.entities.trap.TpTrap;
 import ecs.entities.monster.Tot;
 import ecs.entities.monster.Skeleton;
 import ecs.entities.monster.Zombie;
-import ecs.entities.swords.BigSword;
+import ecs.entities.items.Sword;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
@@ -130,13 +133,10 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         controller.add(systems);
         pauseMenu = new PauseMenu<>();
         controller.add(pauseMenu);
-        new Inventory();
         hero = new Hero();
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
-        new InventoryComponent(hero,2);
         createSystems();
-
     }
 
     /** Called at the beginning of each frame. Before the controllers call <code>update</code>. */
@@ -154,9 +154,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         entities.clear();
         addTraps();
         addMonsters();
+        addItems();
         getHero().ifPresent(this::placeOnLevelStart);
-        Chest.createNewChest();
-        new BigSword();
     }
 
     private void manageEntitiesSets() {
@@ -329,6 +328,32 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
     }
 
+    /** Adds random Items to Dungeon based on level */
+    public void addItems() {
+
+        int itemAmount;
+
+        if (levelCounter >= 0 && levelCounter < 5) {
+            itemAmount = random.nextInt(0, 2);
+        } else if (levelCounter >= 5 && levelCounter < 10) {
+            itemAmount = random.nextInt(1, 3);
+        } else if (levelCounter >= 10 && levelCounter < 15) {
+            itemAmount = random.nextInt(1, 2);
+        } else {
+            itemAmount = random.nextInt(1, 3);
+        }
+
+        for (int i = 0; i < itemAmount; i++) {
+            int randomTraps = random.nextInt(4);
+            switch (randomTraps) {
+                case 0 -> new HealPotion();
+                case 1 -> new Sword();
+                case 2 -> new StrengthPotion();
+                case 3 -> new Bag();
+            }
+        }
+    }
+
     /**
      * Given entity will be added to the game in the next frame
      *
@@ -374,11 +399,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public static Optional<Entity> getHero() {
         return Optional.ofNullable(hero);
     }
-
-
-
-
-
 
     /**
      * set the reference of the playable character careful: old hero will not be removed from the
