@@ -2,11 +2,11 @@ package ecs.entities;
 
 
 import dslToGame.AnimationBuilder;
-import ecs.components.AnimationComponent;
-import ecs.components.PositionComponent;
-import ecs.components.VelocityComponent;
+import ecs.components.*;
 import ecs.components.ai.AIComponent;
 import ecs.components.ai.idle.IIdleAI;
+import ecs.items.ItemData;
+import ecs.systems.HealthSystem;
 import graphic.Animation;
 
 public abstract class Monster extends Entity {
@@ -45,12 +45,21 @@ public abstract class Monster extends Entity {
         setupVelocityComponent();
         setupAnimationComponent();
         setupAIComponent();
+        setupHitboxComponent();
     }
 
     /** Setup Components for Monster */
     private void setupAIComponent() {
         AIComponent ai = new AIComponent(this);
         ai.setIdleAI(idleAI);
+    }
+
+    private void setupHitboxComponent() {
+        new HitboxComponent(
+            this,
+            (you, other, direction) -> Inventory.addItemToInventory(new ItemData()),
+            (you, other, direction) -> Inventory.addItemToInventory(new ItemData())
+            );
     }
 
     private void setupAnimationComponent() {
