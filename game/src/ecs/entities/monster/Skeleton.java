@@ -12,10 +12,10 @@ public class Skeleton extends Monster {
             "character/monster/skeleton/runLeft",
             "character/monster/skeleton/runRight",
             new RadiusWalk(1.0f,1),
-            0.03f,
-            0.03f,
-            0.1f,
-            0.5f
+            0.02f,
+            0.02f,
+            1.0f,
+            5.0f
         );
     }
 }

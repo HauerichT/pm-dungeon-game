@@ -12,9 +12,10 @@ public class Tot extends Monster {
             "character/monster/tot/runLeft",
             "character/monster/tot/runRight",
             new FollowHeroWalk(),
-            0.02f,
-            0.02f,
-            0.3f,
-            1.0f
+            0.04f,
+            0.04f,
+            4.0f,
+            15.0f
         );
-    }}
+    }
+}

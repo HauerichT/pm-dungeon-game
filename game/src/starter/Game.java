@@ -16,6 +16,7 @@ import ecs.components.MissingComponentException;
 import ecs.components.PositionComponent;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
+import ecs.entities.Monster;
 import ecs.entities.Trap;
 import ecs.entities.trap.SpawnTrap;
 import ecs.entities.trap.SpikeTrap;
@@ -81,10 +82,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private static PauseMenu<Actor> pauseMenu;
     private static Entity hero;
 
-
-    private static Entity trap;
-
-
+    /** Counter to save current level */
     private static int levelCounter;
 
     private Logger gameLogger;
@@ -134,9 +132,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
-
-
-
     }
 
     /** Called at the beginning of each frame. Before the controllers call <code>update</code>. */
@@ -225,42 +220,109 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
     }
 
-    /** Adds Monsters to Dungeon based on level */
+    /** Adds random Monsters to Dungeon based on level */
     public void addMonsters() {
-        int randomMonster;
-        for (int i = 0; i < levelCounter; i++) {
-            randomMonster = random.nextInt(3);
-            switch (randomMonster) {
-                case 0 -> new Skeleton();
-                case 1 -> new Zombie();
-                case 2 -> new Tot();
-            }
+
+        /* Amount of Monsters to be spawned */
+        int monsterAmount;
+
+        /* Multiplier to add strength */
+        float strengthAddOn = 1;
+
+        /* Multiplier to add speed */
+        float speedAddOn = 1;
+
+        /* Bool to check if Level to spawn TOT is reached */
+        boolean levelForTotReached = false;
+
+        /* Get amount of Monsters to be spawned */
+        if (levelCounter >= 0 && levelCounter < 5) {
+            monsterAmount = random.nextInt(1, 2);
         }
+        else if (levelCounter >= 5 && levelCounter < 10) {
+            monsterAmount = random.nextInt(1, 3);
+            strengthAddOn = 1.5f;
+            speedAddOn = 1.1f;
+        }
+        else if (levelCounter >= 10 && levelCounter < 15) {
+            monsterAmount = random.nextInt(3, 6);
+            levelForTotReached = true;
+            strengthAddOn = 2.0f;
+            speedAddOn = 1.2f;
+        }
+        else {
+            monsterAmount = random.nextInt(4, 10);
+            strengthAddOn = 2.5f;
+            speedAddOn = 1.3f;
+        }
+
+        System.out.println("Level: " + levelCounter);
+
+        /* Spawn Monsters */
+        for (int i = 0; i < monsterAmount; i++) {
+            int randomMonster;
+
+            /* Check if TOT can be spawned */
+            if (levelForTotReached) {
+                randomMonster = random.nextInt(3);
+            }
+            else {
+                randomMonster = random.nextInt(2);
+            }
+
+            /* Spawn random monster and set Damage based on level */
+            switch (randomMonster) {
+                case 0 -> {
+                    Monster zombie = new Zombie();
+                    zombie.setDmg(zombie.getDmg()*strengthAddOn);
+                    zombie.setHorizontalSpeed(zombie.getHorizontalSpeed()*speedAddOn);
+                    zombie.setVerticalSpeed(zombie.getVerticalSpeed()*speedAddOn);
+                    System.out.println("Zombie with strength " + zombie.getDmg() + " and speed " + zombie.getVerticalSpeed() + " was added.");
+                }
+                case 1 -> {
+                    Monster skeleton = new Skeleton();
+                    skeleton.setDmg(skeleton.getDmg()*strengthAddOn);
+                    skeleton.setHorizontalSpeed(skeleton.getHorizontalSpeed()*speedAddOn);
+                    skeleton.setVerticalSpeed(skeleton.getVerticalSpeed()*speedAddOn);
+                    System.out.println("Skeleton with strength " + skeleton.getDmg() + " and speed " + skeleton.getVerticalSpeed() + " was added.");
+                }
+                case 2 -> {
+                    Monster tot = new Tot();
+                    tot.setDmg(tot.getDmg()*strengthAddOn);
+                    tot.setHorizontalSpeed(tot.getHorizontalSpeed()*speedAddOn);
+                    tot.setVerticalSpeed(tot.getVerticalSpeed()*speedAddOn);
+                    System.out.println("TOT with strength " + tot.getDmg() + " and speed " + tot.getVerticalSpeed() + " was added.");
+                }
+            }
+
+        }
+
     }
 
-    /** Adds Traps to Dungeon based on level */
+    /** Adds random Traps to Dungeon based on level */
     public void addTraps() {
-        int trapAmount = 0;
+
+        int trapAmount;
+
         if (levelCounter >= 0 && levelCounter < 5) {
             trapAmount = random.nextInt(0, 2);
         } else if (levelCounter >= 5 && levelCounter < 10) {
             trapAmount = random.nextInt(1, 3);
         } else if (levelCounter >= 10 && levelCounter < 15) {
             trapAmount = random.nextInt(1, 4);
-        }else {
+        } else {
             trapAmount = random.nextInt(2, 4);
         }
+
         for (int i = 0; i < trapAmount; i++) {
-                int randomTraps = random.nextInt(3);
-                switch (randomTraps) {
-                    case 0 -> new SpikeTrap();
-                    case 1 -> new SpawnTrap();
-                    case 2 -> new TpTrap(hero);
+            int randomTraps = random.nextInt(3);
+            switch (randomTraps) {
+                case 0 -> new SpikeTrap();
+                case 1 -> new SpawnTrap();
+                case 2 -> new TpTrap(hero);
 
-                }
             }
-
-
+        }
     }
 
     /**
