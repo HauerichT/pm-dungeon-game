@@ -14,10 +14,7 @@ import controller.SystemController;
 import ecs.components.Component;
 import ecs.components.MissingComponentException;
 import ecs.components.PositionComponent;
-import ecs.entities.Entity;
-import ecs.entities.Hero;
-import ecs.entities.Monster;
-import ecs.entities.Trap;
+import ecs.entities.*;
 import ecs.entities.trap.SpawnTrap;
 import ecs.entities.trap.SpikeTrap;
 import ecs.entities.trap.TpTrap;
@@ -128,6 +125,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         controller.add(systems);
         pauseMenu = new PauseMenu<>();
         controller.add(pauseMenu);
+        new Inventory();
         hero = new Hero();
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
@@ -150,9 +148,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         addTraps();
         addMonsters();
         getHero().ifPresent(this::placeOnLevelStart);
-
-
-
     }
 
     private void manageEntitiesSets() {
