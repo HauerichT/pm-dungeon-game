@@ -7,15 +7,12 @@ import ecs.components.PositionComponent;
 import ecs.components.VelocityComponent;
 import ecs.components.ai.AIComponent;
 import ecs.components.ai.idle.IIdleAI;
-import ecs.components.ai.idle.PatrouilleWalk;
-import ecs.components.ai.idle.RadiusWalk;
 import graphic.Animation;
-import starter.Game;
 
 public abstract class Monster extends Entity {
 
-    private final float horizontalSpeed;
-    private final float verticalSpeed;
+    private float horizontalSpeed;
+    private float verticalSpeed;
 
     private float health;
     private float dmg;
@@ -50,6 +47,7 @@ public abstract class Monster extends Entity {
         setupAIComponent();
     }
 
+    /** Setup Components for Monster */
     private void setupAIComponent() {
         AIComponent ai = new AIComponent(this);
         ai.setIdleAI(idleAI);
@@ -67,4 +65,41 @@ public abstract class Monster extends Entity {
         new VelocityComponent(this, horizontalSpeed, verticalSpeed, moveLeft, moveRight);
     }
 
+
+    /** Getter to get current information about Monster */
+    public float getDmg() {
+        return dmg;
+    }
+
+    public float getHorizontalSpeed() {
+        return horizontalSpeed;
+    }
+
+    public float getVerticalSpeed() {
+        return verticalSpeed;
+    }
+
+    public float getHealth() {
+        return health;
+    }
+
+
+    /** Setter to update Monster */
+    public void setHealth(float health) {
+        this.health = health;
+    }
+
+    public void setDmg(float dmg) {
+        this.dmg = dmg;
+    }
+
+    public void setHorizontalSpeed(float horizontalSpeed) {
+        this.horizontalSpeed = horizontalSpeed;
+    }
+
+    public void setVerticalSpeed(float verticalSpeed) {
+        this.verticalSpeed = verticalSpeed;
+    }
+
 }
+
