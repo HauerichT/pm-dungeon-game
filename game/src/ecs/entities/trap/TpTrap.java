@@ -10,7 +10,7 @@ import graphic.Animation;
 
 public class TpTrap extends Trap{
 
-    private final String inactive = "trap/tptrap/inactive";
+    private final String active = "trap/tptrap/active";
     private Entity hero;
 
     private final float damage = 15;
@@ -25,9 +25,9 @@ public class TpTrap extends Trap{
     }
 
     void setupAnimationComponent(int a) {
-        Animation inactive = AnimationBuilder.buildAnimation(this.inactive);
+        Animation active = AnimationBuilder.buildAnimation(this.active);
         if (a == 0) {
-            new AnimationComponent(this, inactive);
+            new AnimationComponent(this, active);
         } else {
             new PositionComponent(hero);
         }
