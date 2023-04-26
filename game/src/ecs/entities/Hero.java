@@ -6,6 +6,7 @@ import ecs.components.AnimationComponent;
 import ecs.components.PositionComponent;
 import ecs.components.VelocityComponent;
 import ecs.components.skill.*;
+import ecs.items.ItemData;
 import graphic.Animation;
 
 /**
@@ -14,6 +15,8 @@ import graphic.Animation;
  */
 public class Hero extends Entity {
 
+    private ItemData usedItem;
+    private float dmg = 3.0f;
     private final int fireballCoolDown = 5;
     private final float xSpeed = 0.3f;
     private final float ySpeed = 0.3f;
@@ -60,5 +63,21 @@ public class Hero extends Entity {
                 this,
                 (you, other, direction) -> System.out.println("heroCollisionEnter"),
                 (you, other, direction) -> System.out.println("heroCollisionLeave"));
+    }
+
+    public float getDmg() {
+        return dmg;
+    }
+
+    public void setDmg() {
+        this.dmg = dmg;
+    }
+
+    public ItemData getUsedItem() {
+        return usedItem;
+    }
+
+    public void setUsedItem(ItemData usedItem) {
+        this.usedItem = usedItem;
     }
 }
