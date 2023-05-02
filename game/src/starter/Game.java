@@ -11,28 +11,25 @@ import configuration.Configuration;
 import configuration.KeyboardConfig;
 import controller.AbstractController;
 import controller.SystemController;
-import ecs.components.Component;
-import ecs.components.InventoryComponent;
 import ecs.components.MissingComponentException;
 import ecs.components.PositionComponent;
 import ecs.entities.Chest;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
-import ecs.entities.Trap;
 import ecs.entities.trap.SpawnTrap;
 import ecs.entities.trap.SpikeTrap;
 import ecs.entities.trap.TpTrap;
 import ecs.entities.monster.Tot;
 import ecs.entities.monster.Skeleton;
 import ecs.entities.monster.Zombie;
-import ecs.items.swords.BigSword;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
-import graphic.hud.PauseMenu;
+import configuration.hud.PauseMenu;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
+import configuration.hud.inventoryHud.ScreenInventory;
 import level.IOnLevelLoader;
 import level.LevelAPI;
 import level.elements.ILevel;
@@ -69,7 +66,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     private boolean doSetup = true;
     private static boolean paused = false;
-
+    private static boolean inventory = false;
     /** All entities that are currently active in the dungeon */
     private static final Set<Entity> entities = new HashSet<>();
     /** All entities to be removed from the dungeon in the next frame */
@@ -82,12 +79,12 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     public static ILevel currentLevel;
     private static PauseMenu<Actor> pauseMenu;
-    private static Entity hero;
+    public static Entity hero;
 
 
     private static Entity trap;
 
-
+    private static ScreenInventory<Actor> inv;
     private static int levelCounter;
 
     private Logger gameLogger;
@@ -132,11 +129,12 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         systems = new SystemController();
         controller.add(systems);
         pauseMenu = new PauseMenu<>();
+        inv = new ScreenInventory<>();
+        controller.add(inv);
         controller.add(pauseMenu);
         hero = new Hero();
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
-        new InventoryComponent(hero,10);
         createSystems();
 
 
@@ -150,6 +148,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         manageEntitiesSets();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.I)) toggleInventory();
     }
 
     @Override
@@ -161,7 +160,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         addMonsters();
         getHero().ifPresent(this::placeOnLevelStart);
         Chest.createNewChest();
-        new BigSword();
+
+
 
 
     }
@@ -217,6 +217,13 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
                                 .orElseThrow(
                                         () -> new MissingComponentException("PositionComponent"));
         pc.setPosition(currentLevel.getStartTile().getCoordinate().toPoint());
+    }
+    public static void toggleInventory() {
+        inventory = !inventory;
+        if (inv != null) {
+            if (inventory) inv.showMenu();
+            else inv.hideMenu();
+        }
     }
 
     /** Toggle between pause and run */

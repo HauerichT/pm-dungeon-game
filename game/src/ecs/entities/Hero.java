@@ -35,11 +35,14 @@ public class Hero extends Entity {
         PlayableComponent pc = new PlayableComponent(this);
         setupFireballSkill();
         pc.setSkillSlot1(firstSkill);
+        setupInventoryComponent();
+
+
     }
 
-    public void trapNewPosition(){
-        new PositionComponent(this);
 
+    private void setupInventoryComponent(){
+        new InventoryComponent(this,5);
     }
     private void setupVelocityComponent() {
         Animation moveRight = AnimationBuilder.buildAnimation(pathToRunRight);

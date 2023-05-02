@@ -24,6 +24,7 @@ public class InventoryComponent extends Component {
         super(entity);
         inventory = new ArrayList<>(maxSize);
         this.maxSize = maxSize;
+
     }
 
     /**
@@ -34,6 +35,7 @@ public class InventoryComponent extends Component {
      * @return true if the item was added, otherwise false
      */
     public boolean addItem(ItemData itemData) {
+        System.out.println("test");
         if (inventory.size() >= maxSize) return false;
         inventoryLogger.log(
                 CustomLogLevel.DEBUG,

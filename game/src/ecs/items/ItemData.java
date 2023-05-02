@@ -29,6 +29,7 @@ public class ItemData {
     // passive
     private DamageModifier damageModifier;
 
+
     /**
      * creates a new item data object.
      *
