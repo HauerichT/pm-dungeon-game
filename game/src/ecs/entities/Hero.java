@@ -42,11 +42,21 @@ public class Hero extends Entity {
         setupFireballSkill();
         pc.setSkillSlot1(firstSkill);
         setupInventoryComponent();
+<<<<<<< HEAD
         setupHitboxComponent();
     }
 
     private void setupHitboxComponent() {
         new HitboxComponent(this);
+=======
+
+
+    }
+
+
+    private void setupInventoryComponent(){
+        new InventoryComponent(this,5);
+>>>>>>> item
     }
 
     private void setupInventoryComponent() {
