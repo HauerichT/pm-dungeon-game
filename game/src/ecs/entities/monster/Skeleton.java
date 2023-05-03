@@ -14,7 +14,7 @@ public class Skeleton extends Monster {
             new RadiusWalk(1.0f,1),
             0.02f,
             0.02f,
-            1.0f,
+            1,
             5
         );
     }

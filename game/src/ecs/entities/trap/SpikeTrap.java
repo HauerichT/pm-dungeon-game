@@ -5,6 +5,8 @@ import ecs.components.AnimationComponent;
 import ecs.components.HitboxComponent;
 import ecs.components.PositionComponent;
 import ecs.components.collision.ICollide;
+import ecs.damage.Damage;
+import ecs.damage.DamageType;
 import ecs.entities.Entity;
 import ecs.entities.Trap;
 import graphic.Animation;
@@ -15,7 +17,7 @@ public class SpikeTrap extends Trap {
     private final String inactive = "trap/spiketrap/inactive";
     private final String active = "trap/spiketrap/active";
 
-    private final float dmg = 1.0f;
+    private final int dmg = 2;
 
     public SpikeTrap() {
         super();
@@ -38,8 +40,12 @@ public class SpikeTrap extends Trap {
     private void setupHitboxComponent() {
         new HitboxComponent(
             this,
-            (you, other, direction) -> setupAnimationComponent(1),
-            (you, other, direction) -> setupAnimationComponent(0));
+            (you, other, direction) -> new Damage(dmg, DamageType.PHYSICAL, this),
+            (you, other, direction) -> {
+                new Damage(dmg, DamageType.PHYSICAL, this);
+            }
+
+        );
 
     }
 

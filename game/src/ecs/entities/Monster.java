@@ -2,10 +2,7 @@ package ecs.entities;
 
 
 import dslToGame.AnimationBuilder;
-import ecs.components.AnimationComponent;
-import ecs.components.HealthComponent;
-import ecs.components.PositionComponent;
-import ecs.components.VelocityComponent;
+import ecs.components.*;
 import ecs.components.ai.AIComponent;
 import ecs.components.ai.idle.IIdleAI;
 import graphic.Animation;
@@ -17,7 +14,7 @@ public abstract class Monster extends Entity {
     private float verticalSpeed;
 
     private int health;
-    private float dmg;
+    private int dmg;
 
     private final String pathToIdleLeft;
     private final String pathToIdleRight;
@@ -26,7 +23,7 @@ public abstract class Monster extends Entity {
 
     private final IIdleAI idleAI;
 
-    public Monster(String idleLeft, String idleRight, String runLeft, String runRight, IIdleAI idleAI, float horizontalSpeed, float verticalSpeed, float dmg, int health) {
+    public Monster(String idleLeft, String idleRight, String runLeft, String runRight, IIdleAI idleAI, float horizontalSpeed, float verticalSpeed, int dmg, int health) {
         super();
 
         this.pathToIdleLeft = idleLeft;
@@ -47,6 +44,7 @@ public abstract class Monster extends Entity {
         setupPositionComponent();
         setupAIComponent();
         setupHealthComponent();
+        setupHitboxComponent();
     }
 
 
@@ -73,11 +71,19 @@ public abstract class Monster extends Entity {
         new VelocityComponent(this, horizontalSpeed, verticalSpeed, moveLeft, moveRight);
     }
 
-    protected void setupHealthComponent() {
+    private void setupHealthComponent() {
         HealthComponent hc = new HealthComponent(this);
         hc.setMaximalHealthpoints(this.health);
         hc.setCurrentHealthpoints(this.health);
     }
+
+    private void setupHitboxComponent() {
+        new HitboxComponent(
+            this,
+            (you, other, direction) -> System.out.println("MonsterOnHeroEnter"),
+            (you, other, direction) -> System.out.println("MonsterOnHeroLeave"));
+    }
+
 
 
     /* Getter to get current information about Monster */
@@ -103,7 +109,7 @@ public abstract class Monster extends Entity {
         this.health = health;
     }
 
-    public void setDmg(float dmg) {
+    public void setDmg(int dmg) {
         this.dmg = dmg;
     }
 

@@ -14,11 +14,10 @@ import graphic.Animation;
  */
 public class Hero extends Entity {
 
-    private final int fireballCoolDown = 5;
     private float xSpeed = 0.3f;
     private float ySpeed = 0.3f;
-    private float health = 50;
-    private float dmg = 1.0f;
+    private int health = 50;
+    private int dmg = 2;
 
     private Skill firstSkill;
 
@@ -31,6 +30,7 @@ public class Hero extends Entity {
         setupHitboxComponent();
         PlayableComponent pc = new PlayableComponent(this);
         setupFireballSkill();
+        setupHealthComponent();
         pc.setSkillSlot1(firstSkill);
     }
 
@@ -50,7 +50,14 @@ public class Hero extends Entity {
         new AnimationComponent(this, idleLeft, idleRight);
     }
 
+    private void setupHealthComponent() {
+        HealthComponent hc = new HealthComponent(this);
+        hc.setMaximalHealthpoints(this.health);
+        hc.setCurrentHealthpoints(this.health);
+    }
+
     private void setupFireballSkill() {
+        int fireballCoolDown = 5;
         firstSkill =
                 new Skill(
                         new FireballSkill(SkillTools::getCursorPositionAsPoint), fireballCoolDown);
@@ -79,11 +86,11 @@ public class Hero extends Entity {
         return ySpeed;
     }
 
-    public void setDmg(float dmg) {
+    public void setDmg(int dmg) {
         this.dmg = dmg;
     }
 
-    public void setHealth(float health) {
+    public void setHealth(int health) {
         this.health = health;
     }
 

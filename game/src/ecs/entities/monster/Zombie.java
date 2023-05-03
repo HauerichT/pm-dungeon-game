@@ -14,7 +14,7 @@ public class Zombie extends Monster {
             new StaticRadiusWalk(1.0f,1),
             0.02f,
             0.02f,
-            2.0f,
+            2,
             10
         );
     }

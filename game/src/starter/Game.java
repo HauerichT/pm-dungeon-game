@@ -225,6 +225,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     }
 
 
+
     /**
      * Given entity will be added to the game in the next frame
      *

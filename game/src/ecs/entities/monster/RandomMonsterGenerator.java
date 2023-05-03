@@ -39,19 +39,19 @@ public class RandomMonsterGenerator {
             switch (randomMonster) {
                 case 0 -> {
                     Monster skeleton = new Skeleton();
-                    skeleton.setDmg(skeleton.getDmg() * strengthAddOn);
+                    skeleton.setDmg((int) (skeleton.getDmg() * strengthAddOn));
                     System.out.println("Skelet: " + skeleton.getDmg());
                     Game.addEntity(skeleton);
                 }
                 case 1 -> {
                     Monster zombie = new Zombie();
-                    zombie.setDmg(zombie.getDmg() * strengthAddOn);
+                    zombie.setDmg((int) (zombie.getDmg() * strengthAddOn));
                     System.out.println("Zombie: " + zombie.getDmg());
                     Game.addEntity(zombie);
                 }
                 case 2 -> {
                     Monster tot = new Tot();
-                    tot.setDmg(tot.getDmg() * strengthAddOn);
+                    tot.setDmg((int) (tot.getDmg() * strengthAddOn));
                     System.out.println("Tot: " + tot.getDmg());
                     Game.addEntity(tot);
                 }

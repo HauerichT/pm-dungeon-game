@@ -8,7 +8,6 @@ import graphic.Animation;
 
 public class Trap extends Entity {
 
-
     public Trap() {
         super();
         new PositionComponent(this);

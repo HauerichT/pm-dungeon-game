@@ -14,7 +14,7 @@ public class Tot extends Monster {
             new FollowHeroWalk(),
             0.03f,
             0.03f,
-            4.0f,
+            4,
             15
         );
     }
