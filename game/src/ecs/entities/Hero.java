@@ -17,6 +17,7 @@ import java.util.List;
  */
 public class Hero extends Entity {
 
+<<<<<<< HEAD
     private float dmg = 3.0f;
     private final int fireballCoolDown = 5;
     private final float xSpeed = 0.3f;
@@ -27,6 +28,13 @@ public class Hero extends Entity {
     private final String pathToIdleRight = "knight/idleRight";
     private final String pathToRunLeft = "knight/runLeft";
     private final String pathToRunRight = "knight/runRight";
+=======
+    private float xSpeed = 0.3f;
+    private float ySpeed = 0.3f;
+    private int health = 50;
+    private int dmg = 2;
+
+>>>>>>> monster
     private Skill firstSkill;
 
     private InventoryComponent inventory;
@@ -40,11 +48,13 @@ public class Hero extends Entity {
         setupAnimationComponent();
         PlayableComponent pc = new PlayableComponent(this);
         setupFireballSkill();
+        setupHealthComponent();
         pc.setSkillSlot1(firstSkill);
         setupInventoryComponent();
         setupHitboxComponent();
     }
 
+<<<<<<< HEAD
     private void setupHitboxComponent() {
         new HitboxComponent(this);
     }
@@ -53,22 +63,76 @@ public class Hero extends Entity {
         inventory = new InventoryComponent(this, 3);
     }
 
+=======
+>>>>>>> monster
     private void setupVelocityComponent() {
+        String pathToRunRight = "knight/runRight";
         Animation moveRight = AnimationBuilder.buildAnimation(pathToRunRight);
+        String pathToRunLeft = "knight/runLeft";
         Animation moveLeft = AnimationBuilder.buildAnimation(pathToRunLeft);
         new VelocityComponent(this, xSpeed, ySpeed, moveLeft, moveRight);
     }
 
     private void setupAnimationComponent() {
+        String pathToIdleRight = "knight/idleRight";
         Animation idleRight = AnimationBuilder.buildAnimation(pathToIdleRight);
+        String pathToIdleLeft = "knight/idleLeft";
         Animation idleLeft = AnimationBuilder.buildAnimation(pathToIdleLeft);
         new AnimationComponent(this, idleLeft, idleRight);
     }
 
+    private void setupHealthComponent() {
+        HealthComponent hc = new HealthComponent(this);
+        hc.setMaximalHealthpoints(this.health);
+        hc.setCurrentHealthpoints(this.health);
+    }
+
     private void setupFireballSkill() {
+        int fireballCoolDown = 5;
         firstSkill =
                 new Skill(
                         new FireballSkill(SkillTools::getCursorPositionAsPoint), fireballCoolDown);
     }
 
+<<<<<<< HEAD
+=======
+    private void setupHitboxComponent() {
+        new HitboxComponent(
+                this,
+                (you, other, direction) -> System.out.println("heroCollisionEnter"),
+                (you, other, direction) -> System.out.println("heroCollisionLeave"));
+    }
+
+    public float getHealth() {
+        return health;
+    }
+
+    public float getDmg() {
+        return dmg;
+    }
+
+    public float getxSpeed() {
+        return xSpeed;
+    }
+
+    public float getySpeed() {
+        return ySpeed;
+    }
+
+    public void setDmg(int dmg) {
+        this.dmg = dmg;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public void setxSpeed(float xSpeed) {
+        this.xSpeed = xSpeed;
+    }
+
+    public void setySpeed(float ySpeed) {
+        this.ySpeed = ySpeed;
+    }
+>>>>>>> monster
 }
