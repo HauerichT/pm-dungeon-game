@@ -11,33 +11,24 @@ import configuration.Configuration;
 import configuration.KeyboardConfig;
 import controller.AbstractController;
 import controller.SystemController;
-<<<<<<< HEAD
 import ecs.components.InventoryComponent;
-=======
->>>>>>> item
 import ecs.components.MissingComponentException;
 import ecs.components.PositionComponent;
 import ecs.entities.Chest;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
-<<<<<<< HEAD
 import ecs.entities.Monster;
 import ecs.entities.*;
 import ecs.entities.items.Bag;
 import ecs.entities.items.HealPotion;
 import ecs.entities.items.StrengthPotion;
-=======
->>>>>>> item
 import ecs.entities.trap.SpawnTrap;
 import ecs.entities.trap.SpikeTrap;
 import ecs.entities.trap.TpTrap;
 import ecs.entities.monster.Tot;
 import ecs.entities.monster.Skeleton;
 import ecs.entities.monster.Zombie;
-<<<<<<< HEAD
 import ecs.entities.items.Sword;
-=======
->>>>>>> item
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
@@ -97,14 +88,13 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private static PauseMenu<Actor> pauseMenu;
     public static Entity hero;
 
-<<<<<<< HEAD
     /** Counter to save current level */
-=======
+
 
     private static Entity trap;
 
     private static ScreenInventory<Actor> inv;
->>>>>>> item
+
     private static int levelCounter;
 
     private Logger gameLogger;
@@ -176,14 +166,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         addMonsters();
         addItems();
         getHero().ifPresent(this::placeOnLevelStart);
-<<<<<<< HEAD
-=======
+
         Chest.createNewChest();
-
-
-
-
->>>>>>> item
     }
 
     private void manageEntitiesSets() {

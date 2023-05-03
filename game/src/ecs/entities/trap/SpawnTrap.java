@@ -24,13 +24,9 @@ public class SpawnTrap extends Trap {
 
     }
 
-<<<<<<< HEAD
-    void setupAnimationComponent(int a) {
-        Animation active = AnimationBuilder.buildAnimation(this.active);
-=======
+
     public void setupAnimationComponent(int a) {
-        Animation inactive = AnimationBuilder.buildAnimation(this.inactive);
->>>>>>> item
+        Animation active = AnimationBuilder.buildAnimation(this.active);
         if (a == 0) {
             new AnimationComponent(this, active);
         } else {
