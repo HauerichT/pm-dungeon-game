@@ -4,14 +4,18 @@ import dslToGame.AnimationBuilder;
 import ecs.components.AnimationComponent;
 import ecs.components.HitboxComponent;
 import ecs.components.PositionComponent;
+import ecs.components.collision.ICollide;
+import ecs.entities.Entity;
 import ecs.entities.Trap;
 import graphic.Animation;
+import level.elements.tile.Tile;
+import starter.Game;
 
 public class SpikeTrap extends Trap {
     private final String inactive = "trap/spiketrap/inactive";
     private final String active = "trap/spiketrap/active";
 
-    private final float damage = 15;
+    private final float dmg = 1.0f;
 
     public SpikeTrap() {
         super();
@@ -38,4 +42,5 @@ public class SpikeTrap extends Trap {
             (you, other, direction) -> setupAnimationComponent(0));
 
     }
+
 }

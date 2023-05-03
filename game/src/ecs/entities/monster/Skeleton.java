@@ -15,7 +15,7 @@ public class Skeleton extends Monster {
             0.02f,
             0.02f,
             1.0f,
-            5.0f
+            5
         );
     }
 }

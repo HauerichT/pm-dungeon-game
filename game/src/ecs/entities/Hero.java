@@ -15,14 +15,11 @@ import graphic.Animation;
 public class Hero extends Entity {
 
     private final int fireballCoolDown = 5;
-    private final float xSpeed = 0.3f;
-    private final float ySpeed = 0.3f;
+    private float xSpeed = 0.3f;
+    private float ySpeed = 0.3f;
+    private float health = 50;
+    private float dmg = 1.0f;
 
-    private int counter = 0;
-    private final String pathToIdleLeft = "knight/idleLeft";
-    private final String pathToIdleRight = "knight/idleRight";
-    private final String pathToRunLeft = "knight/runLeft";
-    private final String pathToRunRight = "knight/runRight";
     private Skill firstSkill;
 
     /** Entity with Components */
@@ -37,18 +34,18 @@ public class Hero extends Entity {
         pc.setSkillSlot1(firstSkill);
     }
 
-    public void trapNewPosition(){
-        new PositionComponent(this);
-
-    }
     private void setupVelocityComponent() {
+        String pathToRunRight = "knight/runRight";
         Animation moveRight = AnimationBuilder.buildAnimation(pathToRunRight);
+        String pathToRunLeft = "knight/runLeft";
         Animation moveLeft = AnimationBuilder.buildAnimation(pathToRunLeft);
         new VelocityComponent(this, xSpeed, ySpeed, moveLeft, moveRight);
     }
 
     private void setupAnimationComponent() {
+        String pathToIdleRight = "knight/idleRight";
         Animation idleRight = AnimationBuilder.buildAnimation(pathToIdleRight);
+        String pathToIdleLeft = "knight/idleLeft";
         Animation idleLeft = AnimationBuilder.buildAnimation(pathToIdleLeft);
         new AnimationComponent(this, idleLeft, idleRight);
     }
@@ -64,5 +61,37 @@ public class Hero extends Entity {
                 this,
                 (you, other, direction) -> System.out.println("heroCollisionEnter"),
                 (you, other, direction) -> System.out.println("heroCollisionLeave"));
+    }
+
+    public float getHealth() {
+        return health;
+    }
+
+    public float getDmg() {
+        return dmg;
+    }
+
+    public float getxSpeed() {
+        return xSpeed;
+    }
+
+    public float getySpeed() {
+        return ySpeed;
+    }
+
+    public void setDmg(float dmg) {
+        this.dmg = dmg;
+    }
+
+    public void setHealth(float health) {
+        this.health = health;
+    }
+
+    public void setxSpeed(float xSpeed) {
+        this.xSpeed = xSpeed;
+    }
+
+    public void setySpeed(float ySpeed) {
+        this.ySpeed = ySpeed;
     }
 }
