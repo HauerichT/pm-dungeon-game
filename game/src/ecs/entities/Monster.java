@@ -4,9 +4,13 @@ package ecs.entities;
 import dslToGame.AnimationBuilder;
 import ecs.components.*;
 import ecs.components.ai.AIComponent;
+import ecs.components.ai.fight.MeleeAI;
 import ecs.components.ai.idle.IIdleAI;
-import ecs.items.ItemData;
-import ecs.systems.HealthSystem;
+import ecs.components.ai.idle.StaticRadiusWalk;
+import ecs.components.ai.transition.RangeTransition;
+import ecs.components.skill.MeleeSkill;
+import ecs.components.skill.Skill;
+import ecs.components.skill.SkillTools;
 import graphic.Animation;
 
 
@@ -45,11 +49,8 @@ public abstract class Monster extends Entity {
         setupAnimationComponent();
         setupPositionComponent();
         setupAIComponent();
-<<<<<<< HEAD
         setupHitboxComponent();
-=======
         setupHealthComponent();
-        setupHitboxComponent();
     }
 
 
@@ -57,19 +58,11 @@ public abstract class Monster extends Entity {
 
     private void setupPositionComponent() {
         new PositionComponent(this);
->>>>>>> monster
     }
 
     private void setupAIComponent() {
         AIComponent ai = new AIComponent(this);
         ai.setIdleAI(idleAI);
-    }
-
-    private void setupHitboxComponent() {
-        new HitboxComponent(
-            this,
-            (you, other, direction) -> System.out.println("Enter"),
-            (you, other, direction) -> System.out.println("Enter"));
     }
 
     private void setupAnimationComponent() {
@@ -85,9 +78,7 @@ public abstract class Monster extends Entity {
     }
 
     private void setupHealthComponent() {
-        HealthComponent hc = new HealthComponent(this);
-        hc.setMaximalHealthpoints(this.health);
-        hc.setCurrentHealthpoints(this.health);
+        new HealthComponent(this);
     }
 
     private void setupHitboxComponent() {

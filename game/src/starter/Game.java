@@ -11,30 +11,19 @@ import configuration.Configuration;
 import configuration.KeyboardConfig;
 import controller.AbstractController;
 import controller.SystemController;
-import ecs.components.InventoryComponent;
 import ecs.components.MissingComponentException;
+import ecs.components.PlayableComponent;
 import ecs.components.PositionComponent;
-import ecs.entities.Chest;
+import ecs.components.ai.AIComponent;
+import ecs.components.ai.fight.IFightAI;
+import ecs.components.ai.fight.MeleeAI;
+import ecs.components.skill.MeleeComponent;
+import ecs.components.skill.Skill;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
-import ecs.entities.Monster;
-<<<<<<< HEAD
-import ecs.entities.*;
-import ecs.entities.items.Bag;
-import ecs.entities.items.HealPotion;
-import ecs.entities.items.StrengthPotion;
-=======
-import ecs.entities.Trap;
+import ecs.entities.items.RandomItemGenerator;
 import ecs.entities.monster.RandomMonsterGenerator;
 import ecs.entities.trap.RandomTrapGenerator;
->>>>>>> monster
-import ecs.entities.trap.SpawnTrap;
-import ecs.entities.trap.SpikeTrap;
-import ecs.entities.trap.TpTrap;
-import ecs.entities.monster.Tot;
-import ecs.entities.monster.Skeleton;
-import ecs.entities.monster.Zombie;
-import ecs.entities.items.Sword;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
@@ -94,7 +83,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private static Entity hero;
     private static RandomMonsterGenerator randomMonsterGenerator;
     private static RandomTrapGenerator randomTrapGenerator;
-
+    private static RandomItemGenerator randomItemGenerator;
 
     /** Counter to save current level */
     private static int levelCounter;
@@ -124,6 +113,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         frame();
         clearScreen();
         levelAPI.update();
+        manageSkillCooldowns();
         controller.forEach(AbstractController::update);
         camera.update();
     }
@@ -145,6 +135,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         hero = new Hero();
         randomMonsterGenerator = new RandomMonsterGenerator();
         randomTrapGenerator = new RandomTrapGenerator(hero);
+        randomItemGenerator = new RandomItemGenerator();
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
@@ -154,6 +145,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     protected void frame() {
         setCameraFocus();
         manageEntitiesSets();
+        updateMeleeSkills();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
     }
@@ -163,14 +155,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         levelCounter++;
         currentLevel = levelAPI.getCurrentLevel();
         entities.clear();
-<<<<<<< HEAD
-        addTraps();
-        addMonsters();
-        addItems();
-=======
         randomMonsterGenerator.spawnRandomMonster(levelCounter);
         randomTrapGenerator.spawnRandomTrap(levelCounter);
->>>>>>> monster
+        randomItemGenerator.spwanRandomItems(levelCounter);
         getHero().ifPresent(this::placeOnLevelStart);
     }
 
@@ -239,33 +226,44 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
     }
 
-
-
-    /** Adds random Items to Dungeon based on level */
-    public void addItems() {
-
-        int itemAmount;
-
-        if (levelCounter >= 0 && levelCounter < 5) {
-            itemAmount = random.nextInt(0, 2);
-        } else if (levelCounter >= 5 && levelCounter < 10) {
-            itemAmount = random.nextInt(1, 3);
-        } else if (levelCounter >= 10 && levelCounter < 15) {
-            itemAmount = random.nextInt(1, 2);
-        } else {
-            itemAmount = random.nextInt(1, 3);
+    /**
+     * Reduces the cool-downs for all Skills for each entity
+     */
+    public void manageSkillCooldowns() {
+        // Reduces the skills of the hero
+        PlayableComponent pc =
+            (PlayableComponent) hero.getComponent(PlayableComponent.class).orElse(null);
+        if (pc != null) {
+            pc.getSkillSlot1().ifPresent(Skill::reduceCoolDown);
+            pc.getSkillSlot2().ifPresent(Skill::reduceCoolDown);
         }
+        // reduces the skills of all NPCs
+        entities.stream()
+            .filter(entity -> entity.getComponent(AIComponent.class).isPresent())
+            .map(entity -> (AIComponent) entity.getComponent(AIComponent.class).orElse(null))
+            .filter(Objects::nonNull)
+            .forEach(this::reduceSkillCooldown);
+    }
 
-        for (int i = 0; i < itemAmount; i++) {
-            int randomTraps = random.nextInt(4);
-            switch (randomTraps) {
-                case 0 -> new HealPotion();
-                case 1 -> new Sword();
-                case 2 -> new StrengthPotion();
-                case 3 -> new Bag();
-            }
+    private void reduceSkillCooldown(AIComponent entityAIComponent) {
+        IFightAI entityFightAI = entityAIComponent.getFightAI();
+        if (entityFightAI.getClass() == MeleeAI.class) {
+            ((MeleeAI) entityFightAI).getFightSkill().reduceCoolDown();
         }
     }
+
+    /**
+     * Updates all MeleeSkills for each entity that has one
+     */
+    private void updateMeleeSkills() {
+        List<Entity> l = Game.entities.stream().filter(en -> en.getComponent(MeleeComponent.class).orElse(null) != null).toList();
+        for (Entity en : l) {
+            MeleeComponent mc = (MeleeComponent) en.getComponent(MeleeComponent.class).orElseThrow();
+            mc.getMeleeSkill().update(en);
+        }
+    }
+
+
 
     /**
      * Given entity will be added to the game in the next frame

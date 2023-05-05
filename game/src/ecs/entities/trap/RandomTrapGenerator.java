@@ -12,10 +12,10 @@ public class RandomTrapGenerator {
     private Entity hero;
 
     /**
-     * Add random Monsters to dungeon based on level.
+     * Add random Traps to dungeon based on level.
      * <p>
-     * Generate random amount of monsters based on the current level.
-     * Change the strength of the monsters based on the current level.
+     * Generate random amount of traps based on the current level.
+     * Change the strength of the traps based on the current level.
      *
      * @author timo.haverich@hsbi.de
      */

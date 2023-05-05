@@ -6,36 +6,29 @@ import ecs.components.AnimationComponent;
 import ecs.components.PositionComponent;
 import ecs.components.VelocityComponent;
 import ecs.components.skill.*;
+import ecs.items.IOnCollect;
 import ecs.items.ItemData;
 import graphic.Animation;
 
 import java.util.List;
 
 /**
- * The Hero is the player character. It's entity in the ECS. This class helps to setup the hero with
+ * The Hero is the player character. It's entity in the ECS. This class helps to set up the hero with
  * all its components and attributes .
  */
 public class Hero extends Entity {
 
-<<<<<<< HEAD
-    private float dmg = 3.0f;
-    private final int fireballCoolDown = 5;
-    private final float xSpeed = 0.3f;
-    private final float ySpeed = 0.3f;
 
-    private int counter = 0;
     private final String pathToIdleLeft = "knight/idleLeft";
     private final String pathToIdleRight = "knight/idleRight";
     private final String pathToRunLeft = "knight/runLeft";
     private final String pathToRunRight = "knight/runRight";
-=======
     private float xSpeed = 0.3f;
     private float ySpeed = 0.3f;
     private int health = 50;
     private int dmg = 2;
 
->>>>>>> monster
-    private Skill firstSkill;
+    private Skill meleeSkill;
 
     private InventoryComponent inventory;
 
@@ -46,25 +39,17 @@ public class Hero extends Entity {
         new PositionComponent(this);
         setupVelocityComponent();
         setupAnimationComponent();
-        PlayableComponent pc = new PlayableComponent(this);
-        setupFireballSkill();
-        setupHealthComponent();
-        pc.setSkillSlot1(firstSkill);
-        setupInventoryComponent();
         setupHitboxComponent();
+        PlayableComponent pc = new PlayableComponent(this);
+        setupMeleeSkill();
+        pc.setSkillSlot1(meleeSkill);
     }
 
-<<<<<<< HEAD
-    private void setupHitboxComponent() {
-        new HitboxComponent(this);
-    }
 
     private void setupInventoryComponent() {
         inventory = new InventoryComponent(this, 3);
     }
 
-=======
->>>>>>> monster
     private void setupVelocityComponent() {
         String pathToRunRight = "knight/runRight";
         Animation moveRight = AnimationBuilder.buildAnimation(pathToRunRight);
@@ -87,52 +72,14 @@ public class Hero extends Entity {
         hc.setCurrentHealthpoints(this.health);
     }
 
-    private void setupFireballSkill() {
-        int fireballCoolDown = 5;
-        firstSkill =
-                new Skill(
-                        new FireballSkill(SkillTools::getCursorPositionAsPoint), fireballCoolDown);
+    private void setupMeleeSkill() {
+         meleeSkill = new Skill(new MeleeSkill(SkillTools::getCursorPositionAsPoint), 1);
     }
 
-<<<<<<< HEAD
-=======
     private void setupHitboxComponent() {
         new HitboxComponent(
                 this,
                 (you, other, direction) -> System.out.println("heroCollisionEnter"),
                 (you, other, direction) -> System.out.println("heroCollisionLeave"));
     }
-
-    public float getHealth() {
-        return health;
-    }
-
-    public float getDmg() {
-        return dmg;
-    }
-
-    public float getxSpeed() {
-        return xSpeed;
-    }
-
-    public float getySpeed() {
-        return ySpeed;
-    }
-
-    public void setDmg(int dmg) {
-        this.dmg = dmg;
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
-    public void setxSpeed(float xSpeed) {
-        this.xSpeed = xSpeed;
-    }
-
-    public void setySpeed(float ySpeed) {
-        this.ySpeed = ySpeed;
-    }
->>>>>>> monster
 }

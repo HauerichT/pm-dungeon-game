@@ -10,12 +10,9 @@ import graphic.Animation;
 
 public class TpTrap extends Trap{
 
-<<<<<<< HEAD
     private final String active = "trap/tptrap/active";
     private Entity hero;
-=======
-    private final Entity hero;
->>>>>>> monster
+
 
 
     public TpTrap(Entity hero) {
@@ -26,12 +23,8 @@ public class TpTrap extends Trap{
     }
 
     void setupAnimationComponent(int a) {
-<<<<<<< HEAD
         Animation active = AnimationBuilder.buildAnimation(this.active);
-=======
-        String inactive1 = "trap/tptrap/inactive";
-        Animation inactive = AnimationBuilder.buildAnimation(inactive1);
->>>>>>> monster
+        Animation inactive = AnimationBuilder.buildAnimation("trap/tptrap/inactive");
         if (a == 0) {
             new AnimationComponent(this, active);
         } else {

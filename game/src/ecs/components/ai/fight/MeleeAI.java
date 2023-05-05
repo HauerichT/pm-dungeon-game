@@ -39,4 +39,8 @@ public class MeleeAI implements IFightAI {
             AITools.move(entity, path);
         }
     }
+
+    public Skill getFightSkill() {
+        return fightSkill;
+    }
 }
