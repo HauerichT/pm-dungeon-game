@@ -5,9 +5,9 @@ import ecs.entities.Entity;
 
 public class MeleeComponent extends Component {
     private final Entity entity;
-    private final DamageMeleeSkill skill;
+    private final MeleeSkill skill;
 
-    public MeleeComponent(Entity entity, DamageMeleeSkill skill) {
+    public MeleeComponent(Entity entity, MeleeSkill skill) {
         super(entity);
         this.entity = entity;
         this.skill = skill;
@@ -18,7 +18,7 @@ public class MeleeComponent extends Component {
         return entity;
     }
 
-    public DamageMeleeSkill getMeleeSkill() {
+    public MeleeSkill getMeleeSkill() {
         return skill;
     }
 }

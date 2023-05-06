@@ -73,11 +73,28 @@ public class SkillTools {
         return new Point(newx, newy);
     }
 
+
+    /**
+     * Gets the position of the hero
+     *
+     * @return position of the nearest entity as a point
+     */
     public static Point getHeroPosition() {
         Entity h = Game.getHero().orElseThrow();
         PositionComponent pc =
             (PositionComponent) h.getComponent(PositionComponent.class).orElseThrow();
         return pc.getPosition();
+    }
+
+    /**
+     * gets the current cursor position as Point
+     *
+     * @return mouse cursor position as Point
+     */
+    public static Point getCursorPositionAsPoint() {
+        Vector3 mousePosition =
+            Game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+        return new Point(mousePosition.x, mousePosition.y);
     }
 
     /** Take knock-back when hit */
@@ -89,8 +106,8 @@ public class SkillTools {
         entity.getComponent(VelocityComponent.class)
             .ifPresent(
                 vc -> {
-                    ((VelocityComponent) vc).setCurrentXVelocity(direction.x * 0.4f);
-                    ((VelocityComponent) vc).setCurrentYVelocity(direction.y * 0.4f);
+                    ((VelocityComponent) vc).setCurrentXVelocity(direction.x * 0.9f);
+                    ((VelocityComponent) vc).setCurrentYVelocity(direction.y * 0.9f);
                 });
     }
 }

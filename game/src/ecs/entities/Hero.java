@@ -6,9 +6,13 @@ import ecs.components.AnimationComponent;
 import ecs.components.PositionComponent;
 import ecs.components.VelocityComponent;
 import ecs.components.skill.*;
+import ecs.damage.Damage;
+import ecs.damage.DamageType;
 import ecs.items.IOnCollect;
 import ecs.items.ItemData;
 import graphic.Animation;
+import starter.Game;
+import tools.Point;
 
 import java.util.List;
 
@@ -18,13 +22,8 @@ import java.util.List;
  */
 public class Hero extends Entity {
 
-
-    private final String pathToIdleLeft = "knight/idleLeft";
-    private final String pathToIdleRight = "knight/idleRight";
-    private final String pathToRunLeft = "knight/runLeft";
-    private final String pathToRunRight = "knight/runRight";
-    private float xSpeed = 0.3f;
-    private float ySpeed = 0.3f;
+    private float xSpeed = 0.25f;
+    private float ySpeed = 0.25f;
     private int health = 50;
     private int dmg = 2;
 
@@ -39,7 +38,7 @@ public class Hero extends Entity {
         new PositionComponent(this);
         setupVelocityComponent();
         setupAnimationComponent();
-        setupHitboxComponent();
+        setupHitBoxComponent();
         PlayableComponent pc = new PlayableComponent(this);
         setupMeleeSkill();
         pc.setSkillSlot1(meleeSkill);
@@ -49,7 +48,7 @@ public class Hero extends Entity {
 
 
     private void setupInventoryComponent() {
-        inventory = new InventoryComponent(this, 3);
+        inventory = new InventoryComponent(this, 5);
     }
 
     private void setupVelocityComponent() {
@@ -75,45 +74,12 @@ public class Hero extends Entity {
     }
 
     private void setupMeleeSkill() {
-         meleeSkill = new Skill(new MeleeSkill(SkillTools::getHeroPosition), 1);
+        MeleeSkill skill = new MeleeSkill("knight/attack/", new Damage(this.dmg, DamageType.PHYSICAL, null), new Point(1,1), SkillTools::getHeroPosition);
+        meleeSkill = new Skill(skill,1);
     }
 
-    private void setupHitboxComponent() {
-        new HitboxComponent(
-                this,
-                (you, other, direction) -> System.out.println("heroCollisionEnter"),
-                (you, other, direction) -> System.out.println("heroCollisionLeave"));
+    private void setupHitBoxComponent() {
+        new HitboxComponent(this);
     }
 
-    public float getHealth() {
-        return health;
-    }
-
-    public float getDmg() {
-        return dmg;
-    }
-
-    public float getxSpeed() {
-        return xSpeed;
-    }
-
-    public float getySpeed() {
-        return ySpeed;
-    }
-
-    public void setDmg(int dmg) {
-        this.dmg = dmg;
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
-    public void setxSpeed(float xSpeed) {
-        this.xSpeed = xSpeed;
-    }
-
-    public void setySpeed(float ySpeed) {
-        this.ySpeed = ySpeed;
-    }
 }

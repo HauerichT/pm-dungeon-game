@@ -1,5 +1,7 @@
 package ecs.entities;
 
+import ecs.components.HealthComponent;
+import ecs.components.skill.SkillTools;
 import ecs.entities.items.Bag;
 import ecs.entities.items.HealPotion;
 import ecs.entities.items.StrengthPotion;
@@ -84,20 +86,33 @@ public class RandomEntityGenerator {
             switch (randomMonster) {
                 case 0 -> {
                     Monster skeleton = new Skeleton();
-                    skeleton.setDmg((int) (skeleton.getDmg() * strengthAddOn));
-                    System.out.println("Skelet: " + skeleton.getDmg());
+                    skeleton.getComponent(HealthComponent.class)
+                        .ifPresent(
+                            hc -> {
+                                ((HealthComponent) hc).setMaximalHealthpoints(((HealthComponent) hc).getMaximalHealthpoints()+strengthAddOn);
+                                System.out.println("skeleton:" + ((HealthComponent) hc).getMaximalHealthpoints());
+                            });
                     Game.addEntity(skeleton);
                 }
                 case 1 -> {
                     Monster zombie = new Zombie();
-                    zombie.setDmg((int) (zombie.getDmg() * strengthAddOn));
-                    System.out.println("Zombie: " + zombie.getDmg());
+                    zombie.getComponent(HealthComponent.class)
+                        .ifPresent(
+                            hc -> {
+
+                                ((HealthComponent) hc).setMaximalHealthpoints(((HealthComponent) hc).getMaximalHealthpoints()+strengthAddOn);
+                                System.out.println("Zombie:" + ((HealthComponent) hc).getMaximalHealthpoints());
+                            });
                     Game.addEntity(zombie);
                 }
                 case 2 -> {
                     Monster tot = new Tot();
-                    tot.setDmg((int) (tot.getDmg() * strengthAddOn));
-                    System.out.println("Tot: " + tot.getDmg());
+                    tot.getComponent(HealthComponent.class)
+                        .ifPresent(
+                            hc -> {
+                                ((HealthComponent) hc).setMaximalHealthpoints(((HealthComponent) hc).getMaximalHealthpoints()+strengthAddOn);
+                                System.out.println("tot:" + ((HealthComponent) hc).getMaximalHealthpoints());
+                            });
                     Game.addEntity(tot);
                 }
             }

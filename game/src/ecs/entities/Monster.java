@@ -78,7 +78,6 @@ public abstract class Monster extends Entity {
     private void setupHealthComponent() {
         HealthComponent hc = new HealthComponent(this);
         hc.setMaximalHealthpoints(this.health);
-        hc.setCurrentHealthpoints(this.health);
     }
 
     private void setupHitboxComponent() {
@@ -86,43 +85,6 @@ public abstract class Monster extends Entity {
             this,
             (you, other, direction) -> System.out.println("MonsterOnHeroEnter"),
             (you, other, direction) -> System.out.println("MonsterOnHeroLeave"));
-    }
-
-
-
-    /* Getter to get current information about Monster */
-    public float getDmg() {
-        return dmg;
-    }
-
-    public float getHorizontalSpeed() {
-        return horizontalSpeed;
-    }
-
-    public float getVerticalSpeed() {
-        return verticalSpeed;
-    }
-
-    public float getHealth() {
-        return health;
-    }
-
-
-    /* Setter to update Monster */
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
-    public void setDmg(int dmg) {
-        this.dmg = dmg;
-    }
-
-    public void setHorizontalSpeed(float horizontalSpeed) {
-        this.horizontalSpeed = horizontalSpeed;
-    }
-
-    public void setVerticalSpeed(float verticalSpeed) {
-        this.verticalSpeed = verticalSpeed;
     }
 
 }
