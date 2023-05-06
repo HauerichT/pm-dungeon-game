@@ -20,9 +20,7 @@ import ecs.components.skill.MeleeComponent;
 import ecs.components.skill.Skill;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
-import ecs.entities.items.RandomItemGenerator;
-import ecs.entities.monster.RandomMonsterGenerator;
-import ecs.entities.trap.RandomTrapGenerator;
+import ecs.entities.RandomEntityGenerator;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
@@ -80,9 +78,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public static ILevel currentLevel;
     private static PauseMenu<Actor> pauseMenu;
     private static Entity hero;
-    private static RandomMonsterGenerator randomMonsterGenerator;
-    private static RandomTrapGenerator randomTrapGenerator;
-    private static RandomItemGenerator randomItemGenerator;
+    private static RandomEntityGenerator randomEntityGenerator;
 
     /** Counter to save current level */
     private static int levelCounter;
@@ -132,9 +128,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         pauseMenu = new PauseMenu<>();
         controller.add(pauseMenu);
         hero = new Hero();
-        randomMonsterGenerator = new RandomMonsterGenerator();
-        randomTrapGenerator = new RandomTrapGenerator(hero);
-        randomItemGenerator = new RandomItemGenerator();
+        randomEntityGenerator = new RandomEntityGenerator();
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
@@ -154,9 +148,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         levelCounter++;
         currentLevel = levelAPI.getCurrentLevel();
         entities.clear();
-        randomMonsterGenerator.spawnRandomMonster(levelCounter);
-        randomTrapGenerator.spawnRandomTrap(levelCounter);
-        randomItemGenerator.spwanRandomItems(levelCounter);
+        randomEntityGenerator.spawnRandomMonster();
+        randomEntityGenerator.spawnRandomTrap();
+        randomEntityGenerator.spwanRandomItems();
         getHero().ifPresent(this::placeOnLevelStart);
     }
 
@@ -307,6 +301,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public static Optional<Entity> getHero() {
         return Optional.ofNullable(hero);
     }
+
+    /**
+     * @return current level
+     */
+    public static int getLevelCounter() { return levelCounter; }
 
     /**
      * set the reference of the playable character careful: old hero will not be removed from the
