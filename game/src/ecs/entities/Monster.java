@@ -54,8 +54,6 @@ public abstract class Monster extends Entity {
     }
 
 
-    /* Setup Components for Monster */
-
     private void setupPositionComponent() {
         new PositionComponent(this);
     }
@@ -78,7 +76,9 @@ public abstract class Monster extends Entity {
     }
 
     private void setupHealthComponent() {
-        new HealthComponent(this);
+        HealthComponent hc = new HealthComponent(this);
+        hc.setMaximalHealthpoints(this.health);
+        hc.setCurrentHealthpoints(this.health);
     }
 
     private void setupHitboxComponent() {

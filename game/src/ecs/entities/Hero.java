@@ -43,6 +43,8 @@ public class Hero extends Entity {
         PlayableComponent pc = new PlayableComponent(this);
         setupMeleeSkill();
         pc.setSkillSlot1(meleeSkill);
+        setupInventoryComponent();
+        setupHealthComponent();
     }
 
 
@@ -73,7 +75,7 @@ public class Hero extends Entity {
     }
 
     private void setupMeleeSkill() {
-         meleeSkill = new Skill(new MeleeSkill(SkillTools::getCursorPositionAsPoint), 1);
+         meleeSkill = new Skill(new MeleeSkill(SkillTools::getHeroPosition), 1);
     }
 
     private void setupHitboxComponent() {
@@ -81,5 +83,37 @@ public class Hero extends Entity {
                 this,
                 (you, other, direction) -> System.out.println("heroCollisionEnter"),
                 (you, other, direction) -> System.out.println("heroCollisionLeave"));
+    }
+
+    public float getHealth() {
+        return health;
+    }
+
+    public float getDmg() {
+        return dmg;
+    }
+
+    public float getxSpeed() {
+        return xSpeed;
+    }
+
+    public float getySpeed() {
+        return ySpeed;
+    }
+
+    public void setDmg(int dmg) {
+        this.dmg = dmg;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public void setxSpeed(float xSpeed) {
+        this.xSpeed = xSpeed;
+    }
+
+    public void setySpeed(float ySpeed) {
+        this.ySpeed = ySpeed;
     }
 }

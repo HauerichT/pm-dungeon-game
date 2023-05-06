@@ -53,16 +53,6 @@ public class SkillTools {
         return new Point(velocityX, velocityY);
     }
 
-    /**
-     * gets the current cursor position as Point
-     *
-     * @return mouse cursor position as Point
-     */
-    public static Point getCursorPositionAsPoint() {
-        Vector3 mousePosition =
-                Game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-        return new Point(mousePosition.x, mousePosition.y);
-    }
 
     /**
      * Calculates a new Point that represents the direction limited by 1
@@ -90,43 +80,11 @@ public class SkillTools {
         return pc.getPosition();
     }
 
-    /**
-     * Gets the position from the nearest entity to a starting entity
-     *
-     * @param startingEntity as the starting point
-     * @return position of the nearest entity as a point
-     */
-    public static Point getNearestEntityPosition(Entity startingEntity) {
-        PositionComponent startingEntitypc =
-            (PositionComponent)
-                startingEntity.getComponent(PositionComponent.class).orElseThrow();
-        Point nearestEntityPoint = SkillTools.getCursorPositionAsPoint();
-        float max = 999f;
-        for (Entity targetEntitys : Game.getEntities()) {
-            // continue only if the Entity has a Healthcomponent and Positioncomponent
-            if (targetEntitys.getComponent(HealthComponent.class).orElse(null) == null
-                || targetEntitys.getComponent(PositionComponent.class).orElse(null) == null)
-                continue;
-
-            PositionComponent targetEntitypc =
-                (PositionComponent)
-                    targetEntitys.getComponent(PositionComponent.class).orElseThrow();
-            Point startingEntityPoint = startingEntitypc.getPosition();
-            Point targetEntityPoint = targetEntitypc.getPosition();
-            float distance = Point.calculateDistance(startingEntityPoint, targetEntityPoint);
-
-            if (distance < max && distance >= 0.1 && distance < 10) {
-                max = distance;
-                nearestEntityPoint = targetEntityPoint;
-            }
-        }
-        return nearestEntityPoint;
-    }
-
-    public static void recieveKnockback(Point projectileStartPosition, Entity entity) {
+    /** Take knock-back when hit */
+    public static void recieveKnockback(Point pos, Entity entity) {
         PositionComponent epc = (PositionComponent) entity.getComponent(PositionComponent.class).orElseThrow();
         Point entityPosition = epc.getPosition();
-        Point direction = Point.getUnitDirectionalVector(entityPosition, projectileStartPosition);
+        Point direction = Point.getUnitDirectionalVector(entityPosition, pos);
 
         entity.getComponent(VelocityComponent.class)
             .ifPresent(

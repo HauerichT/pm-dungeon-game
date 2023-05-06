@@ -27,7 +27,7 @@ public class RandomMonsterGenerator {
 
         int randomMonster;
 
-        for (int i = 0; i < monsterAmount+1; i++) {
+        for (int i = 0; i < monsterAmount; i++) {
 
             if (totCanBeSpawned) {
                 randomMonster = random.nextInt(0,3);

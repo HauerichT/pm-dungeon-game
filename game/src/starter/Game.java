@@ -1,6 +1,5 @@
 package starter;
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
-import static com.badlogic.gdx.math.MathUtils.random;
 import static logging.LoggerConfig.initBaseLogger;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -230,14 +229,14 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      * Reduces the cool-downs for all Skills for each entity
      */
     public void manageSkillCooldowns() {
-        // Reduces the skills of the hero
+        // reduce skill cooldown of hero
         PlayableComponent pc =
             (PlayableComponent) hero.getComponent(PlayableComponent.class).orElse(null);
         if (pc != null) {
             pc.getSkillSlot1().ifPresent(Skill::reduceCoolDown);
             pc.getSkillSlot2().ifPresent(Skill::reduceCoolDown);
         }
-        // reduces the skills of all NPCs
+        // reduce skill cooldown of monsters
         entities.stream()
             .filter(entity -> entity.getComponent(AIComponent.class).isPresent())
             .map(entity -> (AIComponent) entity.getComponent(AIComponent.class).orElse(null))
@@ -245,24 +244,22 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             .forEach(this::reduceSkillCooldown);
     }
 
-    private void reduceSkillCooldown(AIComponent entityAIComponent) {
-        IFightAI entityFightAI = entityAIComponent.getFightAI();
-        if (entityFightAI.getClass() == MeleeAI.class) {
-            ((MeleeAI) entityFightAI).getFightSkill().reduceCoolDown();
+    /* Reduces the cooldown time of a skill */
+    private void reduceSkillCooldown(AIComponent aiComponent) {
+        IFightAI fightAI = aiComponent.getFightAI();
+        if (fightAI.getClass() == MeleeAI.class) {
+            ((MeleeAI) fightAI).getFightSkill().reduceCoolDown();
         }
     }
 
-    /**
-     * Updates all MeleeSkills for each entity that has one
-     */
+    /* Updates all MeleeSkills for each entity that has one */
     private void updateMeleeSkills() {
-        List<Entity> l = Game.entities.stream().filter(en -> en.getComponent(MeleeComponent.class).orElse(null) != null).toList();
-        for (Entity en : l) {
-            MeleeComponent mc = (MeleeComponent) en.getComponent(MeleeComponent.class).orElseThrow();
-            mc.getMeleeSkill().update(en);
+        List<Entity> l = Game.entities.stream().filter(a -> a.getComponent(MeleeComponent.class).orElse(null) != null).toList();
+        for (Entity a : l) {
+            MeleeComponent mc = (MeleeComponent) a.getComponent(MeleeComponent.class).orElseThrow();
+            mc.getMeleeSkill().update(a);
         }
     }
-
 
 
     /**
