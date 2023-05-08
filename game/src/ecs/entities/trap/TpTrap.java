@@ -13,20 +13,18 @@ public class TpTrap extends Trap{
     private final String active = "trap/tptrap/active";
     private Entity hero;
 
-    private final float damage = 15;
+
 
     public TpTrap(Entity hero) {
         super();
-        setupAnimationComponent(0);
+        setupAnimationComponent(false);
         setupHitboxComponent();
         this.hero = hero;
-
-
     }
 
-    void setupAnimationComponent(int a) {
+    void setupAnimationComponent(boolean b) {
         Animation active = AnimationBuilder.buildAnimation(this.active);
-        if (a == 0) {
+        if (!b) {
             new AnimationComponent(this, active);
         } else {
             new PositionComponent(hero);
@@ -37,8 +35,9 @@ public class TpTrap extends Trap{
     private void setupHitboxComponent() {
         new HitboxComponent(
             this,
-            (you, other, direction) -> setupAnimationComponent(1),
-            (you, other, direction) -> setupAnimationComponent(0));
+            (you, other, direction) -> setupAnimationComponent(false),
+            (you, other, direction) -> setupAnimationComponent(true)
+        );
     }
 }
 

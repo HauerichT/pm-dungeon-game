@@ -1,6 +1,5 @@
 package starter;
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
-import static com.badlogic.gdx.math.MathUtils.random;
 import static logging.LoggerConfig.initBaseLogger;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -11,24 +10,17 @@ import configuration.Configuration;
 import configuration.KeyboardConfig;
 import controller.AbstractController;
 import controller.SystemController;
-import ecs.components.InventoryComponent;
 import ecs.components.MissingComponentException;
+import ecs.components.PlayableComponent;
 import ecs.components.PositionComponent;
-import ecs.entities.Chest;
+import ecs.components.ai.AIComponent;
+import ecs.components.ai.fight.IFightAI;
+import ecs.components.ai.fight.MeleeAI;
+import ecs.components.skill.MeleeComponent;
+import ecs.components.skill.Skill;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
-import ecs.entities.Monster;
-import ecs.entities.*;
-import ecs.entities.items.Bag;
-import ecs.entities.items.HealPotion;
-import ecs.entities.items.StrengthPotion;
-import ecs.entities.trap.SpawnTrap;
-import ecs.entities.trap.SpikeTrap;
-import ecs.entities.trap.TpTrap;
-import ecs.entities.monster.Tot;
-import ecs.entities.monster.Skeleton;
-import ecs.entities.monster.Zombie;
-import ecs.entities.items.Sword;
+import ecs.entities.RandomEntityGenerator;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
@@ -36,6 +28,7 @@ import configuration.hud.PauseMenu;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
+import graphic.hud.ScreenInventory;
 import configuration.hud.inventoryHud.ScreenInventory;
 import level.IOnLevelLoader;
 import level.LevelAPI;
@@ -86,7 +79,10 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     public static ILevel currentLevel;
     private static PauseMenu<Actor> pauseMenu;
-    public static Entity hero;
+    private static Entity hero;
+    private static RandomEntityGenerator randomEntityGenerator;
+    private static boolean inventoryShown = false;
+    private static ScreenInventory<Actor> inv;
 
     /** Counter to save current level */
 
@@ -122,6 +118,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         frame();
         clearScreen();
         levelAPI.update();
+        manageSkillCooldowns();
         controller.forEach(AbstractController::update);
         camera.update();
     }
@@ -142,7 +139,10 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         inv = new ScreenInventory<>();
         controller.add(inv);
         controller.add(pauseMenu);
+        randomEntityGenerator = new RandomEntityGenerator();
         hero = new Hero();
+        inv = new ScreenInventory<>();
+        controller.add(inv);
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
@@ -152,6 +152,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     protected void frame() {
         setCameraFocus();
         manageEntitiesSets();
+        updateMeleeSkills();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
         if (Gdx.input.isKeyJustPressed(Input.Keys.I)) toggleInventory();
@@ -162,9 +163,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         levelCounter++;
         currentLevel = levelAPI.getCurrentLevel();
         entities.clear();
-        addTraps();
-        addMonsters();
-        addItems();
+        randomEntityGenerator.spawnRandomMonster();
+        randomEntityGenerator.spawnRandomTrap();
+        randomEntityGenerator.spwanRandomItems();
         getHero().ifPresent(this::placeOnLevelStart);
 
         Chest.createNewChest();
@@ -242,136 +243,58 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
     }
 
-    /** Adds random Monsters to Dungeon based on level */
-    public void addMonsters() {
 
-        /* Amount of Monsters to be spawned */
-        int monsterAmount;
-
-        /* Multiplier to add strength */
-        float strengthAddOn = 1;
-
-        /* Multiplier to add speed */
-        float speedAddOn = 1;
-
-        /* Bool to check if Level to spawn TOT is reached */
-        boolean levelForTotReached = false;
-
-        /* Get amount of Monsters to be spawned */
-        if (levelCounter >= 0 && levelCounter < 5) {
-            monsterAmount = random.nextInt(1, 2);
-        }
-        else if (levelCounter >= 5 && levelCounter < 10) {
-            monsterAmount = random.nextInt(1, 3);
-            strengthAddOn = 1.5f;
-            speedAddOn = 1.1f;
-        }
-        else if (levelCounter >= 10 && levelCounter < 15) {
-            monsterAmount = random.nextInt(3, 6);
-            levelForTotReached = true;
-            strengthAddOn = 2.0f;
-            speedAddOn = 1.2f;
-        }
-        else {
-            monsterAmount = random.nextInt(4, 10);
-            strengthAddOn = 2.5f;
-            speedAddOn = 1.3f;
-        }
-
-        System.out.println("Level: " + levelCounter);
-
-        /* Spawn Monsters */
-        for (int i = 0; i < monsterAmount; i++) {
-            int randomMonster;
-
-            /* Check if TOT can be spawned */
-            if (levelForTotReached) {
-                randomMonster = random.nextInt(3);
-            }
-            else {
-                randomMonster = random.nextInt(2);
-            }
-
-            /* Spawn random monster and set Damage based on level */
-            switch (randomMonster) {
-                case 0 -> {
-                    Monster zombie = new Zombie();
-                    zombie.setDmg(zombie.getDmg()*strengthAddOn);
-                    zombie.setHorizontalSpeed(zombie.getHorizontalSpeed()*speedAddOn);
-                    zombie.setVerticalSpeed(zombie.getVerticalSpeed()*speedAddOn);
-                    System.out.println("Zombie with strength " + zombie.getDmg() + " and speed " + zombie.getVerticalSpeed() + " was added.");
-                }
-                case 1 -> {
-                    Monster skeleton = new Skeleton();
-                    skeleton.setDmg(skeleton.getDmg()*strengthAddOn);
-                    skeleton.setHorizontalSpeed(skeleton.getHorizontalSpeed()*speedAddOn);
-                    skeleton.setVerticalSpeed(skeleton.getVerticalSpeed()*speedAddOn);
-                    System.out.println("Skeleton with strength " + skeleton.getDmg() + " and speed " + skeleton.getVerticalSpeed() + " was added.");
-                }
-                case 2 -> {
-                    Monster tot = new Tot();
-                    tot.setDmg(tot.getDmg()*strengthAddOn);
-                    tot.setHorizontalSpeed(tot.getHorizontalSpeed()*speedAddOn);
-                    tot.setVerticalSpeed(tot.getVerticalSpeed()*speedAddOn);
-                    System.out.println("TOT with strength " + tot.getDmg() + " and speed " + tot.getVerticalSpeed() + " was added.");
-                }
-            }
-
-        }
-
-    }
-
-    /** Adds random Traps to Dungeon based on level */
-    public void addTraps() {
-
-        int trapAmount;
-
-        if (levelCounter >= 0 && levelCounter < 5) {
-            trapAmount = random.nextInt(0, 2);
-        } else if (levelCounter >= 5 && levelCounter < 10) {
-            trapAmount = random.nextInt(1, 3);
-        } else if (levelCounter >= 10 && levelCounter < 15) {
-            trapAmount = random.nextInt(1, 4);
-        } else {
-            trapAmount = random.nextInt(2, 4);
-        }
-
-        for (int i = 0; i < trapAmount; i++) {
-            int randomTraps = random.nextInt(3);
-            switch (randomTraps) {
-                case 0 -> new SpikeTrap();
-                case 1 -> new SpawnTrap();
-                case 2 -> new TpTrap(hero);
-
-            }
+    /** Toggle inventory menu */
+    public static void toggleInventory() {
+        inventoryShown = !inventoryShown;
+        if (inv != null) {
+            if (inventoryShown) inv.showMenu();
+            else inv.hideMenu();
         }
     }
 
-    /** Adds random Items to Dungeon based on level */
-    public void addItems() {
+    /** Update inventory menu */
+    public static void updateInventory(Entity worldItemEntity, int emptySlots) {
+        inv.addItemToScreenInventory(worldItemEntity, emptySlots);
+    }
 
-        int itemAmount;
 
-        if (levelCounter >= 0 && levelCounter < 5) {
-            itemAmount = random.nextInt(0, 2);
-        } else if (levelCounter >= 5 && levelCounter < 10) {
-            itemAmount = random.nextInt(1, 3);
-        } else if (levelCounter >= 10 && levelCounter < 15) {
-            itemAmount = random.nextInt(1, 2);
-        } else {
-            itemAmount = random.nextInt(1, 3);
+    /**
+     * Reduces the cool-downs for all Skills for each entity
+     */
+    public void manageSkillCooldowns() {
+        // reduce skill cooldown of hero
+        PlayableComponent pc =
+            (PlayableComponent) hero.getComponent(PlayableComponent.class).orElse(null);
+        if (pc != null) {
+            pc.getSkillSlot1().ifPresent(Skill::reduceCoolDown);
+            pc.getSkillSlot2().ifPresent(Skill::reduceCoolDown);
         }
+        // reduce skill cooldown of monsters
+        entities.stream()
+            .filter(entity -> entity.getComponent(AIComponent.class).isPresent())
+            .map(entity -> (AIComponent) entity.getComponent(AIComponent.class).orElse(null))
+            .filter(Objects::nonNull)
+            .forEach(this::reduceSkillCooldown);
+    }
 
-        for (int i = 0; i < itemAmount; i++) {
-            int randomTraps = random.nextInt(4);
-            switch (randomTraps) {
-                case 0 -> new HealPotion();
-                case 1 -> new Sword();
-                case 2 -> new StrengthPotion();
-                case 3 -> new Bag();
-            }
+    /* Reduces the cooldown time of a skill */
+    private void reduceSkillCooldown(AIComponent aiComponent) {
+        IFightAI fightAI = aiComponent.getFightAI();
+        if (fightAI.getClass() == MeleeAI.class) {
+            ((MeleeAI) fightAI).getFightSkill().reduceCoolDown();
         }
     }
+
+    /* Updates all MeleeSkills for each entity that has one */
+    private void updateMeleeSkills() {
+        List<Entity> l = Game.entities.stream().filter(a -> a.getComponent(MeleeComponent.class).orElse(null) != null).toList();
+        for (Entity a : l) {
+            MeleeComponent mc = (MeleeComponent) a.getComponent(MeleeComponent.class).orElseThrow();
+            mc.getMeleeSkill().update(a);
+        }
+    }
+
 
     /**
      * Given entity will be added to the game in the next frame
@@ -418,6 +341,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public static Optional<Entity> getHero() {
         return Optional.ofNullable(hero);
     }
+
+    /**
+     * @return current level
+     */
+    public static int getLevelCounter() { return levelCounter; }
 
     /**
      * set the reference of the playable character careful: old hero will not be removed from the

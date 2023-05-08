@@ -1,19 +1,16 @@
 package ecs.entities;
 
-import dslToGame.AnimationBuilder;
-import ecs.components.AnimationComponent;
-import ecs.components.HitboxComponent;
 import ecs.components.PositionComponent;
-import graphic.Animation;
 
+
+/**
+ * Trap is the superclass for all types of traps which will be spawned in Dungeon.
+ */
 public abstract class Trap extends Entity {
-
-
-
 
     public Trap() {
         super();
         new PositionComponent(this);
-
     }
+
 }

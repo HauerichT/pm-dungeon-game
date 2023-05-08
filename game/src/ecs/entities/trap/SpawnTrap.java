@@ -37,8 +37,6 @@ public class SpawnTrap extends Trap {
                 case 2 -> new Tot();
                 }
             }
-
-
     }
 
     private void setupHitboxComponent() {

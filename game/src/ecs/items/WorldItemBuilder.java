@@ -3,6 +3,8 @@ package ecs.items;
 import ecs.components.*;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
+import graphic.hud.ScreenInventory;
+import starter.Game;
 import tools.Point;
 
 /** Class which creates all needed Components for a basic WorldItem */

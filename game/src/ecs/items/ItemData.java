@@ -11,6 +11,8 @@ import ecs.entities.Entity;
 import ecs.entities.Hero;
 import graphic.Animation;
 import java.util.List;
+
+import graphic.hud.ScreenInventory;
 import starter.Game;
 import tools.Point;
 
@@ -108,7 +110,9 @@ public class ItemData {
      * @param whoTriesCollects
      */
     public void triggerCollect(Entity worldItemEntity, Entity whoTriesCollects) {
-        if (getOnCollect() != null) getOnCollect().onCollect(worldItemEntity, whoTriesCollects);
+        if (getOnCollect() != null) {
+            getOnCollect().onCollect(worldItemEntity, whoTriesCollects);
+        }
     }
 
     /**
@@ -183,6 +187,7 @@ public class ItemData {
                                 hero.getComponent(InventoryComponent.class)
                                         .ifPresent(
                                                 (x) -> {
+                                                    Game.updateInventory(worldItem, ((InventoryComponent) x).emptySlots());
                                                     if (((InventoryComponent) x)
                                                             .addItem(
                                                                     worldItem
@@ -195,7 +200,6 @@ public class ItemData {
                                                                                             ::cast)
                                                                             .get()
                                                                             .getItemData()))
-
                                                         Game.removeEntity(worldItem);
                                                 });
                             }

@@ -4,18 +4,25 @@ package ecs.entities;
 import dslToGame.AnimationBuilder;
 import ecs.components.*;
 import ecs.components.ai.AIComponent;
+import ecs.components.ai.fight.MeleeAI;
 import ecs.components.ai.idle.IIdleAI;
-import ecs.items.ItemData;
-import ecs.systems.HealthSystem;
+import ecs.components.skill.MeleeSkill;
+import ecs.components.skill.Skill;
+import ecs.components.skill.SkillTools;
+import ecs.damage.Damage;
+import ecs.damage.DamageType;
 import graphic.Animation;
+import starter.Game;
+import tools.Point;
+
 
 public abstract class Monster extends Entity {
 
     private float horizontalSpeed;
     private float verticalSpeed;
 
-    private float health;
-    private float dmg;
+    private int health;
+    private int dmg;
 
     private final String pathToIdleLeft;
     private final String pathToIdleRight;
@@ -24,10 +31,8 @@ public abstract class Monster extends Entity {
 
     private final IIdleAI idleAI;
 
-    public Monster(String idleLeft, String idleRight, String runLeft, String runRight, IIdleAI idleAI, float horizontalSpeed, float verticalSpeed, float dmg, float health) {
+    public Monster(String idleLeft, String idleRight, String runLeft, String runRight, IIdleAI idleAI, float horizontalSpeed, float verticalSpeed, int dmg, int health) {
         super();
-
-        new PositionComponent(this);
 
         this.pathToIdleLeft = idleLeft;
         this.pathToIdleRight = idleRight;
@@ -44,21 +49,21 @@ public abstract class Monster extends Entity {
 
         setupVelocityComponent();
         setupAnimationComponent();
+        setupPositionComponent();
         setupAIComponent();
         setupHitboxComponent();
+        setupHealthComponent();
     }
 
-    /** Setup Components for Monster */
+
+    private void setupPositionComponent() {
+        new PositionComponent(this);
+    }
+
     private void setupAIComponent() {
         AIComponent ai = new AIComponent(this);
         ai.setIdleAI(idleAI);
-    }
-
-    private void setupHitboxComponent() {
-        new HitboxComponent(
-            this,
-            (you, other, direction) -> System.out.println("Enter"),
-            (you, other, direction) -> System.out.println("Enter"));
+        //ai.setFightAI(new MeleeAI(2.0f, new Skill(new MeleeSkill("", new Damage(this.dmg, DamageType.PHYSICAL, null), new Point(1,1), SkillTools::getHeroPosition),2)));
     }
 
     private void setupAnimationComponent() {
@@ -73,40 +78,14 @@ public abstract class Monster extends Entity {
         new VelocityComponent(this, horizontalSpeed, verticalSpeed, moveLeft, moveRight);
     }
 
-
-    /** Getter to get current information about Monster */
-    public float getDmg() {
-        return dmg;
+    private void setupHealthComponent() {
+        HealthComponent hc = new HealthComponent(this);
+        hc.setMaximalHealthpoints(this.health + Game.getLevelCounter()/5);
+        hc.setCurrentHealthpoints(this.health + Game.getLevelCounter()/5);
     }
 
-    public float getHorizontalSpeed() {
-        return horizontalSpeed;
-    }
-
-    public float getVerticalSpeed() {
-        return verticalSpeed;
-    }
-
-    public float getHealth() {
-        return health;
-    }
-
-
-    /** Setter to update Monster */
-    public void setHealth(float health) {
-        this.health = health;
-    }
-
-    public void setDmg(float dmg) {
-        this.dmg = dmg;
-    }
-
-    public void setHorizontalSpeed(float horizontalSpeed) {
-        this.horizontalSpeed = horizontalSpeed;
-    }
-
-    public void setVerticalSpeed(float verticalSpeed) {
-        this.verticalSpeed = verticalSpeed;
+    private void setupHitboxComponent() {
+        new HitboxComponent(this);
     }
 
 }

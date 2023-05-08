@@ -3,6 +3,10 @@ package ecs.components.skill;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import ecs.components.HealthComponent;
+import ecs.components.PositionComponent;
+import ecs.components.VelocityComponent;
+import ecs.entities.Entity;
 import starter.Game;
 import tools.Point;
 
@@ -49,6 +53,39 @@ public class SkillTools {
         return new Point(velocityX, velocityY);
     }
 
+
+    /**
+     * Calculates a new Point that represents the direction limited by 1
+     *
+     * @param entity start point
+     * @param target target point
+     * @return a new Point with values ranging from -1 to 1
+     */
+    public static Point getMeleeSkillOffsetPositon(Point entity, Point target) {
+        float newx = target.x - entity.x;
+        float newy = target.y - entity.y;
+        float offset = 1;
+        if (newx > offset) newx = offset;
+        if (newx < (offset * -1)) newx = (offset * -1);
+        if (newy > offset) newy = offset;
+        if (newy < (offset * -1)) newy = (offset * -1);
+
+        return new Point(newx, newy);
+    }
+
+
+    /**
+     * Gets the position of the hero
+     *
+     * @return position of the nearest entity as a point
+     */
+    public static Point getHeroPosition() {
+        Entity h = Game.getHero().orElseThrow();
+        PositionComponent pc =
+            (PositionComponent) h.getComponent(PositionComponent.class).orElseThrow();
+        return pc.getPosition();
+    }
+
     /**
      * gets the current cursor position as Point
      *
@@ -56,7 +93,21 @@ public class SkillTools {
      */
     public static Point getCursorPositionAsPoint() {
         Vector3 mousePosition =
-                Game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+            Game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
         return new Point(mousePosition.x, mousePosition.y);
+    }
+
+    /** Take knock-back when hit */
+    public static void recieveKnockback(Point pos, Entity entity) {
+        PositionComponent epc = (PositionComponent) entity.getComponent(PositionComponent.class).orElseThrow();
+        Point entityPosition = epc.getPosition();
+        Point direction = Point.getUnitDirectionalVector(entityPosition, pos);
+
+        entity.getComponent(VelocityComponent.class)
+            .ifPresent(
+                vc -> {
+                    ((VelocityComponent) vc).setCurrentXVelocity(direction.x * 0.9f);
+                    ((VelocityComponent) vc).setCurrentYVelocity(direction.y * 0.9f);
+                });
     }
 }
