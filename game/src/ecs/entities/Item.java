@@ -1,8 +1,9 @@
 package ecs.entities;
 
 import dslToGame.AnimationBuilder;
-import ecs.components.ItemComponent;
-import ecs.components.PositionComponent;
+import ecs.components.*;
+import ecs.components.skill.SkillTools;
+import ecs.items.IOnCollect;
 import ecs.items.ItemData;
 import ecs.items.ItemType;
 import ecs.items.WorldItemBuilder;
@@ -24,6 +25,8 @@ public abstract class Item extends Entity {
             description
         );
         WorldItemBuilder.buildWorldItem(item);
+
     }
+
 
 }

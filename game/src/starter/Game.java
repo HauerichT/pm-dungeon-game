@@ -28,6 +28,8 @@ import graphic.hud.PauseMenu;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
+
+import graphic.hud.ScreenInventory;
 import level.IOnLevelLoader;
 import level.LevelAPI;
 import level.elements.ILevel;
@@ -79,6 +81,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private static PauseMenu<Actor> pauseMenu;
     private static Entity hero;
     private static RandomEntityGenerator randomEntityGenerator;
+    private static boolean inventoryShown = false;
+    private static ScreenInventory<Actor> inv;
 
     /** Counter to save current level */
     private static int levelCounter;
@@ -124,9 +128,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         initBaseLogger();
         gameLogger = Logger.getLogger(this.getClass().getName());
         systems = new SystemController();
+        inv = new ScreenInventory<>();
         controller.add(systems);
         pauseMenu = new PauseMenu<>();
         controller.add(pauseMenu);
+        controller.add(inv);
         hero = new Hero();
         randomEntityGenerator = new RandomEntityGenerator();
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
@@ -141,6 +147,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         updateMeleeSkills();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.I)) toggleInventory();
     }
 
     @Override
@@ -218,6 +225,17 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             else pauseMenu.hideMenu();
         }
     }
+
+
+    /** Toggle inventory menu */
+    public static void toggleInventory() {
+        inventoryShown = !inventoryShown;
+        if (inv != null) {
+            if (inventoryShown) inv.showMenu();
+            else inv.hideMenu();
+        }
+    }
+
 
     /**
      * Reduces the cool-downs for all Skills for each entity

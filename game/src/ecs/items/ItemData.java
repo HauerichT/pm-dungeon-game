@@ -194,7 +194,6 @@ public class ItemData {
                                                                                             ::cast)
                                                                             .get()
                                                                             .getItemData()))
-
                                                         Game.removeEntity(worldItem);
                                                 });
                             }

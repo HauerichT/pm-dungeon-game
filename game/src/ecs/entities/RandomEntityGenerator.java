@@ -12,6 +12,7 @@ import ecs.entities.monster.Zombie;
 import ecs.entities.trap.SpawnTrap;
 import ecs.entities.trap.SpikeTrap;
 import ecs.entities.trap.TpTrap;
+import ecs.systems.HealthSystem;
 import starter.Game;
 
 import static com.badlogic.gdx.math.MathUtils.random;
@@ -69,7 +70,7 @@ public class RandomEntityGenerator {
         int level = Game.getLevelCounter();
 
         int monsterAmount = random.nextInt(level/4, (level/4)+1);
-        int strengthAddOn = 1 + level/7;
+        int strengthAddOn = level/6;
         boolean totCanBeSpawned = level > 10;
 
         int randomMonster;
@@ -86,33 +87,14 @@ public class RandomEntityGenerator {
             switch (randomMonster) {
                 case 0 -> {
                     Monster skeleton = new Skeleton();
-                    skeleton.getComponent(HealthComponent.class)
-                        .ifPresent(
-                            hc -> {
-                                ((HealthComponent) hc).setMaximalHealthpoints(((HealthComponent) hc).getMaximalHealthpoints()+strengthAddOn);
-                                System.out.println("skeleton:" + ((HealthComponent) hc).getMaximalHealthpoints());
-                            });
                     Game.addEntity(skeleton);
                 }
                 case 1 -> {
                     Monster zombie = new Zombie();
-                    zombie.getComponent(HealthComponent.class)
-                        .ifPresent(
-                            hc -> {
-
-                                ((HealthComponent) hc).setMaximalHealthpoints(((HealthComponent) hc).getMaximalHealthpoints()+strengthAddOn);
-                                System.out.println("Zombie:" + ((HealthComponent) hc).getMaximalHealthpoints());
-                            });
                     Game.addEntity(zombie);
                 }
                 case 2 -> {
                     Monster tot = new Tot();
-                    tot.getComponent(HealthComponent.class)
-                        .ifPresent(
-                            hc -> {
-                                ((HealthComponent) hc).setMaximalHealthpoints(((HealthComponent) hc).getMaximalHealthpoints()+strengthAddOn);
-                                System.out.println("tot:" + ((HealthComponent) hc).getMaximalHealthpoints());
-                            });
                     Game.addEntity(tot);
                 }
             }

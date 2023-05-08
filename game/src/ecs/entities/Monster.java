@@ -6,12 +6,14 @@ import ecs.components.*;
 import ecs.components.ai.AIComponent;
 import ecs.components.ai.fight.MeleeAI;
 import ecs.components.ai.idle.IIdleAI;
-import ecs.components.ai.idle.StaticRadiusWalk;
-import ecs.components.ai.transition.RangeTransition;
 import ecs.components.skill.MeleeSkill;
 import ecs.components.skill.Skill;
 import ecs.components.skill.SkillTools;
+import ecs.damage.Damage;
+import ecs.damage.DamageType;
 import graphic.Animation;
+import starter.Game;
+import tools.Point;
 
 
 public abstract class Monster extends Entity {
@@ -77,7 +79,10 @@ public abstract class Monster extends Entity {
 
     private void setupHealthComponent() {
         HealthComponent hc = new HealthComponent(this);
-        hc.setMaximalHealthpoints(this.health);
+        hc.setMaximalHealthpoints(this.health + Game.getLevelCounter()/5);
+        hc.setCurrentHealthpoints(this.health + Game.getLevelCounter()/5);
+        System.out.println(hc.getMaximalHealthpoints());
+        System.out.println(hc.getCurrentHealthpoints());
     }
 
     private void setupHitboxComponent() {
