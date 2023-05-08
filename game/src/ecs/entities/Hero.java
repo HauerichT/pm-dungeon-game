@@ -74,7 +74,7 @@ public class Hero extends Entity {
     }
 
     private void setupMeleeSkill() {
-        MeleeSkill skill = new MeleeSkill("knight/attack/", new Damage(this.dmg, DamageType.PHYSICAL, null), new Point(1,1), SkillTools::getHeroPosition);
+        MeleeSkill skill = new MeleeSkill("knight/melee/", new Damage(this.dmg, DamageType.PHYSICAL, null), new Point(1,1), SkillTools::getHeroPosition);
         meleeSkill = new Skill(skill,1);
     }
 

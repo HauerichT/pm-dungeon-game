@@ -128,13 +128,13 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         initBaseLogger();
         gameLogger = Logger.getLogger(this.getClass().getName());
         systems = new SystemController();
-        hero = new Hero();
-        inv = new ScreenInventory<>();
         controller.add(systems);
         pauseMenu = new PauseMenu<>();
         controller.add(pauseMenu);
-        controller.add(inv);
         randomEntityGenerator = new RandomEntityGenerator();
+        hero = new Hero();
+        inv = new ScreenInventory<>();
+        controller.add(inv);
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();

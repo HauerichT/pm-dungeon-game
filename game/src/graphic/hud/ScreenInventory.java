@@ -2,24 +2,16 @@ package graphic.hud;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import controller.ScreenController;
-import ecs.components.HealthComponent;
 import ecs.components.InventoryComponent;
 
 import ecs.components.ItemComponent;
-import ecs.components.skill.SkillTools;
 import ecs.entities.Entity;
-import ecs.entities.Item;
-import ecs.items.IOnCollect;
 import starter.Game;
 import tools.Point;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ScreenInventory<T extends Actor> extends ScreenController<T>{
-
-    private ArrayList<ScreenImage> inventoryEmptyList;
-    private ArrayList<ScreenImage> inventoryItemList;
 
     private int xPosInvImg = 4;
     private int xPosInvItemImg = 4;
@@ -28,8 +20,6 @@ public class ScreenInventory<T extends Actor> extends ScreenController<T>{
     /** Creates a new Inventory with a new Spritebatch */
     public ScreenInventory() {
         this(new SpriteBatch());
-        this.inventoryEmptyList = new ArrayList<>();
-        this.inventoryItemList = new ArrayList<>();
         setInventoryList();
     }
 
@@ -49,7 +39,7 @@ public class ScreenInventory<T extends Actor> extends ScreenController<T>{
         });
     }
 
-    /** Adds an collected Item to Screen Inventor< */
+    /** Adds a collected Item to Screen Inventor< */
     public void addItemToScreenInventory(Entity worldItemEntity, int emptySlots) {
         if (emptySlots == 0) {
             System.out.println("Inventory full!");

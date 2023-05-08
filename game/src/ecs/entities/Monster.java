@@ -63,6 +63,7 @@ public abstract class Monster extends Entity {
     private void setupAIComponent() {
         AIComponent ai = new AIComponent(this);
         ai.setIdleAI(idleAI);
+        ai.setFightAI(new MeleeAI(2.0f, new Skill(new MeleeSkill("", new Damage(this.dmg, DamageType.PHYSICAL, null), new Point(1,1), SkillTools::getHeroPosition),2)));
     }
 
     private void setupAnimationComponent() {
