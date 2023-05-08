@@ -63,7 +63,7 @@ public abstract class Monster extends Entity {
     private void setupAIComponent() {
         AIComponent ai = new AIComponent(this);
         ai.setIdleAI(idleAI);
-        ai.setFightAI(new MeleeAI(2.0f, new Skill(new MeleeSkill("", new Damage(this.dmg, DamageType.PHYSICAL, null), new Point(1,1), SkillTools::getHeroPosition),2)));
+        //ai.setFightAI(new MeleeAI(2.0f, new Skill(new MeleeSkill("", new Damage(this.dmg, DamageType.PHYSICAL, null), new Point(1,1), SkillTools::getHeroPosition),2)));
     }
 
     private void setupAnimationComponent() {
@@ -82,15 +82,10 @@ public abstract class Monster extends Entity {
         HealthComponent hc = new HealthComponent(this);
         hc.setMaximalHealthpoints(this.health + Game.getLevelCounter()/5);
         hc.setCurrentHealthpoints(this.health + Game.getLevelCounter()/5);
-        System.out.println(hc.getMaximalHealthpoints());
-        System.out.println(hc.getCurrentHealthpoints());
     }
 
     private void setupHitboxComponent() {
-        new HitboxComponent(
-            this,
-            (you, other, direction) -> System.out.println("MonsterOnHeroEnter"),
-            (you, other, direction) -> System.out.println("MonsterOnHeroLeave"));
+        new HitboxComponent(this);
     }
 
 }

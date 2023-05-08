@@ -1,7 +1,5 @@
 package ecs.entities;
 
-import ecs.components.HealthComponent;
-import ecs.components.skill.SkillTools;
 import ecs.entities.items.Bag;
 import ecs.entities.items.HealPotion;
 import ecs.entities.items.StrengthPotion;
@@ -12,7 +10,6 @@ import ecs.entities.monster.Zombie;
 import ecs.entities.trap.SpawnTrap;
 import ecs.entities.trap.SpikeTrap;
 import ecs.entities.trap.TpTrap;
-import ecs.systems.HealthSystem;
 import starter.Game;
 
 import static com.badlogic.gdx.math.MathUtils.random;
@@ -70,7 +67,6 @@ public class RandomEntityGenerator {
         int level = Game.getLevelCounter();
 
         int monsterAmount = random.nextInt(level/4, (level/4)+1);
-        int strengthAddOn = level/6;
         boolean totCanBeSpawned = level > 10;
 
         int randomMonster;

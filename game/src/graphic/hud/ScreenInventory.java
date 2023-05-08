@@ -66,4 +66,6 @@ public class ScreenInventory<T extends Actor> extends ScreenController<T>{
         this.forEach((Actor s) -> s.setVisible(false));
     }
 
+
+
 }
