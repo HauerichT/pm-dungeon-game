@@ -49,16 +49,21 @@ public class ScreenInventory<T extends Actor> extends ScreenController<T>{
         });
     }
 
-    /** Copy current inventory of hero */
-    public void updateScreenInventory(Entity worldItemEntity, Entity whoTriesCollects) {
-        worldItemEntity.getComponent(ItemComponent.class)
-            .ifPresent(
-                ic -> {
-                    ScreenImage invItemImg = new ScreenImage(((ItemComponent) ic).getItemData().getInventoryTexture().getNextAnimationTexturePath(), new Point(this.xPosInvItemImg, 4));
-                    invItemImg.scaleBy(-0.8f, -0.8f);
-                    add((T) invItemImg);
-                    this.xPosInvItemImg += (invItemImg.getWidth()+8);
-                });
+    /** Adds an collected Item to Screen Inventor< */
+    public void addItemToScreenInventory(Entity worldItemEntity, int emptySlots) {
+        if (emptySlots == 0) {
+            System.out.println("Inventory full!");
+        }
+        else {
+            worldItemEntity.getComponent(ItemComponent.class)
+                .ifPresent(
+                    ic -> {
+                        ScreenImage invItemImg = new ScreenImage(((ItemComponent) ic).getItemData().getInventoryTexture().getNextAnimationTexturePath(), new Point(this.xPosInvItemImg, 4));
+                        invItemImg.scaleBy(-0.8f, -0.8f);
+                        add((T) invItemImg);
+                        this.xPosInvItemImg += (invItemImg.getWidth()+8);
+                    });
+        }
     }
 
     /** shows the Menu */

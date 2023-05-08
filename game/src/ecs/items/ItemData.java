@@ -111,7 +111,6 @@ public class ItemData {
     public void triggerCollect(Entity worldItemEntity, Entity whoTriesCollects) {
         if (getOnCollect() != null) {
             getOnCollect().onCollect(worldItemEntity, whoTriesCollects);
-            Game.updateInventory(worldItemEntity,whoTriesCollects);
         }
     }
 
@@ -187,6 +186,7 @@ public class ItemData {
                                 hero.getComponent(InventoryComponent.class)
                                         .ifPresent(
                                                 (x) -> {
+                                                    Game.updateInventory(worldItem, ((InventoryComponent) x).emptySlots());
                                                     if (((InventoryComponent) x)
                                                             .addItem(
                                                                     worldItem

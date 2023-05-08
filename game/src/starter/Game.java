@@ -237,8 +237,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     }
 
     /** Update inventory menu */
-    public static void updateInventory(Entity worldItemEntity, Entity whoTriesCollects) {
-        inv.updateScreenInventory(worldItemEntity,whoTriesCollects);
+    public static void updateInventory(Entity worldItemEntity, int emptySlots) {
+        inv.addItemToScreenInventory(worldItemEntity, emptySlots);
     }
 
 
