@@ -1,49 +1,64 @@
 package graphic.hud;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
 import controller.ScreenController;
 import ecs.components.HealthComponent;
 import ecs.components.InventoryComponent;
-import ecs.components.PositionComponent;
-import ecs.items.ItemData;
+
+import ecs.components.ItemComponent;
+import ecs.components.skill.SkillTools;
+import ecs.entities.Entity;
+import ecs.entities.Item;
+import ecs.items.IOnCollect;
 import starter.Game;
 import tools.Point;
 
-public class ScreenInventory<T extends Actor> extends ScreenController<T> {
+import java.util.ArrayList;
+import java.util.Arrays;
 
-    private List<ItemData> inventoryList;
+public class ScreenInventory<T extends Actor> extends ScreenController<T>{
+
+    private ArrayList<ScreenImage> inventoryEmptyList;
+    private ArrayList<ScreenImage> inventoryItemList;
+
+    private int xPosInvImg = 4;
+    private int xPosInvItemImg = 4;
+
 
     /** Creates a new Inventory with a new Spritebatch */
     public ScreenInventory() {
         this(new SpriteBatch());
+        this.inventoryEmptyList = new ArrayList<>();
+        this.inventoryItemList = new ArrayList<>();
+        setInventoryList();
     }
 
     /** Creates a new Inventory with a given Spritebatch */
     public ScreenInventory(SpriteBatch batch) {
         super(batch);
-        setCurrentInventoryList();
-        System.out.println(this.inventoryList);
-        for (int i = 0; i < 410; i+=41) {
-            ScreenImage inv = new ScreenImage("hud/inv.png", new Point(i, 0));
-            inv.scaleBy(-0.7f, -0.7f);
-            add((T) inv);
-        }
+    }
+
+    public void setInventoryList() {
+        Game.getHero().flatMap(hero -> hero.getComponent(InventoryComponent.class)).ifPresent(inv -> {
+            for (int i = 0; i < ((InventoryComponent) inv).getMaxSize(); i++) {
+                ScreenImage invImg = new ScreenImage("hud/inv.png", new Point(this.xPosInvImg, 4));
+                invImg.scaleBy(-0.8f, -0.8f);
+                add((T) invImg);
+                this.xPosInvImg += (invImg.getWidth()+8);
+            }
+        });
     }
 
     /** Copy current inventory of hero */
-    public void setCurrentInventoryList() {
-        Game.getHero()
+    public void updateScreenInventory(Entity worldItemEntity, Entity whoTriesCollects) {
+        worldItemEntity.getComponent(ItemComponent.class)
             .ifPresent(
-                hero -> {
-                    hero.getComponent(InventoryComponent.class)
-                        .ifPresent(
-                            inv -> {
-                                this.inventoryList = (List<ItemData>) ((InventoryComponent) inv).getItems();
-                            }
-                        );
-                }
-            );
+                ic -> {
+                    ScreenImage invItemImg = new ScreenImage(((ItemComponent) ic).getItemData().getInventoryTexture().getNextAnimationTexturePath(), new Point(this.xPosInvItemImg, 4));
+                    invItemImg.scaleBy(-0.8f, -0.8f);
+                    add((T) invItemImg);
+                    this.xPosInvItemImg += (invItemImg.getWidth()+8);
+                });
     }
 
     /** shows the Menu */
@@ -55,4 +70,5 @@ public class ScreenInventory<T extends Actor> extends ScreenController<T> {
     public void hideMenu() {
         this.forEach((Actor s) -> s.setVisible(false));
     }
+
 }

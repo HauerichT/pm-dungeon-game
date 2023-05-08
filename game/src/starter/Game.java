@@ -128,12 +128,12 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         initBaseLogger();
         gameLogger = Logger.getLogger(this.getClass().getName());
         systems = new SystemController();
+        hero = new Hero();
         inv = new ScreenInventory<>();
         controller.add(systems);
         pauseMenu = new PauseMenu<>();
         controller.add(pauseMenu);
         controller.add(inv);
-        hero = new Hero();
         randomEntityGenerator = new RandomEntityGenerator();
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
@@ -234,6 +234,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             if (inventoryShown) inv.showMenu();
             else inv.hideMenu();
         }
+    }
+
+    /** Update inventory menu */
+    public static void updateInventory(Entity worldItemEntity, Entity whoTriesCollects) {
+        inv.updateScreenInventory(worldItemEntity,whoTriesCollects);
     }
 
 
