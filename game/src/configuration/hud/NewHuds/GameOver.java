@@ -30,11 +30,11 @@ public class GameOver<T extends Actor> extends ScreenController<T>  {
         endButton.setFontColor(Color.BLACK);
         endButton.setOverFontColor(Color.BLUE);
         endButton.setDownFontColor(Color.BROWN);
-        endButton.setCheckedImage("gameover/Button ende.png");
-        endButton.setUpImage("gameover/Button ende.png");
-        endButton.setDownImage("gameover/Button restart.png");
+        endButton.setCheckedImage("gameover/Button restart.png");
+        endButton.setUpImage("gameover/Button restart.png");
+        endButton.setDownImage("gameover/Button ende.png");
         ScreenButton ende = new ScreenButton("Endgame",new Point(10,50),enden,endButton.build());
-        ende.setScale(1.25F,1.25F);
+        ende.setScale(1.2555F,1.25F);
         add((T) ende);
 
         //Button to restart the game
@@ -49,8 +49,6 @@ public class GameOver<T extends Actor> extends ScreenController<T>  {
         ScreenButton restartbuttonready = new ScreenButton("Restart",new Point(300,50),restart,restartButton.build());
         restartbuttonready.setScale(1.25F,1.25F);
         add((T) restartbuttonready);
-
-
 
 
 

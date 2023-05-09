@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import configuration.Configuration;
 import configuration.KeyboardConfig;
+import configuration.hud.NewHuds.GameEnd;
 import configuration.hud.NewHuds.GameOver;
 import controller.AbstractController;
 import controller.SystemController;
@@ -138,16 +139,16 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         controller.add(systems);
         pauseMenu = new PauseMenu<>();
         inv = new ScreenInventory<>();
-        endgame = new GameOver<>();
-        controller.add(endgame);
-        controller.add(inv);
         controller.add(pauseMenu);
         randomEntityGenerator = new RandomEntityGenerator();
         hero = new Hero();
         inv = new ScreenInventory<>();
         controller.add(inv);
+        endgame = new GameOver<>();
+        controller.add(endgame);
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
+
         createSystems();
     }
 
