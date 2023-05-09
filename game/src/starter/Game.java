@@ -9,6 +9,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import configuration.Configuration;
 import configuration.KeyboardConfig;
+import configuration.hud.NewHuds.GameEnd;
+import configuration.hud.NewHuds.GameOver;
+import configuration.hud.TextButtonListener;
 import controller.AbstractController;
 import controller.SystemController;
 import ecs.components.MissingComponentException;
@@ -66,6 +69,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     private boolean doSetup = true;
     private static boolean paused = false;
+    private static boolean gameover = false;
     private static boolean inventory = false;
     /** All entities that are currently active in the dungeon */
     private static final Set<Entity> entities = new HashSet<>();
@@ -84,10 +88,12 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     private static Entity trap;
 
+
     private static ScreenInventory<Actor> inv;
     private static int levelCounter;
 
     private Logger gameLogger;
+    private static GameOver<Actor> endgame;
 
     public static void main(String[] args) {
         // start the game
@@ -130,6 +136,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         controller.add(systems);
         pauseMenu = new PauseMenu<>();
         inv = new ScreenInventory<>();
+        endgame = new GameOver<>();
+        controller.add(endgame);
         controller.add(inv);
         controller.add(pauseMenu);
         hero = new Hero();
@@ -149,6 +157,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
         if (Gdx.input.isKeyJustPressed(Input.Keys.I)) toggleInventory();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.J)) toggleGameOver();
     }
 
     @Override
@@ -223,6 +232,17 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         if (inv != null) {
             if (inventory) inv.showMenu();
             else inv.hideMenu();
+        }
+    }
+
+    public static void toggleGameOver() {
+        gameover = !gameover;
+        if (systems != null) {
+            systems.forEach(ECS_System::toggleRun);
+        }
+        if (endgame != null) {
+            if (gameover) endgame.showMenu();
+            else endgame.hideMenu();
         }
     }
 
@@ -321,9 +341,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public static Optional<Entity> getHero() {
         return Optional.ofNullable(hero);
     }
-
-
-
 
 
 
