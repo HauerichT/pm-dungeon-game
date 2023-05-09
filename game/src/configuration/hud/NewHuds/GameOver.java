@@ -34,7 +34,7 @@ public class GameOver<T extends Actor> extends ScreenController<T>  {
         endButton.setUpImage("gameover/Button restart.png");
         endButton.setDownImage("gameover/Button ende.png");
         ScreenButton ende = new ScreenButton("Endgame",new Point(10,50),enden,endButton.build());
-        ende.setScale(1.2555F,1.25F);
+        ende.setScale(1F,1F);
         add((T) ende);
 
         //Button to restart the game
@@ -47,7 +47,7 @@ public class GameOver<T extends Actor> extends ScreenController<T>  {
         restartButton.setUpImage("gameover/Button ende.png");
         restartButton.setDownImage("gameover/Button restart.png");
         ScreenButton restartbuttonready = new ScreenButton("Restart",new Point(300,50),restart,restartButton.build());
-        restartbuttonready.setScale(1.25F,1.25F);
+        restartbuttonready.setScale(1F,1F);
         add((T) restartbuttonready);
 
 
