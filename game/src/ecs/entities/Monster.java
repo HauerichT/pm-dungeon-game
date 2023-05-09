@@ -4,6 +4,7 @@ package ecs.entities;
 import dslToGame.AnimationBuilder;
 import ecs.components.*;
 import ecs.components.ai.AIComponent;
+import ecs.components.ai.fight.CollideAI;
 import ecs.components.ai.fight.MeleeAI;
 import ecs.components.ai.idle.IIdleAI;
 import ecs.components.skill.MeleeSkill;
