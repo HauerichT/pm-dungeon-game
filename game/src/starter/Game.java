@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import configuration.Configuration;
 import configuration.KeyboardConfig;
+import configuration.hud.NewHuds.GameOver;
 import controller.AbstractController;
 import controller.SystemController;
 import ecs.components.MissingComponentException;
@@ -29,7 +30,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
 import graphic.hud.ScreenInventory;
-import configuration.hud.inventoryHud.ScreenInventory;
 import level.IOnLevelLoader;
 import level.LevelAPI;
 import level.elements.ILevel;
@@ -66,6 +66,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     private boolean doSetup = true;
     private static boolean paused = false;
+    private static boolean gameover = false;
     private static boolean inventory = false;
     /** All entities that are currently active in the dungeon */
     private static final Set<Entity> entities = new HashSet<>();
@@ -89,11 +90,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     private static Entity trap;
 
-    private static ScreenInventory<Actor> inv;
 
     private static int levelCounter;
 
     private Logger gameLogger;
+    private static GameOver<Actor> endgame;
 
     public static void main(String[] args) {
         // start the game
@@ -137,6 +138,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         controller.add(systems);
         pauseMenu = new PauseMenu<>();
         inv = new ScreenInventory<>();
+        endgame = new GameOver<>();
+        controller.add(endgame);
         controller.add(inv);
         controller.add(pauseMenu);
         randomEntityGenerator = new RandomEntityGenerator();
@@ -156,6 +159,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
         if (Gdx.input.isKeyJustPressed(Input.Keys.I)) toggleInventory();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.J)) toggleGameOver();
     }
 
     @Override
@@ -168,7 +172,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         randomEntityGenerator.spwanRandomItems();
         getHero().ifPresent(this::placeOnLevelStart);
 
-        Chest.createNewChest();
     }
 
     private void manageEntitiesSets() {
@@ -223,11 +226,16 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
                                         () -> new MissingComponentException("PositionComponent"));
         pc.setPosition(currentLevel.getStartTile().getCoordinate().toPoint());
     }
-    public static void toggleInventory() {
-        inventory = !inventory;
-        if (inv != null) {
-            if (inventory) inv.showMenu();
-            else inv.hideMenu();
+
+
+    public static void toggleGameOver() {
+        gameover = !gameover;
+        if (systems != null) {
+            systems.forEach(ECS_System::toggleRun);
+        }
+        if (endgame != null) {
+            if (gameover) endgame.showMenu();
+            else endgame.hideMenu();
         }
     }
 
