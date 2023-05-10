@@ -4,7 +4,6 @@ package ecs.entities;
 import dslToGame.AnimationBuilder;
 import ecs.components.*;
 import ecs.components.ai.AIComponent;
-import ecs.components.ai.fight.CollideAI;
 import ecs.components.ai.fight.MeleeAI;
 import ecs.components.ai.idle.IIdleAI;
 import ecs.components.skill.MeleeSkill;
@@ -64,7 +63,7 @@ public abstract class Monster extends Entity {
     private void setupAIComponent() {
         AIComponent ai = new AIComponent(this);
         ai.setIdleAI(idleAI);
-        //ai.setFightAI(new MeleeAI(2.0f, new Skill(new MeleeSkill("", new Damage(this.dmg, DamageType.PHYSICAL, null), new Point(1,1), SkillTools::getHeroPosition),2)));
+        ai.setFightAI(new MeleeAI(0.8f, new Skill(new MeleeSkill("knight/melee", new Damage(this.dmg,DamageType.PHYSICAL,null), new Point(1,1), SkillTools::getHeroPosition),3)));
     }
 
     private void setupAnimationComponent() {
