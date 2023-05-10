@@ -46,6 +46,10 @@ public class Hero extends Entity {
         setupHealthComponent();
     }
 
+    private void setupHitboxComponent() {
+        new HitboxComponent(this);
+    }
+
 
     private void setupInventoryComponent() {
         inventory = new InventoryComponent(this, 5);

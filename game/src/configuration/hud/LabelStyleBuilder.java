@@ -1,4 +1,4 @@
-package graphic.hud;
+package configuration.hud;
 
 import static java.util.Objects.requireNonNull;
 
