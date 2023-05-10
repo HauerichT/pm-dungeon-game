@@ -80,12 +80,5 @@ public class Gravestone extends Entity{
             (you, other, direction) -> setupAnimationComponent(0));
 
     }
-    private Point gravestonePosition(){
-         this.getComponent(PositionComponent.class).ifPresent(
-            position -> {
-                graveStonePosition = ((PositionComponent) position).getPosition();
-            }
-        );
-         return graveStonePosition;
-    }
+
 }
