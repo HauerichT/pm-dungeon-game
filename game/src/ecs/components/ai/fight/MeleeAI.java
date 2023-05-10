@@ -28,6 +28,7 @@ public class MeleeAI implements IFightAI {
 
     @Override
     public void fight(Entity entity) {
+        path = AITools.calculatePathToHero(entity);
         if (AITools.playerInRange(entity, attackRange)) {
             fightSkill.execute(entity);
         } else {
