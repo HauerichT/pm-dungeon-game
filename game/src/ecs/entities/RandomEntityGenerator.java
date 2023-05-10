@@ -136,4 +136,23 @@ public class RandomEntityGenerator {
 
     }
 
+
+    /**
+     * Add ghost and gravestone to dungeon based on level.
+     *
+     * @author timo.haverich@hsbi.de
+     */
+    public void spawnGhostAndGravestone() {
+
+        int level = Game.getLevelCounter();
+
+        if (level % 5 == 0 && level != 0) {
+            Ghost ghost = new Ghost();
+            Gravestone gravestone = new Gravestone(ghost,Game.getHero().get());
+            Game.addEntity(ghost);
+            Game.addEntity(gravestone);
+            Game.setGhost(ghost);
+        }
+    }
+
 }

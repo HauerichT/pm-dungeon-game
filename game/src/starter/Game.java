@@ -8,10 +8,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import configuration.Configuration;
 import configuration.KeyboardConfig;
-import configuration.hud.NewHuds.GameEnd;
-import configuration.hud.NewHuds.GameOver;
+import configuration.hud.GameOver;
 import controller.AbstractController;
 import controller.SystemController;
+import ecs.components.HealthComponent;
 import ecs.components.MissingComponentException;
 import ecs.components.PlayableComponent;
 import ecs.components.PositionComponent;
@@ -65,8 +65,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     private boolean doSetup = true;
     private static boolean paused = false;
-    private static boolean gameover = false;
-    private static boolean inventory = false;
+    private static boolean gameOverIsActive = false;
     /** All entities that are currently active in the dungeon */
     private static final Set<Entity> entities = new HashSet<>();
     /** All entities to be removed from the dungeon in the next frame */
@@ -80,9 +79,10 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public static ILevel currentLevel;
     private static PauseMenu<Actor> pauseMenu;
     private static Entity hero;
-    private static Entity ghost;
-    private static Entity gravestone;
     private int counterGhost;
+
+    private static Ghost ghost;
+
     private static RandomEntityGenerator randomEntityGenerator;
     private static boolean inventoryShown = false;
     private static ScreenInventory<Actor> inv;
@@ -91,7 +91,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private static int levelCounter;
 
     private Logger gameLogger;
-    private static GameOver<Actor> endgame;
+    private static GameOver<Actor> gameOver;
 
     public static void main(String[] args) {
         // start the game
@@ -139,14 +139,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         hero = new Hero();
         inv = new ScreenInventory<>();
         controller.add(inv);
-        endgame = new GameOver<>();
-        controller.add(endgame);
+        gameOver = new GameOver<>();
+        controller.add(gameOver);
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
-
         createSystems();
-        ghost = new Ghost();
-        gravestone = new Gravestone(ghost,hero);
     }
 
     /** Called at the beginning of each frame. Before the controllers call <code>update</code>. */
@@ -156,13 +153,19 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         updateMeleeSkills();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
-        if (Gdx.input.isKeyJustPressed(Input.Keys.I)) toggleInventory();
-        counterGhost++;
-        if (counterGhost == 200){
-            ((Ghost) ghost).movement();
-            counterGhost = 0;
+        //if (Gdx.input.isKeyJustPressed(Input.Keys.I)) toggleInventory();
+        //if (Gdx.input.isKeyJustPressed(Input.Keys.J)) gameOver.startGameOver();
+
+
+        // check if ghost is active
+        if (ghost != null) {
+            counterGhost++;
+            if (counterGhost == 200) {
+                ghost.movement();
+                counterGhost = 0;
+            }
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.J)) toggleGameOver();
+
     }
 
     @Override
@@ -173,11 +176,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         randomEntityGenerator.spawnRandomMonster();
         randomEntityGenerator.spawnRandomTrap();
         randomEntityGenerator.spwanRandomItems();
+        randomEntityGenerator.spawnGhostAndGravestone();
         getHero().ifPresent(this::placeOnLevelStart);
-<<<<<<< HEAD
-=======
-
->>>>>>> 93fe4640bcfd97649316bfdac1ce3d790ff69b37
     }
     private void manageEntitiesSets() {
         entities.removeAll(entitiesToRemove);
@@ -231,21 +231,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
                                         () -> new MissingComponentException("PositionComponent"));
         pc.setPosition(currentLevel.getStartTile().getCoordinate().toPoint());
     }
-<<<<<<< HEAD
-=======
 
-
-    public static void toggleGameOver() {
-        gameover = !gameover;
-        if (systems != null) {
-            systems.forEach(ECS_System::toggleRun);
-        }
-        if (endgame != null) {
-            if (gameover) endgame.showMenu();
-            else endgame.hideMenu();
-        }
-    }
->>>>>>> 93fe4640bcfd97649316bfdac1ce3d790ff69b37
 
     /** Toggle between pause and run */
     public static void togglePause() {
@@ -258,6 +244,19 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             else pauseMenu.hideMenu();
         }
     }
+
+    /** Toggle game over screen */
+    public static void toggleGameOver() {
+        gameOverIsActive = !gameOverIsActive;
+        if (systems != null) {
+            systems.forEach(ECS_System::toggleRun);
+        }
+        if (gameOver != null) {
+            if (gameOverIsActive) gameOver.showMenu();
+            else gameOver.hideMenu();
+        }
+    }
+
 
     /** Toggle inventory menu */
     public static void toggleInventory() {
@@ -371,6 +370,14 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public static void setHero(Entity hero) {
         Game.hero = hero;
     }
+
+    /**
+     * set ghost
+     */
+    public static void setGhost(Ghost ghost) {
+        Game.ghost = ghost;
+    }
+
 
     public void setSpriteBatch(SpriteBatch batch) {
         this.batch = batch;

@@ -9,6 +9,7 @@ import ecs.entities.monster.Skeleton;
 import ecs.entities.monster.Tot;
 import ecs.entities.monster.Zombie;
 import graphic.Animation;
+import starter.Game;
 
 import static com.badlogic.gdx.math.MathUtils.random;
 
@@ -42,7 +43,11 @@ public class SpawnTrap extends Trap {
     private void setupHitboxComponent() {
         new HitboxComponent(
             this,
-            (you, other, direction) -> setupAnimationComponent(1),
+            (you, other, direction) -> {
+                if (other.getClass() == Game.getHero().get().getClass()) {
+                    setupAnimationComponent(1);
+                }
+            },
             (you, other, direction) -> setupAnimationComponent(0));
 
     }

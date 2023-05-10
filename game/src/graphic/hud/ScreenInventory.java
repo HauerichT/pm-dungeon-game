@@ -56,6 +56,7 @@ public class ScreenInventory<T extends Actor> extends ScreenController<T>{
         }
     }
 
+
     /** shows the Menu */
     public void showMenu() {
         this.forEach((Actor s) -> s.setVisible(true));

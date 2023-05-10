@@ -7,6 +7,7 @@ import ecs.components.PositionComponent;
 import ecs.entities.Entity;
 import ecs.entities.Trap;
 import graphic.Animation;
+import starter.Game;
 
 public class TpTrap extends Trap{
 
@@ -35,8 +36,12 @@ public class TpTrap extends Trap{
     private void setupHitboxComponent() {
         new HitboxComponent(
             this,
-            (you, other, direction) -> setupAnimationComponent(false),
-            (you, other, direction) -> setupAnimationComponent(true)
+            (you, other, direction) -> {
+                if (other.getClass() == Game.getHero().get().getClass()) {
+                    setupAnimationComponent(true);
+                }
+            },
+            (you, other, direction) -> setupAnimationComponent(false)
         );
     }
 }

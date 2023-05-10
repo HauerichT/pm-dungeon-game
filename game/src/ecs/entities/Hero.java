@@ -24,7 +24,7 @@ public class Hero extends Entity {
 
     private float xSpeed = 0.25f;
     private float ySpeed = 0.25f;
-    private int health = 25;
+    private int health = 20;
     private int dmg = 1;
     private Boolean ghostAktive;
 
@@ -74,6 +74,7 @@ public class Hero extends Entity {
 
     private void setupHealthComponent() {
         HealthComponent hc = new HealthComponent(this);
+        hc.setOnDeath(entity -> Game.toggleGameOver());
         hc.setMaximalHealthpoints(this.health);
         hc.setCurrentHealthpoints(this.health);
     }
@@ -87,11 +88,4 @@ public class Hero extends Entity {
         new HitboxComponent(this);
     }
 
-    public Boolean getGhostAktive() {
-        return ghostAktive;
-    }
-
-    public void setGhostAktive(Boolean ghostAktive) {
-        this.ghostAktive = ghostAktive;
-    }
 }
