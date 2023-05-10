@@ -1,6 +1,7 @@
 package graphic.hud;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import configuration.hud.ScreenImage;
 import controller.ScreenController;
 import ecs.components.InventoryComponent;
 
@@ -9,7 +10,6 @@ import ecs.entities.Entity;
 import starter.Game;
 import tools.Point;
 
-import java.util.ArrayList;
 
 public class ScreenInventory<T extends Actor> extends ScreenController<T>{
 

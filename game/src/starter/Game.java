@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
 import graphic.hud.ScreenInventory;
-import configuration.hud.inventoryHud.ScreenInventory;
 import level.IOnLevelLoader;
 import level.LevelAPI;
 import level.elements.ILevel;
@@ -85,12 +84,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private static ScreenInventory<Actor> inv;
 
     /** Counter to save current level */
-
-
-    private static Entity trap;
-
-    private static ScreenInventory<Actor> inv;
-
     private static int levelCounter;
 
     private Logger gameLogger;
@@ -167,8 +160,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         randomEntityGenerator.spawnRandomTrap();
         randomEntityGenerator.spwanRandomItems();
         getHero().ifPresent(this::placeOnLevelStart);
-
-        Chest.createNewChest();
     }
 
     private void manageEntitiesSets() {
@@ -222,13 +213,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
                                 .orElseThrow(
                                         () -> new MissingComponentException("PositionComponent"));
         pc.setPosition(currentLevel.getStartTile().getCoordinate().toPoint());
-    }
-    public static void toggleInventory() {
-        inventory = !inventory;
-        if (inv != null) {
-            if (inventory) inv.showMenu();
-            else inv.hideMenu();
-        }
     }
 
     /** Toggle between pause and run */
