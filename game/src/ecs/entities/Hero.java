@@ -26,7 +26,6 @@ public class Hero extends Entity {
     private float ySpeed = 0.25f;
     private int health = 20;
     private int dmg = 1;
-    private Boolean ghostAktive;
 
     private Skill meleeSkill;
 

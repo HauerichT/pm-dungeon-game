@@ -32,10 +32,12 @@ public class GameOver<T extends Actor> extends ScreenController<T> {
     public GameOver(SpriteBatch batch) {
         super(batch);
 
+        // Game Over Screen Text
         gameOverImg = new ScreenImage("hud/gameover.png",new Point(0,-10));
         gameOverImg.setScale(1.25f, 1.25f);
         add((T) gameOverImg);
 
+        // End button
         TextButtonStyleBuilder endButton = new TextButtonStyleBuilder(BitmapFont);
         endButton.setFontColor(Color.BLACK);
         endButton.setOverFontColor(Color.BLUE);
@@ -52,6 +54,7 @@ public class GameOver<T extends Actor> extends ScreenController<T> {
         endButtonReady.setScale(1F,1F);
         add((T) endButtonReady);
 
+        // restart button
         TextButtonStyleBuilder restartButton = new TextButtonStyleBuilder(BitmapFont);
         restartButton.setFontColor(Color.BLACK);
         restartButton.setOverFontColor(Color.BLUE);
