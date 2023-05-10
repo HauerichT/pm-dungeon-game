@@ -18,9 +18,7 @@ import ecs.components.ai.fight.IFightAI;
 import ecs.components.ai.fight.MeleeAI;
 import ecs.components.skill.MeleeComponent;
 import ecs.components.skill.Skill;
-import ecs.entities.Entity;
-import ecs.entities.Hero;
-import ecs.entities.RandomEntityGenerator;
+import ecs.entities.*;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
@@ -80,6 +78,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public static ILevel currentLevel;
     private static PauseMenu<Actor> pauseMenu;
     private static Entity hero;
+    private static Entity ghost;
+    private static Entity gravestone;
+    private int counterGhost;
     private static RandomEntityGenerator randomEntityGenerator;
     private static boolean inventoryShown = false;
     private static ScreenInventory<Actor> inv;
@@ -138,6 +139,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
+        ghost = new Ghost();
+        gravestone = new Gravestone(ghost,hero);
     }
 
     /** Called at the beginning of each frame. Before the controllers call <code>update</code>. */
@@ -148,6 +151,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
         if (Gdx.input.isKeyJustPressed(Input.Keys.I)) toggleInventory();
+        counterGhost++;
+        if (counterGhost == 200){
+            ((Ghost) ghost).movement();
+            counterGhost = 0;
+        }
     }
 
     @Override
@@ -225,7 +233,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             else pauseMenu.hideMenu();
         }
     }
-
 
     /** Toggle inventory menu */
     public static void toggleInventory() {
