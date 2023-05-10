@@ -138,7 +138,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         systems = new SystemController();
         controller.add(systems);
         pauseMenu = new PauseMenu<>();
-        inv = new ScreenInventory<>();
         controller.add(pauseMenu);
         randomEntityGenerator = new RandomEntityGenerator();
         hero = new Hero();
@@ -174,6 +173,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         getHero().ifPresent(this::placeOnLevelStart);
 
     }
+
 
     private void manageEntitiesSets() {
         entities.removeAll(entitiesToRemove);
@@ -394,4 +394,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         new SkillSystem();
         new ProjectileSystem();
     }
+
+
 }
