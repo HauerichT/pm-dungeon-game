@@ -44,9 +44,6 @@ public class SpikeTrap extends Trap {
             (you, other, direction) -> {
                 new Damage(dmg, DamageType.PHYSICAL, this);
             }
-
         );
-
     }
-
 }

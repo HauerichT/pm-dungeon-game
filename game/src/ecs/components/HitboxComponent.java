@@ -18,6 +18,8 @@ public class HitboxComponent extends Component {
     private /*@DSLTypeMember(name="size")*/ Point size;
     private ICollide iCollideEnter;
     private ICollide iCollideLeave;
+    private Entity collide;
+
     private final Logger hitboxLogger = Logger.getLogger(this.getClass().getName());
 
     /**
@@ -40,6 +42,7 @@ public class HitboxComponent extends Component {
         this.size = size;
         this.iCollideEnter = iCollideEnter;
         this.iCollideLeave = iCollideLeave;
+
     }
 
     /**
@@ -68,6 +71,7 @@ public class HitboxComponent extends Component {
      * @param direction direction in which the collision happens
      */
     public void onEnter(HitboxComponent other, Tile.Direction direction) {
+        this.collide = other.getEntity();
         if (iCollideEnter != null) iCollideEnter.onCollision(this.entity, other.entity, direction);
     }
 
@@ -145,5 +149,9 @@ public class HitboxComponent extends Component {
     private static MissingComponentException getMissingPositionComponentException() {
         return new MissingComponentException(
                 PositionComponent.class.getName() + " in " + HitboxComponent.class.getName());
+    }
+
+    public Entity getCollide() {
+        return collide;
     }
 }

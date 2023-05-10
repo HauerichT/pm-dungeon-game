@@ -26,6 +26,7 @@ public class Hero extends Entity {
     private float ySpeed = 0.25f;
     private int health = 25;
     private int dmg = 1;
+    private Boolean ghostAktive;
 
     private Skill meleeSkill;
 
@@ -86,4 +87,11 @@ public class Hero extends Entity {
         new HitboxComponent(this);
     }
 
+    public Boolean getGhostAktive() {
+        return ghostAktive;
+    }
+
+    public void setGhostAktive(Boolean ghostAktive) {
+        this.ghostAktive = ghostAktive;
+    }
 }
