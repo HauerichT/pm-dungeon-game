@@ -1,6 +1,7 @@
 package graphic.hud;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import configuration.hud.ScreenImage;
 import controller.ScreenController;
 import ecs.components.InventoryComponent;
 

@@ -66,7 +66,7 @@ public class RandomEntityGenerator {
     public void spawnRandomMonster() {
         int level = Game.getLevelCounter();
 
-        int monsterAmount = random.nextInt(level/4, (level/4)+1);
+        int monsterAmount = random.nextInt(level/2, (level/2)+1);
         boolean totCanBeSpawned = level > 10;
 
         int randomMonster;
