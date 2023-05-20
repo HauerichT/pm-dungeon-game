@@ -4,15 +4,11 @@ import dslToGame.AnimationBuilder;
 import ecs.components.AnimationComponent;
 import ecs.components.HealthComponent;
 import ecs.components.HitboxComponent;
-import ecs.components.PositionComponent;
-import ecs.components.collision.ICollide;
-import ecs.components.skill.SkillTools;
 import ecs.damage.Damage;
 import ecs.damage.DamageType;
 import ecs.entities.Entity;
 import ecs.entities.Trap;
 import graphic.Animation;
-import level.elements.tile.Tile;
 import starter.Game;
 
 public class SpikeTrap extends Trap {
@@ -26,7 +22,6 @@ public class SpikeTrap extends Trap {
         super();
         setupAnimationComponent(0);
         setupHitboxComponent();
-
     }
 
     void setupAnimationComponent(int a) {
@@ -37,25 +32,30 @@ public class SpikeTrap extends Trap {
         } else {
             new AnimationComponent(this, active);
         }
-
     }
 
     private void setupHitboxComponent() {
         new HitboxComponent(
-            this,
-            (you, other, direction) -> {
-                if (other.getClass() == Game.getHero().get().getClass()) {
-                    setupAnimationComponent(1);
-                    Game.getHero().get().getComponent(HealthComponent.class)
-                        .ifPresent(
-                            hc -> {
-                                ((HealthComponent) hc).receiveHit(new Damage(dmg,DamageType.PHYSICAL,null));
-                            });
-                }
-            },
-            (you, other, direction) -> {
-                setupAnimationComponent(0);
-            }
-        );
+                this,
+                (you, other, direction) -> {
+                    if (other.getClass() == Game.getHero().get().getClass()) {
+                        setupAnimationComponent(1);
+                        Game.getHero()
+                                .get()
+                                .getComponent(HealthComponent.class)
+                                .ifPresent(
+                                        hc -> {
+                                            ((HealthComponent) hc)
+                                                    .receiveHit(
+                                                            new Damage(
+                                                                    dmg,
+                                                                    DamageType.PHYSICAL,
+                                                                    null));
+                                        });
+                    }
+                },
+                (you, other, direction) -> {
+                    setupAnimationComponent(0);
+                });
     }
 }

@@ -54,7 +54,8 @@ public abstract class DamageProjectileSkill implements ISkillFunction {
                         epc.getPosition(), aimedOn, projectileRange);
         Point velocity =
                 SkillTools.calculateVelocity(epc.getPosition(), targetPoint, projectileSpeed);
-        VelocityComponent vc = new VelocityComponent(projectile, velocity.x, velocity.y, animation, animation);
+        VelocityComponent vc =
+                new VelocityComponent(projectile, velocity.x, velocity.y, animation, animation);
         new ProjectileComponent(projectile, epc.getPosition(), targetPoint);
         ICollide collide =
                 (a, b, from) -> {

@@ -42,7 +42,6 @@ public class HitboxComponent extends Component {
         this.size = size;
         this.iCollideEnter = iCollideEnter;
         this.iCollideLeave = iCollideLeave;
-
     }
 
     /**

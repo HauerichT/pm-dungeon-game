@@ -8,11 +8,8 @@ import ecs.components.ItemComponent;
 import ecs.components.PositionComponent;
 import ecs.components.stats.DamageModifier;
 import ecs.entities.Entity;
-import ecs.entities.Hero;
 import graphic.Animation;
 import java.util.List;
-
-import graphic.hud.ScreenInventory;
 import starter.Game;
 import tools.Point;
 
@@ -31,7 +28,6 @@ public class ItemData {
 
     // passive
     private DamageModifier damageModifier;
-
 
     /**
      * creates a new item data object.
@@ -187,7 +183,9 @@ public class ItemData {
                                 hero.getComponent(InventoryComponent.class)
                                         .ifPresent(
                                                 (x) -> {
-                                                    Game.updateInventory(worldItem, ((InventoryComponent) x).emptySlots());
+                                                    Game.updateInventory(
+                                                            worldItem,
+                                                            ((InventoryComponent) x).emptySlots());
                                                     if (((InventoryComponent) x)
                                                             .addItem(
                                                                     worldItem
