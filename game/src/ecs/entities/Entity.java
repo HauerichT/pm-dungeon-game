@@ -58,18 +58,16 @@ public class Entity {
      *
      * @param isBoomerang Class of the component
      */
-    public void setBoomerang(boolean isBoomerang) {
+    public void setIsBoomerang(boolean isBoomerang) {
         this.isBoomerang = isBoomerang;
     }
 
     /**
-     * Set if entity is a boomerang
+     * Get if entity is a boomerang
      *
      * @return if entity is a boomerang
      */
-    public boolean getBoomerang() {
-        return isBoomerang;
+    public boolean getIsBoomerang() {
+        return this.isBoomerang;
     }
-
-
 }

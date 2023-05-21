@@ -17,7 +17,6 @@ public class MeleeSkill implements ISkillFunction {
     private final Damage dmg;
     private final Point hitBoxSize;
     private final ITargetSelection selectionFunction;
-    private final float holdingTimeInSeconds = 0.5f;
     private float currentHoldingTimeInFrames;
     private float hitCooldownInFrames;
     private Entity ownedBy;
@@ -37,6 +36,7 @@ public class MeleeSkill implements ISkillFunction {
 
     @Override
     public void execute(Entity entity) {
+        float holdingTimeInSeconds = 0.5f;
         this.currentHoldingTimeInFrames = (holdingTimeInSeconds * Constants.FRAME_RATE);
         this.hitCooldownInFrames = 0;
         this.ownedBy = entity;
@@ -66,7 +66,7 @@ public class MeleeSkill implements ISkillFunction {
                                 .ifPresent(
                                         hc -> {
                                             ((HealthComponent) hc).receiveHit(dmg);
-                                            SkillTools.recieveKnockback(epc.getPosition(), b);
+                                            SkillTools.takeKickback(epc.getPosition(), b);
                                             this.hitCooldownInFrames = 15;
                                         });
                     }
