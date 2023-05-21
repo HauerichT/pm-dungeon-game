@@ -11,14 +11,14 @@ import tools.Point;
 
 public abstract class DamageProjectileSkill implements ISkillFunction {
 
-    private String pathToTexturesOfProjectile;
-    private float projectileSpeed;
+    protected String pathToTexturesOfProjectile;
+    protected float projectileSpeed;
 
-    private float projectileRange;
-    private Damage projectileDamage;
-    private Point projectileHitboxSize;
+    protected float projectileRange;
+    protected Damage projectileDamage;
+    protected Point projectileHitboxSize;
 
-    private ITargetSelection selectionFunction;
+    protected ITargetSelection selectionFunction;
 
     public DamageProjectileSkill(
             String pathToTexturesOfProjectile,

@@ -17,32 +17,46 @@ import tools.Point;
  * with all its components and attributes .
  */
 public class Hero extends Entity {
-
     private float xSpeed = 0.25f;
     private float ySpeed = 0.25f;
     private int health = 20;
     private int dmg = 1;
-
-    private Skill meleeSkill;
-
     private InventoryComponent inventory;
 
-    /** Entity with Components */
+    private Skill firstSkill;
+    private Skill secondSkill;
+
     public Hero() {
         super();
         new PositionComponent(this);
+        PlayableComponent pc = new PlayableComponent(this);
         setupVelocityComponent();
         setupAnimationComponent();
         setupHitBoxComponent();
-        PlayableComponent pc = new PlayableComponent(this);
-        setupMeleeSkill();
-        pc.setSkillSlot1(meleeSkill);
+        setupSkillComponent();
+        pc.setSkillSlot1(firstSkill);
+        pc.setSkillSlot2(secondSkill);
         setupInventoryComponent();
         setupHealthComponent();
     }
 
-    private void setupHitboxComponent() {
-        new HitboxComponent(this);
+    private void setupSkillComponent() {
+        SkillComponent skillComponent = new SkillComponent(this);
+
+        firstSkill =
+                new Skill(new FireballSkill(SkillTools::getCursorPositionAsPoint),1);
+                        /*new MeleeSkill(
+                                "knight/melee/",
+                                new Damage(this.dmg, DamageType.PHYSICAL, null),
+                                new Point(1, 1),
+                                SkillTools::getHeroPosition),
+                        1);*/
+        secondSkill =
+                new Skill(
+                        new BoomerangSkill(SkillTools::getCursorPositionAsPoint), 0);
+
+        skillComponent.addSkill(firstSkill);
+        skillComponent.addSkill(secondSkill);
     }
 
     private void setupInventoryComponent() {
@@ -70,16 +84,6 @@ public class Hero extends Entity {
         hc.setOnDeath(entity -> Game.toggleGameOver());
         hc.setMaximalHealthpoints(this.health);
         hc.setCurrentHealthpoints(this.health);
-    }
-
-    private void setupMeleeSkill() {
-        MeleeSkill skill =
-                new MeleeSkill(
-                        "knight/melee/",
-                        new Damage(this.dmg, DamageType.PHYSICAL, null),
-                        new Point(1, 1),
-                        SkillTools::getHeroPosition);
-        meleeSkill = new Skill(skill, 1);
     }
 
     private void setupHitBoxComponent() {

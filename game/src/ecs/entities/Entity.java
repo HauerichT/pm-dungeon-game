@@ -16,6 +16,7 @@ public class Entity {
     public final int id = nextId++;
     private HashMap<Class, Component> components;
     private final Logger entityLogger;
+    private boolean isBoomerang = false;
 
     public Entity() {
         components = new HashMap<>();
@@ -52,7 +53,23 @@ public class Entity {
         return Optional.ofNullable(components.get(klass));
     }
 
-    public void takeDamage(int damage) {
-        System.out.println(damage);
+    /**
+     * Set if entity is a boomerang
+     *
+     * @param isBoomerang Class of the component
+     */
+    public void setBoomerang(boolean isBoomerang) {
+        this.isBoomerang = isBoomerang;
     }
+
+    /**
+     * Set if entity is a boomerang
+     *
+     * @return if entity is a boomerang
+     */
+    public boolean getBoomerang() {
+        return isBoomerang;
+    }
+
+
 }
