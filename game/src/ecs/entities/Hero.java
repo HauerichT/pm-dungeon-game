@@ -6,6 +6,8 @@ import ecs.components.AnimationComponent;
 import ecs.components.PositionComponent;
 import ecs.components.VelocityComponent;
 import ecs.components.skill.*;
+import ecs.components.xp.ILevelUp;
+import ecs.components.xp.XPComponent;
 import ecs.damage.Damage;
 import ecs.damage.DamageType;
 import graphic.Animation;
@@ -22,6 +24,7 @@ public class Hero extends Entity {
     private float ySpeed = 0.25f;
     private int health = 20;
     private int dmg = 1;
+    public static long currentLV;
 
     private Skill meleeSkill;
 
@@ -39,6 +42,7 @@ public class Hero extends Entity {
         pc.setSkillSlot1(meleeSkill);
         setupInventoryComponent();
         setupHealthComponent();
+        setupXPComponent();
     }
 
     private void setupHitboxComponent() {
@@ -70,13 +74,14 @@ public class Hero extends Entity {
         hc.setOnDeath(entity -> Game.toggleGameOver());
         hc.setMaximalHealthpoints(this.health);
         hc.setCurrentHealthpoints(this.health);
+
     }
 
     private void setupMeleeSkill() {
         MeleeSkill skill =
                 new MeleeSkill(
                         "knight/melee/",
-                        new Damage(this.dmg, DamageType.PHYSICAL, null),
+                        new Damage(this.dmg, DamageType.PHYSICAL, this),
                         new Point(1, 1),
                         SkillTools::getHeroPosition);
         meleeSkill = new Skill(skill, 1);
@@ -85,4 +90,13 @@ public class Hero extends Entity {
     private void setupHitBoxComponent() {
         new HitboxComponent(this);
     }
+
+    private void setupXPComponent(){
+        XPComponent heroXP = new XPComponent(this,null);
+        heroXP.setCurrentLevel(0);
+        heroXP.setCurrentXP(0);
+
+    }
+
+
 }

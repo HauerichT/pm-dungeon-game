@@ -1,7 +1,7 @@
 package ecs.components.xp;
-
 import ecs.components.Component;
 import ecs.entities.Entity;
+import starter.Game;
 
 public class XPComponent extends Component {
 
@@ -91,6 +91,7 @@ public class XPComponent extends Component {
      */
     public void levelUp(long level) {
         if (this.callbackLevelUp != null) this.callbackLevelUp.onLevelUp(level);
+        Game.lvUP(level);
     }
 
     /**
