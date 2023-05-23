@@ -9,12 +9,10 @@ import ecs.entities.Trap;
 import graphic.Animation;
 import starter.Game;
 
-public class TpTrap extends Trap{
+public class TpTrap extends Trap {
 
     private final String active = "trap/tptrap/active";
     private Entity hero;
-
-
 
     public TpTrap(Entity hero) {
         super();
@@ -30,21 +28,16 @@ public class TpTrap extends Trap{
         } else {
             new PositionComponent(hero);
         }
-
     }
 
     private void setupHitboxComponent() {
         new HitboxComponent(
-            this,
-            (you, other, direction) -> {
-                if (other.getClass() == Game.getHero().get().getClass()) {
-                    setupAnimationComponent(true);
-                }
-            },
-            (you, other, direction) -> setupAnimationComponent(false)
-        );
+                this,
+                (you, other, direction) -> {
+                    if (other.getClass() == Game.getHero().get().getClass()) {
+                        setupAnimationComponent(true);
+                    }
+                },
+                (you, other, direction) -> setupAnimationComponent(false));
     }
 }
-
-
-

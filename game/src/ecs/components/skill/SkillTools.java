@@ -3,7 +3,6 @@ package ecs.components.skill;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import ecs.components.HealthComponent;
 import ecs.components.PositionComponent;
 import ecs.components.VelocityComponent;
 import ecs.entities.Entity;
@@ -53,7 +52,6 @@ public class SkillTools {
         return new Point(velocityX, velocityY);
     }
 
-
     /**
      * Calculates a new Point that represents the direction limited by 1
      *
@@ -73,7 +71,6 @@ public class SkillTools {
         return new Point(newx, newy);
     }
 
-
     /**
      * Gets the position of the hero
      *
@@ -82,7 +79,7 @@ public class SkillTools {
     public static Point getHeroPosition() {
         Entity h = Game.getHero().orElseThrow();
         PositionComponent pc =
-            (PositionComponent) h.getComponent(PositionComponent.class).orElseThrow();
+                (PositionComponent) h.getComponent(PositionComponent.class).orElseThrow();
         return pc.getPosition();
     }
 
@@ -93,21 +90,22 @@ public class SkillTools {
      */
     public static Point getCursorPositionAsPoint() {
         Vector3 mousePosition =
-            Game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+                Game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
         return new Point(mousePosition.x, mousePosition.y);
     }
 
     /** Take knock-back when hit */
     public static void recieveKnockback(Point pos, Entity entity) {
-        PositionComponent epc = (PositionComponent) entity.getComponent(PositionComponent.class).orElseThrow();
+        PositionComponent epc =
+                (PositionComponent) entity.getComponent(PositionComponent.class).orElseThrow();
         Point entityPosition = epc.getPosition();
         Point direction = Point.getUnitDirectionalVector(entityPosition, pos);
 
         entity.getComponent(VelocityComponent.class)
-            .ifPresent(
-                vc -> {
-                    ((VelocityComponent) vc).setCurrentXVelocity(direction.x * 0.9f);
-                    ((VelocityComponent) vc).setCurrentYVelocity(direction.y * 0.9f);
-                });
+                .ifPresent(
+                        vc -> {
+                            ((VelocityComponent) vc).setCurrentXVelocity(direction.x * 0.9f);
+                            ((VelocityComponent) vc).setCurrentYVelocity(direction.y * 0.9f);
+                        });
     }
 }

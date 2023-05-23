@@ -3,7 +3,7 @@ package ecs.components.collision;
 import ecs.entities.Entity;
 import level.elements.tile.Tile;
 
-public interface  ICollide {
+public interface ICollide {
     /**
      * Implements the Collision behavior of a Hitbox having entity
      *

@@ -1,6 +1,8 @@
 package starter;
+
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
 import static logging.LoggerConfig.initBaseLogger;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
@@ -9,9 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import configuration.Configuration;
 import configuration.KeyboardConfig;
 import configuration.hud.GameOver;
+import configuration.hud.PauseMenu;
 import controller.AbstractController;
 import controller.SystemController;
-import ecs.components.HealthComponent;
 import ecs.components.MissingComponentException;
 import ecs.components.PlayableComponent;
 import ecs.components.PositionComponent;
@@ -24,11 +26,10 @@ import ecs.entities.*;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
-import configuration.hud.PauseMenu;
+import graphic.hud.ScreenInventory;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
-import graphic.hud.ScreenInventory;
 import level.IOnLevelLoader;
 import level.LevelAPI;
 import level.elements.ILevel;
@@ -153,9 +154,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         updateMeleeSkills();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
-        //if (Gdx.input.isKeyJustPressed(Input.Keys.I)) toggleInventory();
-        //if (Gdx.input.isKeyJustPressed(Input.Keys.J)) gameOver.startGameOver();
-
+        // if (Gdx.input.isKeyJustPressed(Input.Keys.I)) toggleInventory();
+        // if (Gdx.input.isKeyJustPressed(Input.Keys.J)) gameOver.startGameOver();
 
         // check if ghost is active
         if (ghost != null) {
@@ -165,7 +165,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
                 counterGhost = 0;
             }
         }
-
     }
 
     @Override
@@ -179,6 +178,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         randomEntityGenerator.spawnGhostAndGravestone();
         getHero().ifPresent(this::placeOnLevelStart);
     }
+
     private void manageEntitiesSets() {
         entities.removeAll(entitiesToRemove);
         entities.addAll(entitiesToAdd);
@@ -232,7 +232,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         pc.setPosition(currentLevel.getStartTile().getCoordinate().toPoint());
     }
 
-
     /** Toggle between pause and run */
     public static void togglePause() {
         paused = !paused;
@@ -257,7 +256,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
     }
 
-
     /** Toggle inventory menu */
     public static void toggleInventory() {
         inventoryShown = !inventoryShown;
@@ -272,24 +270,21 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         inv.addItemToScreenInventory(worldItemEntity, emptySlots);
     }
 
-
-    /**
-     * Reduces the cool-downs for all Skills for each entity
-     */
+    /** Reduces the cool-downs for all Skills for each entity */
     public void manageSkillCooldowns() {
         // reduce skill cooldown of hero
         PlayableComponent pc =
-            (PlayableComponent) hero.getComponent(PlayableComponent.class).orElse(null);
+                (PlayableComponent) hero.getComponent(PlayableComponent.class).orElse(null);
         if (pc != null) {
             pc.getSkillSlot1().ifPresent(Skill::reduceCoolDown);
             pc.getSkillSlot2().ifPresent(Skill::reduceCoolDown);
         }
         // reduce skill cooldown of monsters
         entities.stream()
-            .filter(entity -> entity.getComponent(AIComponent.class).isPresent())
-            .map(entity -> (AIComponent) entity.getComponent(AIComponent.class).orElse(null))
-            .filter(Objects::nonNull)
-            .forEach(this::reduceSkillCooldown);
+                .filter(entity -> entity.getComponent(AIComponent.class).isPresent())
+                .map(entity -> (AIComponent) entity.getComponent(AIComponent.class).orElse(null))
+                .filter(Objects::nonNull)
+                .forEach(this::reduceSkillCooldown);
     }
 
     /* Reduces the cooldown time of a skill */
@@ -302,13 +297,15 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     /* Updates all MeleeSkills for each entity that has one */
     private void updateMeleeSkills() {
-        List<Entity> l = Game.entities.stream().filter(a -> a.getComponent(MeleeComponent.class).orElse(null) != null).toList();
+        List<Entity> l =
+                Game.entities.stream()
+                        .filter(a -> a.getComponent(MeleeComponent.class).orElse(null) != null)
+                        .toList();
         for (Entity a : l) {
             MeleeComponent mc = (MeleeComponent) a.getComponent(MeleeComponent.class).orElseThrow();
             mc.getMeleeSkill().update(a);
         }
     }
-
 
     /**
      * Given entity will be added to the game in the next frame
@@ -359,7 +356,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     /**
      * @return current level
      */
-    public static int getLevelCounter() { return levelCounter; }
+    public static int getLevelCounter() {
+        return levelCounter;
+    }
 
     /**
      * set the reference of the playable character careful: old hero will not be removed from the
@@ -371,13 +370,10 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         Game.hero = hero;
     }
 
-    /**
-     * set ghost
-     */
+    /** set ghost */
     public static void setGhost(Ghost ghost) {
         Game.ghost = ghost;
     }
-
 
     public void setSpriteBatch(SpriteBatch batch) {
         this.batch = batch;
@@ -407,6 +403,4 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         new SkillSystem();
         new ProjectileSystem();
     }
-
-
 }

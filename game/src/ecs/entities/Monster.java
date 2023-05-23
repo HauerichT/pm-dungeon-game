@@ -1,6 +1,5 @@
 package ecs.entities;
 
-
 import dslToGame.AnimationBuilder;
 import ecs.components.*;
 import ecs.components.ai.AIComponent;
@@ -14,7 +13,6 @@ import ecs.damage.DamageType;
 import graphic.Animation;
 import starter.Game;
 import tools.Point;
-
 
 public abstract class Monster extends Entity {
 
@@ -31,7 +29,16 @@ public abstract class Monster extends Entity {
 
     private final IIdleAI idleAI;
 
-    public Monster(String idleLeft, String idleRight, String runLeft, String runRight, IIdleAI idleAI, float horizontalSpeed, float verticalSpeed, int dmg, int health) {
+    public Monster(
+            String idleLeft,
+            String idleRight,
+            String runLeft,
+            String runRight,
+            IIdleAI idleAI,
+            float horizontalSpeed,
+            float verticalSpeed,
+            int dmg,
+            int health) {
         super();
 
         this.pathToIdleLeft = idleLeft;
@@ -55,7 +62,6 @@ public abstract class Monster extends Entity {
         setupHealthComponent();
     }
 
-
     private void setupPositionComponent() {
         new PositionComponent(this);
     }
@@ -63,7 +69,16 @@ public abstract class Monster extends Entity {
     private void setupAIComponent() {
         AIComponent ai = new AIComponent(this);
         ai.setIdleAI(idleAI);
-        ai.setFightAI(new MeleeAI(0.8f, new Skill(new MeleeSkill("knight/melee", new Damage(this.dmg,DamageType.PHYSICAL,null), new Point(1,1), SkillTools::getHeroPosition),3)));
+        ai.setFightAI(
+                new MeleeAI(
+                        0.8f,
+                        new Skill(
+                                new MeleeSkill(
+                                        "knight/melee",
+                                        new Damage(this.dmg, DamageType.PHYSICAL, null),
+                                        new Point(1, 1),
+                                        SkillTools::getHeroPosition),
+                                3)));
     }
 
     private void setupAnimationComponent() {
@@ -80,13 +95,11 @@ public abstract class Monster extends Entity {
 
     private void setupHealthComponent() {
         HealthComponent hc = new HealthComponent(this);
-        hc.setMaximalHealthpoints(this.health + Game.getLevelCounter()/5);
-        hc.setCurrentHealthpoints(this.health + Game.getLevelCounter()/5);
+        hc.setMaximalHealthpoints(this.health + Game.getLevelCounter() / 5);
+        hc.setCurrentHealthpoints(this.health + Game.getLevelCounter() / 5);
     }
 
     private void setupHitboxComponent() {
         new HitboxComponent(this);
     }
-
 }
-

@@ -190,7 +190,6 @@ public class AITools {
         else return calculatePath(entity, entity);
     }
 
-
     /**
      * @param p1 Point A
      * @param p2 Point B

@@ -1,20 +1,17 @@
 package ecs.entities;
 
+import static com.badlogic.gdx.math.MathUtils.random;
+
 import dslToGame.AnimationBuilder;
 import ecs.components.AnimationComponent;
 import ecs.components.PositionComponent;
 import ecs.components.VelocityComponent;
 import ecs.components.ai.AIComponent;
 import ecs.components.ai.idle.FollowHeroWalk;
-import ecs.components.ai.idle.IIdleAI;
 import ecs.components.ai.idle.RadiusWalk;
 import graphic.Animation;
-import starter.Game;
-import tools.Point;
 
-import static com.badlogic.gdx.math.MathUtils.random;
-
-public class Ghost extends Entity{
+public class Ghost extends Entity {
     private float xSpeed = 0.1f;
     private float ySpeed = 0.1f;
     private final String pathToIdleLeft = "character/ghost/idleLeft/left0.png";
@@ -33,14 +30,13 @@ public class Ghost extends Entity{
         new PositionComponent(this);
         setupVelocityComponent();
         ai = new AIComponent(this);
-        ai.setIdleAI(new RadiusWalk(0.5f,0));
+        ai.setIdleAI(new RadiusWalk(0.5f, 0));
         setAnimationComponent();
-
     }
 
-    public void movement(){
+    public void movement() {
         int r = random.nextInt(3);
-        switch (r){
+        switch (r) {
             case 0:
                 ghostFollowWalk();
                 break;
@@ -52,23 +48,25 @@ public class Ghost extends Entity{
                 break;
         }
     }
+
     private void setupVelocityComponent() {
         if (hasAnimationComponent) {
             Animation moveRight = AnimationBuilder.buildAnimation(this.pathToRunRight);
             Animation moveLeft = AnimationBuilder.buildAnimation(this.pathToRunLeft);
             new VelocityComponent(this, xSpeed, ySpeed, moveLeft, moveRight);
-        }else {
+        } else {
             Animation moveRight = AnimationBuilder.buildAnimation(this.pathToIdleRightinvisible);
             Animation moveLeft = AnimationBuilder.buildAnimation(this.pathToIdleLeftinvisible);
             new VelocityComponent(this, xSpeed, ySpeed, moveLeft, moveRight);
         }
     }
-    private void setAnimationComponent(){
-        if (!hasAnimationComponent){
+
+    private void setAnimationComponent() {
+        if (!hasAnimationComponent) {
             Animation idleRight = AnimationBuilder.buildAnimation(this.pathToIdleRightinvisible);
             Animation idleLeft = AnimationBuilder.buildAnimation(this.pathToIdleLeftinvisible);
             ac = new AnimationComponent(this, idleLeft, idleRight);
-        }else {
+        } else {
             Animation idleRight = AnimationBuilder.buildAnimation(this.pathToIdleRight);
             Animation idleLeft = AnimationBuilder.buildAnimation(this.pathToIdleLeft);
             ac = new AnimationComponent(this, idleLeft, idleRight);
@@ -82,15 +80,15 @@ public class Ghost extends Entity{
     public Boolean getFollowWalk() {
         return followWalk;
     }
-    private void ghostFollowWalk(){
-        if (hasAnimationComponent){
+
+    private void ghostFollowWalk() {
+        if (hasAnimationComponent) {
             ai.setIdleAI(new FollowHeroWalk());
             followWalk = true;
             xSpeed = 0.25f;
             ySpeed = 0.25f;
             setupVelocityComponent();
-        }
-        else {
+        } else {
             ai.setIdleAI(new FollowHeroWalk());
             hasAnimationComponent = true;
             xSpeed = 0.25f;
@@ -100,31 +98,32 @@ public class Ghost extends Entity{
             followWalk = true;
         }
     }
-    private void ghostRadiusWalk(){
-        if (hasAnimationComponent){
+
+    private void ghostRadiusWalk() {
+        if (hasAnimationComponent) {
             new PositionComponent(this);
             xSpeed = 0.05f;
             ySpeed = 0.05f;
             setupVelocityComponent();
             followWalk = false;
-            ai.setIdleAI(new RadiusWalk(1.0f,0));
-        }
-        else {
+            ai.setIdleAI(new RadiusWalk(1.0f, 0));
+        } else {
             hasAnimationComponent = true;
             xSpeed = 0.05f;
             ySpeed = 0.05f;
             setupVelocityComponent();
             setAnimationComponent();
             new PositionComponent(this);
-            ai.setIdleAI(new RadiusWalk(1.0f,0));
+            ai.setIdleAI(new RadiusWalk(1.0f, 0));
             followWalk = false;
         }
     }
-    private void ghostInvisible(){
+
+    private void ghostInvisible() {
         hasAnimationComponent = false;
         setupVelocityComponent();
         setAnimationComponent();
-        ai.setIdleAI(new RadiusWalk(1.0f,0));
+        ai.setIdleAI(new RadiusWalk(1.0f, 0));
         followWalk = false;
     }
 }
