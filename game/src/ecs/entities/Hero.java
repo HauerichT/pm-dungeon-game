@@ -23,34 +23,55 @@ public class Hero extends Entity {
     private int health = 20;
     private int dmg = 1;
     private int mana = 10;
-
     private Skill meleeSkill;
     private Skill speedSkill;
+    private Skill firstSkill;
+    private Skill secondSkill;
+    private Skill thirdSkill;
 
-    private InventoryComponent inventory;
 
-    /** Entity with Components */
     public Hero() {
         super();
-        new PositionComponent(this);
+        PositionComponent psc = new PositionComponent(this);
+        PlayableComponent pc = new PlayableComponent(this);
         setupVelocityComponent();
         setupAnimationComponent();
         setupHitBoxComponent();
-        PlayableComponent pc = new PlayableComponent(this);
-        setupMeleeSkill();
         setupSpeedSkill();
         pc.setSkillSlot1(meleeSkill);
         pc.setSkillSlot2(speedSkill);
+        setupSkillComponent();
+        pc.setSkillSlot1(firstSkill);
+        pc.setSkillSlot2(secondSkill);
+        pc.setSkillSlot3(thirdSkill);
         setupInventoryComponent();
         setupHealthComponent();
     }
 
-    private void setupHitboxComponent() {
-        new HitboxComponent(this);
+    private void setupSkillComponent() {
+        SkillComponent skillComponent = new SkillComponent(this);
+
+        int dmg = 1;
+        firstSkill =
+            new Skill(new MeleeSkill(
+                "knight/melee/",
+                new Damage(dmg, DamageType.PHYSICAL, null),
+                new Point(1, 1),
+                SkillTools::getHeroPosition),
+                1);
+
+        secondSkill = new Skill(new BoomerangSkill(SkillTools::getCursorPositionAsPoint), 2);
+        thirdSkill = new Skill(new LaserSkill(SkillTools::getCursorPositionAsPoint), 2);
+
+
+        skillComponent.addSkill(firstSkill);
+        skillComponent.addSkill(secondSkill);
+        skillComponent.addSkill(thirdSkill);
+
     }
 
     private void setupInventoryComponent() {
-        inventory = new InventoryComponent(this, 5);
+        InventoryComponent inventory = new InventoryComponent(this, 5);
     }
 
     private void setupVelocityComponent() {
@@ -58,6 +79,8 @@ public class Hero extends Entity {
         Animation moveRight = AnimationBuilder.buildAnimation(pathToRunRight);
         String pathToRunLeft = "knight/runLeft";
         Animation moveLeft = AnimationBuilder.buildAnimation(pathToRunLeft);
+        float ySpeed = 0.25f;
+        float xSpeed = 0.25f;
         new VelocityComponent(this, xSpeed, ySpeed, moveLeft, moveRight);
     }
 
@@ -72,18 +95,9 @@ public class Hero extends Entity {
     private void setupHealthComponent() {
         HealthComponent hc = new HealthComponent(this);
         hc.setOnDeath(entity -> Game.toggleGameOver());
-        hc.setMaximalHealthpoints(this.health);
-        hc.setCurrentHealthpoints(this.health);
-    }
-
-    private void setupMeleeSkill() {
-        MeleeSkill skill =
-                new MeleeSkill(
-                        "knight/melee/",
-                        new Damage(this.dmg, DamageType.PHYSICAL, null),
-                        new Point(1, 1),
-                        SkillTools::getHeroPosition);
-        meleeSkill = new Skill(skill, 1);
+        int health = 20;
+        hc.setMaximalHealthpoints(health);
+        hc.setCurrentHealthpoints(health);
     }
 
     private void setupSpeedSkill() {

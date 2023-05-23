@@ -38,6 +38,14 @@ public class SkillTools {
         return new Point(startPoint.x + scv.x, startPoint.y + scv.y);
     }
 
+    /**
+     * Calculates the velocity between two points
+     *
+     * @param start start point
+     * @param goal target point
+     * @param speed speed of entity
+     * @return a new Point with calculated velocity
+     */
     public static Point calculateVelocity(Point start, Point goal, float speed) {
         float x1 = start.x;
         float y1 = start.y;
@@ -72,7 +80,7 @@ public class SkillTools {
     }
 
     /**
-     * Gets the position of the hero
+     * gets the position of the hero
      *
      * @return position of the nearest entity as a point
      */
@@ -94,8 +102,13 @@ public class SkillTools {
         return new Point(mousePosition.x, mousePosition.y);
     }
 
-    /** Take knock-back when hit */
-    public static void recieveKnockback(Point pos, Entity entity) {
+    /**
+     * Take knock-back when hit
+     *
+     * @param pos position as Point to take knock-back
+     * @param entity entitiy to get knock-back
+     */
+    public static void takeKickback(Point pos, Entity entity) {
         PositionComponent epc =
                 (PositionComponent) entity.getComponent(PositionComponent.class).orElseThrow();
         Point entityPosition = epc.getPosition();
