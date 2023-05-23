@@ -1,14 +1,24 @@
 package ecs.components.skill;
 
+import dslToGame.AnimationBuilder;
 import ecs.components.VelocityComponent;
 import ecs.entities.Entity;
+import ecs.entities.Hero;
+import graphic.Animation;
+import starter.Game;
+import java.awt.*;
+import java.util.Arrays;
 
 public class SpeedSkill implements ISkillFunction {
     float speed = 0.5f;
     int manaCost = 5;
+    long timer1;
+    long timer2;
+    int time;
     VelocityComponent heroV;
 
-    /** Konstruktor Params mana costs of the Skill * */
+    /** Konstruktor
+     * @Params mana costs of the Skill * */
     public SpeedSkill(int manaCost) {
         this.manaCost = manaCost;
     }
@@ -16,19 +26,14 @@ public class SpeedSkill implements ISkillFunction {
     /** Methode to use the Skill
      * @Params: Entity which uses the Skill * */
     @Override
-    public void execute(Entity hero) {
-        VelocityComponent heroV =
-                (VelocityComponent) hero.getComponent(VelocityComponent.class).orElseThrow();
+    public void execute(Entity entity) {
 
-        heroV.setCurrentXVelocity(speed);
-        heroV.setCurrentYVelocity(speed);
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+        heroV = (VelocityComponent) entity.getComponent(VelocityComponent.class).orElseThrow();
+        heroV.setXVelocity(speed);
+        heroV.setYVelocity(speed);
+        System.out.println("Die Faehigkeit SpeedSkill wurde aktiviert! \n Mana -" + manaCost);
         }
-        heroV.setCurrentXVelocity(0.25f);
-        heroV.setCurrentYVelocity(0.25f);
-        System.out.println("Die Fähigkeit SpeedSkill wurde aktiviert! \n Mana - " + manaCost);
+
+
     }
-}
+

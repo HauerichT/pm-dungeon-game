@@ -23,11 +23,11 @@ public class Hero extends Entity {
     private int health = 20;
     private int dmg = 1;
     private int mana = 10;
-    private Skill meleeSkill;
-    private Skill speedSkill;
+
     private Skill firstSkill;
     private Skill secondSkill;
     private Skill thirdSkill;
+    private Skill fourthSkill;
 
 
     public Hero() {
@@ -37,13 +37,11 @@ public class Hero extends Entity {
         setupVelocityComponent();
         setupAnimationComponent();
         setupHitBoxComponent();
-        setupSpeedSkill();
-        pc.setSkillSlot1(meleeSkill);
-        pc.setSkillSlot2(speedSkill);
         setupSkillComponent();
         pc.setSkillSlot1(firstSkill);
         pc.setSkillSlot2(secondSkill);
         pc.setSkillSlot3(thirdSkill);
+        pc.setSkillSlot4(fourthSkill);
         setupInventoryComponent();
         setupHealthComponent();
     }
@@ -62,11 +60,14 @@ public class Hero extends Entity {
 
         secondSkill = new Skill(new BoomerangSkill(SkillTools::getCursorPositionAsPoint), 2);
         thirdSkill = new Skill(new LaserSkill(SkillTools::getCursorPositionAsPoint), 2);
-
+        fourthSkill = new Skill(new SpeedSkill(4), 5);
+        System.out.println("Das Mana des Heros betraegt " + mana);
 
         skillComponent.addSkill(firstSkill);
         skillComponent.addSkill(secondSkill);
         skillComponent.addSkill(thirdSkill);
+        skillComponent.addSkill(fourthSkill);
+
 
     }
 
@@ -100,14 +101,15 @@ public class Hero extends Entity {
         hc.setCurrentHealthpoints(health);
     }
 
-    private void setupSpeedSkill() {
-        SpeedSkill skill = new SpeedSkill(4);
-        speedSkill = new Skill(skill, 5);
-        mana = mana - 5;
-        System.out.println("Das Mana des Heros beträgt " + mana);
-    }
 
     private void setupHitBoxComponent() {
-        new HitboxComponent(this);
+        new HitboxComponent(
+            this,
+            (you, other, direction) -> {
+                if (other.getClass() == Monster.class) {
+                    setupVelocityComponent();
+                }
+            },
+            (you, other, direction) -> setupVelocityComponent());
     }
 }
