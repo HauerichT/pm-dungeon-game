@@ -44,7 +44,6 @@ public class Gravestone extends Entity {
                                     }
                                     Game.removeEntity(this);
                                     Game.removeEntity(ghost);
-
                                 }
                             });
         }
