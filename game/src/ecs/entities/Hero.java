@@ -22,8 +22,10 @@ public class Hero extends Entity {
     private float ySpeed = 0.25f;
     private int health = 20;
     private int dmg = 1;
+    private int mana = 10;
 
     private Skill meleeSkill;
+    private Skill speedSkill;
 
     private InventoryComponent inventory;
 
@@ -36,7 +38,9 @@ public class Hero extends Entity {
         setupHitBoxComponent();
         PlayableComponent pc = new PlayableComponent(this);
         setupMeleeSkill();
+        setupSpeedSkill();
         pc.setSkillSlot1(meleeSkill);
+        pc.setSkillSlot2(speedSkill);
         setupInventoryComponent();
         setupHealthComponent();
     }
@@ -80,6 +84,13 @@ public class Hero extends Entity {
                         new Point(1, 1),
                         SkillTools::getHeroPosition);
         meleeSkill = new Skill(skill, 1);
+    }
+
+    private void setupSpeedSkill() {
+        SpeedSkill skill = new SpeedSkill(4);
+        speedSkill = new Skill(skill, 5);
+        mana = mana - 5;
+        System.out.println("Das Mana des Heros beträgt " + mana);
     }
 
     private void setupHitBoxComponent() {
