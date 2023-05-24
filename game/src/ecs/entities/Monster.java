@@ -8,12 +8,17 @@ import ecs.components.ai.idle.IIdleAI;
 import ecs.components.skill.MeleeSkill;
 import ecs.components.skill.Skill;
 import ecs.components.skill.SkillTools;
+import ecs.components.xp.XPComponent;
 import ecs.damage.Damage;
 import ecs.damage.DamageType;
+import ecs.systems.XPSystem;
 import graphic.Animation;
 import starter.Game;
 import tools.Point;
 
+/**
+ * Used to create Monster. (Superclass)
+ */
 public abstract class Monster extends Entity {
 
     private float horizontalSpeed;
@@ -21,6 +26,7 @@ public abstract class Monster extends Entity {
 
     private int health;
     private int dmg;
+    private int exp;
 
     private final String pathToIdleLeft;
     private final String pathToIdleRight;
@@ -38,7 +44,8 @@ public abstract class Monster extends Entity {
             float horizontalSpeed,
             float verticalSpeed,
             int dmg,
-            int health) {
+            int health,
+            int exp) {
         super();
 
         this.pathToIdleLeft = idleLeft;
@@ -53,6 +60,7 @@ public abstract class Monster extends Entity {
 
         this.dmg = dmg;
         this.health = health;
+        this.exp = exp;
 
         setupVelocityComponent();
         setupAnimationComponent();
@@ -60,7 +68,9 @@ public abstract class Monster extends Entity {
         setupAIComponent();
         setupHitboxComponent();
         setupHealthComponent();
+        setupXPComponent();
     }
+
 
     private void setupPositionComponent() {
         new PositionComponent(this);
@@ -78,6 +88,7 @@ public abstract class Monster extends Entity {
                                         new Damage(this.dmg, DamageType.PHYSICAL, null),
                                         new Point(1, 1),
                                         SkillTools::getHeroPosition),
+
                                 3)));
     }
 
@@ -97,6 +108,12 @@ public abstract class Monster extends Entity {
         HealthComponent hc = new HealthComponent(this);
         hc.setMaximalHealthpoints(this.health + Game.getLevelCounter() / 5);
         hc.setCurrentHealthpoints(this.health + Game.getLevelCounter() / 5);
+
+    }
+    private void setupXPComponent(){
+        XPComponent monsterXP = new XPComponent(this);
+        monsterXP.setLootXP(exp);
+
     }
 
     private void setupHitboxComponent() {

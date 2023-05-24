@@ -16,6 +16,9 @@ import graphic.Animation;
 import starter.Game;
 import tools.Point;
 
+/**
+ * Friendly Monster that will spawn if the hero use his "friendly monster" skill.
+ */
 public class FriendlyMonster extends Entity {
     private float horizontalSpeed = 0.2f;
     private float verticalSpeed = 0.2f;

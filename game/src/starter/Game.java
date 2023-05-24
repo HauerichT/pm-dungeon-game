@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import configuration.Configuration;
 import configuration.KeyboardConfig;
 import configuration.hud.GameOver;
+import configuration.hud.LVup;
 import configuration.hud.PauseMenu;
 import controller.AbstractController;
 import controller.SystemController;
@@ -38,6 +39,7 @@ import level.generator.IGenerator;
 import level.generator.postGeneration.WallGenerator;
 import level.generator.randomwalk.RandomWalkGenerator;
 import level.tools.LevelSize;
+import org.antlr.v4.runtime.tree.ErrorNodeImpl;
 import tools.Constants;
 import tools.Point;
 
@@ -78,7 +80,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public static SystemController systems;
 
     public static ILevel currentLevel;
+
     private static PauseMenu<Actor> pauseMenu;
+    private static LVup<Actor> lvUPscreen;
     private static Entity hero;
     private int counterGhost;
 
@@ -90,7 +94,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     /** Counter to save current level */
     private static int levelCounter;
-
     private Logger gameLogger;
     private static GameOver<Actor> gameOver;
 
@@ -139,6 +142,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         randomEntityGenerator = new RandomEntityGenerator();
         hero = new Hero();
         inv = new ScreenInventory<>();
+        lvUPscreen = new LVup<>();
+        controller.add(lvUPscreen);
         controller.add(inv);
         gameOver = new GameOver<>();
         controller.add(gameOver);
@@ -153,7 +158,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         manageEntitiesSets();
         updateMeleeSkills();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
+        Hero.addMana(0.005f);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
+
         // if (Gdx.input.isKeyJustPressed(Input.Keys.I)) toggleInventory();
         // if (Gdx.input.isKeyJustPressed(Input.Keys.J)) gameOver.startGameOver();
 
@@ -244,7 +251,15 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
     }
 
-    /** Toggle game over screen */
+    /**
+     * Hide and Show the LV. Text
+     * @param level new Level
+     */
+    public static void lvUP(long level){
+        lvUPscreen.hideMenu();
+        lvUPscreen.showMenu(level);
+    }
+    /** Toggle game over screen when the Hero dies */
     public static void toggleGameOver() {
         gameOverIsActive = !gameOverIsActive;
         if (systems != null) {
