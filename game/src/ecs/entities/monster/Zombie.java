@@ -1,6 +1,7 @@
 package ecs.entities.monster;
 
 import ecs.components.ai.idle.StaticRadiusWalk;
+import ecs.entities.Entity;
 import ecs.entities.Monster;
 
 /** Zombie is a NPC-Entity which will be spawned in Dungeon. */
@@ -16,6 +17,9 @@ public class Zombie extends Monster {
                 0.02f,
                 0.02f,
                 2,
-                3);
+                3,
+                55);
     }
+
+
 }

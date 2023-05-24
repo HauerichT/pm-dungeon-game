@@ -76,7 +76,7 @@ public class GameOver<T extends Actor> extends ScreenController<T> {
                                 }
 
                                 Game.toggleGameOver();
-
+                                Game.lvUP(0);
                                 Hero hero = new Hero();
                                 Game.setHero(hero);
                             }

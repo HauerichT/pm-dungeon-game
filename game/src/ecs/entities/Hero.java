@@ -6,6 +6,8 @@ import ecs.components.AnimationComponent;
 import ecs.components.PositionComponent;
 import ecs.components.VelocityComponent;
 import ecs.components.skill.*;
+import ecs.components.xp.ILevelUp;
+import ecs.components.xp.XPComponent;
 import ecs.damage.Damage;
 import ecs.damage.DamageType;
 import graphic.Animation;
@@ -23,6 +25,7 @@ public class Hero extends Entity {
     private int health = 20;
     private int dmg = 1;
     private int mana = 10;
+    public static long currentLV;
 
     private Skill firstSkill;
     private Skill secondSkill;
@@ -48,6 +51,7 @@ public class Hero extends Entity {
         pc.setSkillSlot6(sixthSkill);
         setupInventoryComponent();
         setupHealthComponent();
+        setupXPComponent();
     }
 
     private void setupSkillComponent() {
@@ -104,9 +108,14 @@ public class Hero extends Entity {
     private void setupHealthComponent() {
         HealthComponent hc = new HealthComponent(this);
         hc.setOnDeath(entity -> Game.toggleGameOver());
+
         int health = 20;
         hc.setMaximalHealthpoints(health);
         hc.setCurrentHealthpoints(health);
+
+
+        hc.setMaximalHealthpoints(this.health);
+        hc.setCurrentHealthpoints(this.health);
     }
 
 
@@ -120,4 +129,13 @@ public class Hero extends Entity {
             },
             (you, other, direction) -> setupVelocityComponent());
     }
+
+    private void setupXPComponent(){
+        XPComponent heroXP = new XPComponent(this,null);
+        heroXP.setCurrentLevel(0);
+        heroXP.setCurrentXP(0);
+
+    }
+
+
 }
