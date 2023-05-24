@@ -30,6 +30,7 @@ public class FriendlyMonster extends Entity {
 
     private final IIdleAI idleAI = new FollowHeroWalk();
 
+
     public FriendlyMonster(){
         super();
         setupVelocityComponent();

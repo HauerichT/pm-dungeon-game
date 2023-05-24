@@ -105,9 +105,14 @@ public class SkillTools {
     public static Point getMonsterPosition() {
         List<Entity> m = Game.getEntities().stream().collect(Collectors.toUnmodifiableList());
 
-            PositionComponent pc =
-                (PositionComponent) m.get(3).getComponent(PositionComponent.class).orElseThrow();
-            return pc.getPosition();
+        for (int i = 0; i < m.size(); i++) {
+            if (m.get(i).equals(Monster.class)){
+                PositionComponent pc =
+                    (PositionComponent) m.get(i).getComponent(PositionComponent.class).orElseThrow();
+                return pc.getPosition();
+            }
+        }
+        return null;
         }
 
 
