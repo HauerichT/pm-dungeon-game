@@ -20,6 +20,8 @@ public class PlayableComponent extends Component {
     private Skill skillSlot2;
     private Skill skillSlot3;
     private Skill skillSlot4;
+    private Skill skillSlot5;
+    private Skill skillSlot6;
 
     /**
      * @param entity associated entity
@@ -67,23 +69,35 @@ public class PlayableComponent extends Component {
     }
 
     /**
-     * @param skillSlot2 skill that will be on the first skillslot
+     * @param skillSlot2 skill that will be on the second skillslot
      */
     public void setSkillSlot2(Skill skillSlot2) {
         this.skillSlot2 = skillSlot2;
     }
 
     /**
-     * @param skillSlot3 skill that will be on the first skillslot
+     * @param skillSlot3 skill that will be on the third skillslot
      */
     public void setSkillSlot3(Skill skillSlot3) {
         this.skillSlot3 = skillSlot3;
     }
     /**
-     * @param skillSlot4 skill that will be on the first skillslot
+     * @param skillSlot4 skill that will be on the fourth skillslot
      */
     public void setSkillSlot4(Skill skillSlot4) {
         this.skillSlot4 = skillSlot4;
+    }
+    /**
+     * @param skillSlot5 skill that will be on the fifth skillslot
+     */
+    public void setSkillSlot5(Skill skillSlot5) {
+        this.skillSlot5 = skillSlot5;
+    }
+    /**
+     * @param skillSlot6 skill that will be on the sixth skillslot
+     */
+    public void setSkillSlot6(Skill skillSlot6) {
+        this.skillSlot6 = skillSlot6;
     }
 
     /**
@@ -112,5 +126,17 @@ public class PlayableComponent extends Component {
      */
     public Optional<Skill> getSkillSlot4() {
         return Optional.ofNullable(skillSlot4);
+    }
+    /**
+     * @return skill on fifth skill slot
+     */
+    public Optional<Skill> getSkillSlot5() {
+        return Optional.ofNullable(skillSlot5);
+    }
+    /**
+     * @return skill on sixth skill slot
+     */
+    public Optional<Skill> getSkillSlot6() {
+        return Optional.ofNullable(skillSlot6);
     }
 }

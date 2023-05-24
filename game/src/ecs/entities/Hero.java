@@ -28,6 +28,8 @@ public class Hero extends Entity {
     private Skill secondSkill;
     private Skill thirdSkill;
     private Skill fourthSkill;
+    private Skill fifthSkill;
+    private Skill sixthSkill;
 
 
     public Hero() {
@@ -42,6 +44,8 @@ public class Hero extends Entity {
         pc.setSkillSlot2(secondSkill);
         pc.setSkillSlot3(thirdSkill);
         pc.setSkillSlot4(fourthSkill);
+        pc.setSkillSlot5(fifthSkill);
+        pc.setSkillSlot6(sixthSkill);
         setupInventoryComponent();
         setupHealthComponent();
     }
@@ -61,12 +65,16 @@ public class Hero extends Entity {
         secondSkill = new Skill(new BoomerangSkill(SkillTools::getCursorPositionAsPoint), 2);
         thirdSkill = new Skill(new LaserSkill(SkillTools::getCursorPositionAsPoint), 2);
         fourthSkill = new Skill(new SpeedSkill(4), 5);
+        fifthSkill = new Skill(new FriendlyMonsterSkill(), 20);
+        sixthSkill = new Skill(new FireballSkill(SkillTools::getCursorPositionAsPoint),1);
         System.out.println("Das Mana des Heros betraegt " + mana);
 
         skillComponent.addSkill(firstSkill);
         skillComponent.addSkill(secondSkill);
         skillComponent.addSkill(thirdSkill);
         skillComponent.addSkill(fourthSkill);
+        skillComponent.addSkill(fifthSkill);
+        skillComponent.addSkill(sixthSkill);
 
 
     }

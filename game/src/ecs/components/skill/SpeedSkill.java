@@ -12,9 +12,7 @@ import java.util.Arrays;
 public class SpeedSkill implements ISkillFunction {
     float speed = 0.5f;
     int manaCost = 5;
-    long timer1;
-    long timer2;
-    int time;
+
     VelocityComponent heroV;
 
     /** Konstruktor

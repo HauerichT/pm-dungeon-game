@@ -6,8 +6,15 @@ import com.badlogic.gdx.math.Vector3;
 import ecs.components.PositionComponent;
 import ecs.components.VelocityComponent;
 import ecs.entities.Entity;
+import ecs.entities.Hero;
+import ecs.entities.Monster;
+import ecs.entities.monster.Tot;
 import starter.Game;
 import tools.Point;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class SkillTools {
 
@@ -90,6 +97,20 @@ public class SkillTools {
                 (PositionComponent) h.getComponent(PositionComponent.class).orElseThrow();
         return pc.getPosition();
     }
+    /**
+     * gets the position of a Monster
+     *
+     * @return position of the nearest entity as a point
+     */
+    public static Point getMonsterPosition() {
+        List<Entity> m = Game.getEntities().stream().collect(Collectors.toUnmodifiableList());
+
+            PositionComponent pc =
+                (PositionComponent) m.get(3).getComponent(PositionComponent.class).orElseThrow();
+            return pc.getPosition();
+        }
+
+
 
     /**
      * gets the current cursor position as Point
