@@ -8,10 +8,11 @@ import graphic.Animation;
 import starter.Game;
 import java.awt.*;
 import java.util.Arrays;
+import java.util.logging.Logger;
 
 public class SpeedSkill implements ISkillFunction {
     float speed = 0.5f;
-    int manaCost = 5;
+    int manaCost;
 
     VelocityComponent heroV;
 
@@ -25,13 +26,29 @@ public class SpeedSkill implements ISkillFunction {
      * @Params: Entity which uses the Skill * */
     @Override
     public void execute(Entity entity) {
+        Logger l = Logger.getLogger(Game.getHero().getClass().getName());
+        if (Hero.getMana() >= manaCost){
+            Hero.reduceMana(manaCost);
+            heroV = (VelocityComponent) entity.getComponent(VelocityComponent.class).orElseThrow();
+            heroV.setXVelocity(speed);
+            heroV.setYVelocity(speed);
+            System.out.println("Die Faehigkeit SpeedSkill wurde aktiviert! \n Mana -" + manaCost);
+            l.info("\u001B[34m" + "Hero used Speedskill" + "\u001B[0m");
 
-        heroV = (VelocityComponent) entity.getComponent(VelocityComponent.class).orElseThrow();
-        heroV.setXVelocity(speed);
-        heroV.setYVelocity(speed);
-        System.out.println("Die Faehigkeit SpeedSkill wurde aktiviert! \n Mana -" + manaCost);
+        }
+        else {
+
+
+
+            l.info("\u001B[32m" + "your mana capacity is to low" + "\u001B[0m");
+
+
+
+
         }
 
 
     }
+
+}
 
