@@ -81,7 +81,7 @@ public class Hero extends Entity implements ILevelUp{
         sixthSkill = new Skill(new FireballSkill(SkillTools::getCursorPositionAsPoint,new Damage(1, DamageType.FIRE, this)),1);
 
         skillComponent.addSkill(fourthSkill);
-        fifthSkill = new Skill(new FriendlyMonsterSkill(), 20);
+        fifthSkill = new Skill(new HealthSkill(), 20);
         skillComponent.addSkill(fifthSkill);
 
         sixthSkill = new Skill(new FireballSkill(SkillTools::getCursorPositionAsPoint,new Damage(1, DamageType.FIRE, this)),1);
