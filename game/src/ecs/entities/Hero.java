@@ -20,7 +20,7 @@ public class Hero extends Entity {
 
     private float xSpeed = 0.25f;
     private float ySpeed = 0.25f;
-    private int health = 20;
+    private  int health = 20;
     private int dmg = 1;
     private int mana = 10;
 
@@ -65,9 +65,9 @@ public class Hero extends Entity {
         secondSkill = new Skill(new BoomerangSkill(SkillTools::getCursorPositionAsPoint), 2);
         thirdSkill = new Skill(new LaserSkill(SkillTools::getCursorPositionAsPoint), 2);
         fourthSkill = new Skill(new SpeedSkill(4), 5);
-        fifthSkill = new Skill(new FriendlyMonsterSkill(), 20);
+        fifthSkill = new Skill(new HealthSkill(), 20);
         sixthSkill = new Skill(new FireballSkill(SkillTools::getCursorPositionAsPoint),1);
-        System.out.println("Das Mana des Heros betraegt " + mana);
+
 
         skillComponent.addSkill(firstSkill);
         skillComponent.addSkill(secondSkill);
@@ -120,4 +120,6 @@ public class Hero extends Entity {
             },
             (you, other, direction) -> setupVelocityComponent());
     }
+
+
 }
