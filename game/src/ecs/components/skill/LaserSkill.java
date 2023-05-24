@@ -5,11 +5,11 @@ import ecs.damage.DamageType;
 import tools.Point;
 
 public class LaserSkill extends DamageProjectileSkill {
-    public LaserSkill(ITargetSelection targetSelection) {
+    public LaserSkill(ITargetSelection targetSelection,Damage dmg) {
         super(
             "skills/laser",
             0.5f,
-            new Damage(1, DamageType.FIRE, null),
+            dmg,
             new Point(1, 1),
             targetSelection,
             5f);

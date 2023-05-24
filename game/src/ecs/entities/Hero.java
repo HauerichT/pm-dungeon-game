@@ -18,14 +18,15 @@ import tools.Point;
  * The Hero is the player character. It's entity in the ECS. This class helps to set up the hero
  * with all its components and attributes .
  */
-public class Hero extends Entity {
+public class Hero extends Entity implements ILevelUp{
 
     private float xSpeed = 0.25f;
     private float ySpeed = 0.25f;
     private int health = 20;
     private int dmg = 1;
     private int mana = 10;
-    public static long currentLV;
+    private int heroLV = 0;
+
 
     private Skill firstSkill;
     private Skill secondSkill;
@@ -33,55 +34,62 @@ public class Hero extends Entity {
     private Skill fourthSkill;
     private Skill fifthSkill;
     private Skill sixthSkill;
+    private PlayableComponent pc;
+    private SkillComponent skillComponent;
 
 
     public Hero() {
         super();
         PositionComponent psc = new PositionComponent(this);
-        PlayableComponent pc = new PlayableComponent(this);
+        pc = new PlayableComponent(this);
         setupVelocityComponent();
         setupAnimationComponent();
         setupHitBoxComponent();
         setupSkillComponent();
+
         pc.setSkillSlot1(firstSkill);
         pc.setSkillSlot2(secondSkill);
         pc.setSkillSlot3(thirdSkill);
-        pc.setSkillSlot4(fourthSkill);
-        pc.setSkillSlot5(fifthSkill);
-        pc.setSkillSlot6(sixthSkill);
+
         setupInventoryComponent();
         setupHealthComponent();
         setupXPComponent();
     }
 
     private void setupSkillComponent() {
-        SkillComponent skillComponent = new SkillComponent(this);
+        skillComponent = new SkillComponent(this);
 
         int dmg = 1;
         firstSkill =
             new Skill(new MeleeSkill(
                 "knight/melee/",
-                new Damage(dmg, DamageType.PHYSICAL, null),
+                new Damage(dmg, DamageType.PHYSICAL, this),
                 new Point(1, 1),
                 SkillTools::getHeroPosition),
                 1);
 
-        secondSkill = new Skill(new BoomerangSkill(SkillTools::getCursorPositionAsPoint), 2);
-        thirdSkill = new Skill(new LaserSkill(SkillTools::getCursorPositionAsPoint), 2);
+
+        secondSkill = new Skill(new BoomerangSkill(SkillTools::getCursorPositionAsPoint,new Damage(1, DamageType.PHYSICAL, this)), 2);
+        skillComponent.addSkill(secondSkill);
+
+        thirdSkill = new Skill(new LaserSkill(SkillTools::getCursorPositionAsPoint,new Damage(1, DamageType.FIRE, this)), 2);
+        skillComponent.addSkill(thirdSkill);
+
         fourthSkill = new Skill(new SpeedSkill(4), 5);
+        skillComponent.addSkill(fourthSkill);
+
         fifthSkill = new Skill(new FriendlyMonsterSkill(), 20);
-        sixthSkill = new Skill(new FireballSkill(SkillTools::getCursorPositionAsPoint),1);
+        skillComponent.addSkill(fifthSkill);
+
+        sixthSkill = new Skill(new FireballSkill(SkillTools::getCursorPositionAsPoint,new Damage(1, DamageType.FIRE, this)),1);
+        skillComponent.addSkill(sixthSkill);
+
         System.out.println("Das Mana des Heros betraegt " + mana);
 
-        skillComponent.addSkill(firstSkill);
-        skillComponent.addSkill(secondSkill);
-        skillComponent.addSkill(thirdSkill);
-        skillComponent.addSkill(fourthSkill);
-        skillComponent.addSkill(fifthSkill);
-        skillComponent.addSkill(sixthSkill);
 
 
     }
+
 
     private void setupInventoryComponent() {
         InventoryComponent inventory = new InventoryComponent(this, 5);
@@ -118,7 +126,6 @@ public class Hero extends Entity {
         hc.setCurrentHealthpoints(this.health);
     }
 
-
     private void setupHitBoxComponent() {
         new HitboxComponent(
             this,
@@ -131,11 +138,36 @@ public class Hero extends Entity {
     }
 
     private void setupXPComponent(){
-        XPComponent heroXP = new XPComponent(this,null);
+        XPComponent heroXP = new XPComponent(this,this);
         heroXP.setCurrentLevel(0);
         heroXP.setCurrentXP(0);
 
     }
 
+    @Override
+    public void onLevelUp(long nexLevel) {
+        Game.lvUP(nexLevel);
 
+        if (nexLevel == 1){
+            pc.setSkillSlot4(fourthSkill);
+        }
+        if (nexLevel == 2){
+            pc.setSkillSlot6(sixthSkill);
+
+        }
+        if (nexLevel == 3){
+            pc.setSkillSlot5(fifthSkill);
+        }
+
+
+
+
+
+
+        //Gives the hero a new skill when he reaches a certain level
+
+
+
+
+    }
 }
