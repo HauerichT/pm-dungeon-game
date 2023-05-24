@@ -9,6 +9,10 @@ import starter.Game;
 import java.awt.*;
 import java.util.Arrays;
 
+
+/**
+ * Speedskill is a skill that increase the speed of the Hero until he get damage.
+ */
 public class SpeedSkill implements ISkillFunction {
     float speed = 0.5f;
     int manaCost = 5;

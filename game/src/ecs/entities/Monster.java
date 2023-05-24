@@ -16,6 +16,9 @@ import graphic.Animation;
 import starter.Game;
 import tools.Point;
 
+/**
+ * Used to create Monster. (Superclass)
+ */
 public abstract class Monster extends Entity {
 
     private float horizontalSpeed;

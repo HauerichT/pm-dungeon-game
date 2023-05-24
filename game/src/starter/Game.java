@@ -257,7 +257,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         lvUPscreen.hideMenu();
         lvUPscreen.showMenu(level);
     }
-    /** Toggle game over screen */
+    /** Toggle game over screen when the Hero dies */
     public static void toggleGameOver() {
         gameOverIsActive = !gameOverIsActive;
         if (systems != null) {

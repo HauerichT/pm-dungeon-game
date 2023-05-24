@@ -11,6 +11,10 @@ import ecs.components.ai.idle.FollowHeroWalk;
 import ecs.components.ai.idle.RadiusWalk;
 import graphic.Animation;
 
+
+/**
+ * friendly NPC-Ghost
+ */
 public class Ghost extends Entity {
     private float xSpeed = 0.1f;
     private float ySpeed = 0.1f;
@@ -34,6 +38,9 @@ public class Ghost extends Entity {
         setAnimationComponent();
     }
 
+    /**
+     * Is called in the Game.java and switches the walking behavior of the ghost by time.
+     */
     public void movement() {
         int r = random.nextInt(3);
         switch (r) {

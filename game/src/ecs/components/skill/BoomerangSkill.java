@@ -11,6 +11,9 @@ import graphic.Animation;
 import starter.Game;
 import tools.Point;
 
+/**
+ * BoomerangSkill is a ranged combat possibility for the Hero
+ */
 public class BoomerangSkill extends DamageProjectileSkill {
 
     public BoomerangSkill(ITargetSelection targetSelection,Damage dmg) {
