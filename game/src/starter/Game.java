@@ -39,6 +39,7 @@ import level.generator.IGenerator;
 import level.generator.postGeneration.WallGenerator;
 import level.generator.randomwalk.RandomWalkGenerator;
 import level.tools.LevelSize;
+import org.antlr.v4.runtime.tree.ErrorNodeImpl;
 import tools.Constants;
 import tools.Point;
 
@@ -157,6 +158,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         manageEntitiesSets();
         updateMeleeSkills();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
+        Hero.addMana(0.005f);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
 
         // if (Gdx.input.isKeyJustPressed(Input.Keys.I)) toggleInventory();

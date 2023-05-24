@@ -1,7 +1,6 @@
 package ecs.entities.monster;
 
 import ecs.components.ai.idle.FollowHeroWalk;
-import ecs.entities.Entity;
 import ecs.entities.Monster;
 
 /** Tot is a NPC-Entity which will be spawned in Dungeon. */

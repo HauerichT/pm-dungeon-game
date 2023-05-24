@@ -1,13 +1,12 @@
 package ecs.components.skill;
 
 import ecs.damage.Damage;
-import ecs.damage.DamageType;
 import tools.Point;
-
 
 /**
  * FireballSkill is a skill that the Hero will learn to use at a higher lv.
  */
+
 public class FireballSkill extends DamageProjectileSkill {
     public FireballSkill(ITargetSelection targetSelection,Damage dmg) {
         super(
@@ -17,5 +16,6 @@ public class FireballSkill extends DamageProjectileSkill {
                 new Point(10, 10),
                 targetSelection,
                 5f);
+
     }
 }

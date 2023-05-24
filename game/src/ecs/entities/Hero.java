@@ -24,9 +24,9 @@ public class Hero extends Entity implements ILevelUp{
     private float ySpeed = 0.25f;
     private int health = 20;
     private int dmg = 1;
-    private int mana = 10;
-    private int heroLV = 0;
 
+
+    private static float mana = 3;
 
     private Skill firstSkill;
     private Skill secondSkill;
@@ -141,13 +141,26 @@ public class Hero extends Entity implements ILevelUp{
         XPComponent heroXP = new XPComponent(this,this);
         heroXP.setCurrentLevel(0);
         heroXP.setCurrentXP(0);
+    }
 
+    public static void addMana(float manaPerFrame){
+        if (mana < 20){
+            mana += manaPerFrame;
+        }
+        else {
+            System.out.println("Dein Mana ist Voll!");
+        }
+    }
+    public static void reduceMana(float manaCost){
+        mana -= manaCost;
+        System.out.println(mana);
     }
 
     @Override
     public void onLevelUp(long nexLevel) {
         Game.lvUP(nexLevel);
 
+        //Gives the hero a new skill when he reaches a certain level
         if (nexLevel == 1){
             pc.setSkillSlot4(fourthSkill);
         }
@@ -158,16 +171,9 @@ public class Hero extends Entity implements ILevelUp{
         if (nexLevel == 3){
             pc.setSkillSlot5(fifthSkill);
         }
-
-
-
-
-
-
-        //Gives the hero a new skill when he reaches a certain level
-
-
-
-
     }
+    public static float getMana() {
+        return mana;
+    }
+
 }

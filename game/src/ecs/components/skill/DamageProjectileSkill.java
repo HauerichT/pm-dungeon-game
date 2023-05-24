@@ -9,6 +9,8 @@ import graphic.Animation;
 import starter.Game;
 import tools.Point;
 
+import java.util.logging.Logger;
+
 public abstract class DamageProjectileSkill implements ISkillFunction {
 
     protected String pathToTexturesOfProjectile;
@@ -37,6 +39,7 @@ public abstract class DamageProjectileSkill implements ISkillFunction {
 
     @Override
     public void execute(Entity entity) {
+
         Entity projectile = new Entity();
         PositionComponent epc =
                 (PositionComponent)
