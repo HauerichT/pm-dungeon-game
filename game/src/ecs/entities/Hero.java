@@ -76,21 +76,15 @@ public class Hero extends Entity implements ILevelUp{
         skillComponent.addSkill(thirdSkill);
 
         fourthSkill = new Skill(new SpeedSkill(4), 5);
-
-        fifthSkill = new Skill(new HealthSkill(), 20);
-        sixthSkill = new Skill(new FireballSkill(SkillTools::getCursorPositionAsPoint,new Damage(1, DamageType.FIRE, this)),1);
-
         skillComponent.addSkill(fourthSkill);
-        fifthSkill = new Skill(new HealthSkill(), 20);
+
+        fifthSkill = new Skill(new HealthSkill(4), 2);
         skillComponent.addSkill(fifthSkill);
 
         sixthSkill = new Skill(new FireballSkill(SkillTools::getCursorPositionAsPoint,new Damage(1, DamageType.FIRE, this)),1);
         skillComponent.addSkill(sixthSkill);
 
         System.out.println("Das Mana des Heros betraegt " + mana);
-
-
-
 
     }
 
