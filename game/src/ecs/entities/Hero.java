@@ -49,7 +49,7 @@ public class Hero extends Entity implements ILevelUp{
 
         pc.setSkillSlot1(firstSkill);
         pc.setSkillSlot2(secondSkill);
-        pc.setSkillSlot3(thirdSkill);
+
 
         setupInventoryComponent();
         setupHealthComponent();
@@ -162,6 +162,7 @@ public class Hero extends Entity implements ILevelUp{
         //Gives the hero a new skill when he reaches a certain level
         if (nexLevel == 1){
             pc.setSkillSlot4(fourthSkill);
+            pc.setSkillSlot3(thirdSkill);
         }
         if (nexLevel == 2){
             pc.setSkillSlot6(sixthSkill);
