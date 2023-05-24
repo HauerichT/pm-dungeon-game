@@ -41,14 +41,7 @@ public class SpeedSkill implements ISkillFunction {
 
         }
         else {
-
-
-
             l.info("\u001B[32m" + "your mana capacity is to low" + "\u001B[0m");
-
-
-
-
         }
 
 
