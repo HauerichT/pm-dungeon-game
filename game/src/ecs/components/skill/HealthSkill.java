@@ -9,11 +9,21 @@ import starter.Game;
 public class HealthSkill implements ISkillFunction {
 
     private int manaCost;
-    /** Konstruktor @Params mana costs of the Skill * */
+
+    /**
+     * Konstruktor
+     *
+     * @param manaCost
+     */
     public HealthSkill(int manaCost) {
         this.manaCost = manaCost;
     }
-    /** Methode to use the Skill @Params: Entity which uses the Skill * */
+
+    /**
+     * Methode to use the Skill
+     *
+     * @param entity which uses the skill
+     */
     @Override
     public void execute(Entity entity) {
 

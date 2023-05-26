@@ -26,7 +26,7 @@ public class LVup<T extends Actor> extends ScreenController<T> {
                         new Point(0, 0),
                         3,
                         new LabelStyleBuilder(FontBuilder.DEFAULT_FONT)
-                                .setFontcolor(Color.WHITE)
+                                .setFontcolor(Color.GOLD)
                                 .build());
         newLV.setFontScale(1);
         newLV.setPosition(5, 40, Align.left | Align.bottom);

@@ -26,7 +26,7 @@ public class Hero extends Entity implements ILevelUp {
     private int health = 20;
     private int dmg = 1;
 
-    private static float mana = 20;
+    private static float mana = 1;
 
     private Skill firstSkill;
     private Skill secondSkill;
@@ -133,7 +133,7 @@ public class Hero extends Entity implements ILevelUp {
         hc.setMaximalHealthpoints(this.health);
         hc.setCurrentHealthpoints(this.health);
 
-        healtLog.info("\u001B[33m" + "Health = " + health +"\u001B[31m");
+        healtLog.info("\u001B[33m" + "Health = " + health + "\u001B[31m");
     }
 
     private void setupHitBoxComponent() {
@@ -174,7 +174,6 @@ public class Hero extends Entity implements ILevelUp {
         Logger manalog2 = Logger.getLogger(Game.getHero().getClass().getName());
         mana -= manaCost;
         manalog2.info("\u001B[34m" + "Current Mana =" + mana + "\u001B[31m");
-
     }
 
     @Override
@@ -185,17 +184,21 @@ public class Hero extends Entity implements ILevelUp {
         // Gives the hero a new skill when he reaches a certain level
         if (nexLevel == 1) {
             pc.setSkillSlot4(fourthSkill);
-            abilityLog.info("\u001B[32m" + "Hero learned Speed skill, press 1 to use it" + "\u001B[31m");
+            abilityLog.info(
+                    "\u001B[32m" + "Hero learned Speed skill, press 1 to use it" + "\u001B[31m");
             pc.setSkillSlot3(thirdSkill);
-            abilityLog.info("\u001B[32m" + "Hero learned Laser skill, press F to use it" + "\u001B[31m");
+            abilityLog.info(
+                    "\u001B[32m" + "Hero learned Laser skill, press F to use it" + "\u001B[31m");
         }
         if (nexLevel == 2) {
             pc.setSkillSlot6(sixthSkill);
-            abilityLog.info("\u001B[32m" + "Hero learned Fireball skill, press 3 to use it" + "\u001B[31m");
+            abilityLog.info(
+                    "\u001B[32m" + "Hero learned Fireball skill, press 3 to use it" + "\u001B[31m");
         }
         if (nexLevel == 3) {
             pc.setSkillSlot5(fifthSkill);
-            abilityLog.info("\u001B[32m" + "Hero learned Health skill, press 2 to use it" + "\u001B[31m");
+            abilityLog.info(
+                    "\u001B[32m" + "Hero learned Health skill, press 2 to use it" + "\u001B[31m");
         }
     }
 
