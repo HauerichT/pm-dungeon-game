@@ -16,9 +16,7 @@ import graphic.Animation;
 import starter.Game;
 import tools.Point;
 
-/**
- * Friendly Monster that will spawn if the hero use his "friendly monster" skill.
- */
+/** Friendly Monster that will spawn if the hero use his "friendly monster" skill. */
 public class FriendlyMonster extends Entity {
     private float horizontalSpeed = 0.2f;
     private float verticalSpeed = 0.2f;
@@ -33,8 +31,7 @@ public class FriendlyMonster extends Entity {
 
     private final IIdleAI idleAI = new FollowHeroWalk();
 
-
-    public FriendlyMonster(){
+    public FriendlyMonster() {
         super();
         setupVelocityComponent();
         setupAnimationComponent();
@@ -42,8 +39,8 @@ public class FriendlyMonster extends Entity {
         setupAIComponent();
         setupHitboxComponent();
         setupHealthComponent();
-
     }
+
     private void setupPositionComponent() {
         new PositionComponent(this);
     }
@@ -52,15 +49,15 @@ public class FriendlyMonster extends Entity {
         AIComponent ai = new AIComponent(this);
         ai.setIdleAI(idleAI);
         ai.setFightAI(
-            new MeleeAI(
-                0.8f,
-                new Skill(
-                    new MeleeSkill(
-                        "knight/melee",
-                        new Damage(this.dmg, DamageType.PHYSICAL, null),
-                        new Point(1, 1),
-                        SkillTools::getMonsterPosition),
-                    3)));
+                new MeleeAI(
+                        0.8f,
+                        new Skill(
+                                new MeleeSkill(
+                                        "knight/melee",
+                                        new Damage(this.dmg, DamageType.PHYSICAL, null),
+                                        new Point(1, 1),
+                                        SkillTools::getMonsterPosition),
+                                3)));
     }
 
     private void setupAnimationComponent() {
@@ -84,5 +81,4 @@ public class FriendlyMonster extends Entity {
     private void setupHitboxComponent() {
         new HitboxComponent(this);
     }
-
 }

@@ -19,5 +19,4 @@ public class Tot extends Monster {
                 5,
                 70);
     }
-
 }

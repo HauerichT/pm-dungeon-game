@@ -11,14 +11,11 @@ import ecs.components.skill.SkillTools;
 import ecs.components.xp.XPComponent;
 import ecs.damage.Damage;
 import ecs.damage.DamageType;
-import ecs.systems.XPSystem;
 import graphic.Animation;
 import starter.Game;
 import tools.Point;
 
-/**
- * Used to create Monster. (Superclass)
- */
+/** Used to create Monster. (Superclass) */
 public abstract class Monster extends Entity {
 
     private float horizontalSpeed;
@@ -71,7 +68,6 @@ public abstract class Monster extends Entity {
         setupXPComponent();
     }
 
-
     private void setupPositionComponent() {
         new PositionComponent(this);
     }
@@ -88,7 +84,6 @@ public abstract class Monster extends Entity {
                                         new Damage(this.dmg, DamageType.PHYSICAL, null),
                                         new Point(1, 1),
                                         SkillTools::getHeroPosition),
-
                                 3)));
     }
 
@@ -108,12 +103,11 @@ public abstract class Monster extends Entity {
         HealthComponent hc = new HealthComponent(this);
         hc.setMaximalHealthpoints(this.health + Game.getLevelCounter() / 5);
         hc.setCurrentHealthpoints(this.health + Game.getLevelCounter() / 5);
-
     }
-    private void setupXPComponent(){
+
+    private void setupXPComponent() {
         XPComponent monsterXP = new XPComponent(this);
         monsterXP.setLootXP(exp);
-
     }
 
     private void setupHitboxComponent() {

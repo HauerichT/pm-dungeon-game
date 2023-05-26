@@ -1,8 +1,7 @@
 package ecs.components.xp;
+
 import ecs.components.Component;
 import ecs.entities.Entity;
-import ecs.entities.Hero;
-import starter.Game;
 
 public class XPComponent extends Component {
 

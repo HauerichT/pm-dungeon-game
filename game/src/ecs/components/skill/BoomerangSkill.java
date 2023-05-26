@@ -4,27 +4,17 @@ import dslToGame.AnimationBuilder;
 import ecs.components.*;
 import ecs.components.collision.ICollide;
 import ecs.damage.Damage;
-import ecs.damage.DamageType;
 import ecs.entities.Entity;
 import ecs.systems.ProjectileSystem;
 import graphic.Animation;
 import starter.Game;
 import tools.Point;
 
-/**
- * BoomerangSkill is a ranged combat possibility for the Hero
- */
+/** BoomerangSkill is a ranged combat possibility for the Hero */
 public class BoomerangSkill extends DamageProjectileSkill {
 
-    public BoomerangSkill(ITargetSelection targetSelection,Damage dmg) {
-        super(
-                "skills/boomerang/",
-                0.4f,
-                dmg,
-                new Point(2, 2),
-                targetSelection,
-                3f);
-
+    public BoomerangSkill(ITargetSelection targetSelection, Damage dmg) {
+        super("skills/boomerang/", 0.4f, dmg, new Point(2, 2), targetSelection, 3f);
     }
 
     /* Execute boomerang when its thrown and not coming back */

@@ -6,15 +6,11 @@ import com.badlogic.gdx.math.Vector3;
 import ecs.components.PositionComponent;
 import ecs.components.VelocityComponent;
 import ecs.entities.Entity;
-import ecs.entities.Hero;
 import ecs.entities.Monster;
-import ecs.entities.monster.Tot;
-import starter.Game;
-import tools.Point;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import starter.Game;
+import tools.Point;
 
 public class SkillTools {
 
@@ -106,16 +102,15 @@ public class SkillTools {
         List<Entity> m = Game.getEntities().stream().collect(Collectors.toUnmodifiableList());
 
         for (int i = 0; i < m.size(); i++) {
-            if (m.get(i).equals(Monster.class)){
+            if (m.get(i).equals(Monster.class)) {
                 PositionComponent pc =
-                    (PositionComponent) m.get(i).getComponent(PositionComponent.class).orElseThrow();
+                        (PositionComponent)
+                                m.get(i).getComponent(PositionComponent.class).orElseThrow();
                 return pc.getPosition();
             }
         }
         return null;
-        }
-
-
+    }
 
     /**
      * gets the current cursor position as Point
