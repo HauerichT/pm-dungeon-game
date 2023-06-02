@@ -11,14 +11,14 @@ import tools.Point;
 
 public abstract class DamageProjectileSkill implements ISkillFunction {
 
-    private String pathToTexturesOfProjectile;
-    private float projectileSpeed;
+    protected String pathToTexturesOfProjectile;
+    protected float projectileSpeed;
 
-    private float projectileRange;
-    private Damage projectileDamage;
-    private Point projectileHitboxSize;
+    protected float projectileRange;
+    protected Damage projectileDamage;
+    protected Point projectileHitboxSize;
 
-    private ITargetSelection selectionFunction;
+    protected ITargetSelection selectionFunction;
 
     public DamageProjectileSkill(
             String pathToTexturesOfProjectile,
@@ -37,6 +37,7 @@ public abstract class DamageProjectileSkill implements ISkillFunction {
 
     @Override
     public void execute(Entity entity) {
+
         Entity projectile = new Entity();
         PositionComponent epc =
                 (PositionComponent)
@@ -54,7 +55,8 @@ public abstract class DamageProjectileSkill implements ISkillFunction {
                         epc.getPosition(), aimedOn, projectileRange);
         Point velocity =
                 SkillTools.calculateVelocity(epc.getPosition(), targetPoint, projectileSpeed);
-        VelocityComponent vc = new VelocityComponent(projectile, velocity.x, velocity.y, animation, animation);
+        VelocityComponent vc =
+                new VelocityComponent(projectile, velocity.x, velocity.y, animation, animation);
         new ProjectileComponent(projectile, epc.getPosition(), targetPoint);
         ICollide collide =
                 (a, b, from) -> {

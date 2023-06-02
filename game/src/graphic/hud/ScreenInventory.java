@@ -1,21 +1,19 @@
 package graphic.hud;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import configuration.hud.ScreenImage;
 import controller.ScreenController;
 import ecs.components.InventoryComponent;
-
 import ecs.components.ItemComponent;
 import ecs.entities.Entity;
 import starter.Game;
 import tools.Point;
 
-import java.util.ArrayList;
-
-public class ScreenInventory<T extends Actor> extends ScreenController<T>{
+public class ScreenInventory<T extends Actor> extends ScreenController<T> {
 
     private int xPosInvImg = 4;
     private int xPosInvItemImg = 4;
-
 
     /** Creates a new Inventory with a new Spritebatch */
     public ScreenInventory() {
@@ -29,30 +27,41 @@ public class ScreenInventory<T extends Actor> extends ScreenController<T>{
     }
 
     public void setInventoryList() {
-        Game.getHero().flatMap(hero -> hero.getComponent(InventoryComponent.class)).ifPresent(inv -> {
-            for (int i = 0; i < ((InventoryComponent) inv).getMaxSize(); i++) {
-                ScreenImage invImg = new ScreenImage("hud/inv.png", new Point(this.xPosInvImg, 4));
-                invImg.scaleBy(-0.8f, -0.8f);
-                add((T) invImg);
-                this.xPosInvImg += (invImg.getWidth()+8);
-            }
-        });
+        Game.getHero()
+                .flatMap(hero -> hero.getComponent(InventoryComponent.class))
+                .ifPresent(
+                        inv -> {
+                            for (int i = 0; i < ((InventoryComponent) inv).getMaxSize(); i++) {
+                                ScreenImage invImg =
+                                        new ScreenImage(
+                                                "hud/inv.png", new Point(this.xPosInvImg, 4));
+                                invImg.scaleBy(-0.8f, -0.8f);
+                                add((T) invImg);
+                                this.xPosInvImg += (invImg.getWidth() + 8);
+                            }
+                        });
     }
 
     /** Adds a collected Item to Screen Inventor< */
     public void addItemToScreenInventory(Entity worldItemEntity, int emptySlots) {
         if (emptySlots == 0) {
             System.out.println("Inventory full!");
-        }
-        else {
-            worldItemEntity.getComponent(ItemComponent.class)
-                .ifPresent(
-                    ic -> {
-                        ScreenImage invItemImg = new ScreenImage(((ItemComponent) ic).getItemData().getInventoryTexture().getNextAnimationTexturePath(), new Point(this.xPosInvItemImg, 4));
-                        invItemImg.scaleBy(-0.8f, -0.8f);
-                        add((T) invItemImg);
-                        this.xPosInvItemImg += (invItemImg.getWidth()+8);
-                    });
+        } else {
+            worldItemEntity
+                    .getComponent(ItemComponent.class)
+                    .ifPresent(
+                            ic -> {
+                                ScreenImage invItemImg =
+                                        new ScreenImage(
+                                                ((ItemComponent) ic)
+                                                        .getItemData()
+                                                        .getInventoryTexture()
+                                                        .getNextAnimationTexturePath(),
+                                                new Point(this.xPosInvItemImg, 4));
+                                invItemImg.scaleBy(-0.8f, -0.8f);
+                                add((T) invItemImg);
+                                this.xPosInvItemImg += (invItemImg.getWidth() + 8);
+                            });
         }
     }
 
@@ -65,7 +74,4 @@ public class ScreenInventory<T extends Actor> extends ScreenController<T>{
     public void hideMenu() {
         this.forEach((Actor s) -> s.setVisible(false));
     }
-
-
-
 }

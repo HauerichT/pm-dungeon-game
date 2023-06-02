@@ -8,9 +8,7 @@ import level.elements.tile.Tile;
 public class FollowHeroWalk implements IIdleAI {
     private GraphPath<Tile> path;
 
-    /**
-     * Finds path to the Hero and follows him.
-     */
+    /** Finds path to the Hero and follows him. */
     @Override
     public void idle(Entity entity) {
         if (path == null || AITools.pathFinishedOrLeft(entity, path)) {

@@ -1,6 +1,5 @@
 package ecs.entities;
 
-
 import dslToGame.AnimationBuilder;
 import ecs.components.*;
 import ecs.components.ai.AIComponent;
@@ -9,13 +8,14 @@ import ecs.components.ai.idle.IIdleAI;
 import ecs.components.skill.MeleeSkill;
 import ecs.components.skill.Skill;
 import ecs.components.skill.SkillTools;
+import ecs.components.xp.XPComponent;
 import ecs.damage.Damage;
 import ecs.damage.DamageType;
 import graphic.Animation;
 import starter.Game;
 import tools.Point;
 
-
+/** Used to create Monster. (Superclass) */
 public abstract class Monster extends Entity {
 
     private float horizontalSpeed;
@@ -23,6 +23,7 @@ public abstract class Monster extends Entity {
 
     private int health;
     private int dmg;
+    private int exp;
 
     private final String pathToIdleLeft;
     private final String pathToIdleRight;
@@ -31,7 +32,17 @@ public abstract class Monster extends Entity {
 
     private final IIdleAI idleAI;
 
-    public Monster(String idleLeft, String idleRight, String runLeft, String runRight, IIdleAI idleAI, float horizontalSpeed, float verticalSpeed, int dmg, int health) {
+    public Monster(
+            String idleLeft,
+            String idleRight,
+            String runLeft,
+            String runRight,
+            IIdleAI idleAI,
+            float horizontalSpeed,
+            float verticalSpeed,
+            int dmg,
+            int health,
+            int exp) {
         super();
 
         this.pathToIdleLeft = idleLeft;
@@ -46,6 +57,7 @@ public abstract class Monster extends Entity {
 
         this.dmg = dmg;
         this.health = health;
+        this.exp = exp;
 
         setupVelocityComponent();
         setupAnimationComponent();
@@ -53,8 +65,8 @@ public abstract class Monster extends Entity {
         setupAIComponent();
         setupHitboxComponent();
         setupHealthComponent();
+        setupXPComponent();
     }
-
 
     private void setupPositionComponent() {
         new PositionComponent(this);
@@ -63,7 +75,16 @@ public abstract class Monster extends Entity {
     private void setupAIComponent() {
         AIComponent ai = new AIComponent(this);
         ai.setIdleAI(idleAI);
-        //ai.setFightAI(new MeleeAI(2.0f, new Skill(new MeleeSkill("", new Damage(this.dmg, DamageType.PHYSICAL, null), new Point(1,1), SkillTools::getHeroPosition),2)));
+        ai.setFightAI(
+                new MeleeAI(
+                        0.8f,
+                        new Skill(
+                                new MeleeSkill(
+                                        "knight/melee",
+                                        new Damage(this.dmg, DamageType.PHYSICAL, null),
+                                        new Point(1, 1),
+                                        SkillTools::getHeroPosition),
+                                3)));
     }
 
     private void setupAnimationComponent() {
@@ -80,13 +101,16 @@ public abstract class Monster extends Entity {
 
     private void setupHealthComponent() {
         HealthComponent hc = new HealthComponent(this);
-        hc.setMaximalHealthpoints(this.health + Game.getLevelCounter()/5);
-        hc.setCurrentHealthpoints(this.health + Game.getLevelCounter()/5);
+        hc.setMaximalHealthpoints(this.health + Game.getLevelCounter() / 5);
+        hc.setCurrentHealthpoints(this.health + Game.getLevelCounter() / 5);
+    }
+
+    private void setupXPComponent() {
+        XPComponent monsterXP = new XPComponent(this);
+        monsterXP.setLootXP(exp);
     }
 
     private void setupHitboxComponent() {
         new HitboxComponent(this);
     }
-
 }
-

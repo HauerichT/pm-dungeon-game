@@ -3,10 +3,12 @@ package ecs.components.skill;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import ecs.components.HealthComponent;
 import ecs.components.PositionComponent;
 import ecs.components.VelocityComponent;
 import ecs.entities.Entity;
+import ecs.entities.Monster;
+import java.util.List;
+import java.util.stream.Collectors;
 import starter.Game;
 import tools.Point;
 
@@ -39,6 +41,14 @@ public class SkillTools {
         return new Point(startPoint.x + scv.x, startPoint.y + scv.y);
     }
 
+    /**
+     * Calculates the velocity between two points
+     *
+     * @param start start point
+     * @param goal target point
+     * @param speed speed of entity
+     * @return a new Point with calculated velocity
+     */
     public static Point calculateVelocity(Point start, Point goal, float speed) {
         float x1 = start.x;
         float y1 = start.y;
@@ -52,7 +62,6 @@ public class SkillTools {
         float velocityY = dy / distance * speed;
         return new Point(velocityX, velocityY);
     }
-
 
     /**
      * Calculates a new Point that represents the direction limited by 1
@@ -73,17 +82,34 @@ public class SkillTools {
         return new Point(newx, newy);
     }
 
-
     /**
-     * Gets the position of the hero
+     * gets the position of the hero
      *
      * @return position of the nearest entity as a point
      */
     public static Point getHeroPosition() {
         Entity h = Game.getHero().orElseThrow();
         PositionComponent pc =
-            (PositionComponent) h.getComponent(PositionComponent.class).orElseThrow();
+                (PositionComponent) h.getComponent(PositionComponent.class).orElseThrow();
         return pc.getPosition();
+    }
+    /**
+     * gets the position of a Monster
+     *
+     * @return position of the nearest entity as a point
+     */
+    public static Point getMonsterPosition() {
+        List<Entity> m = Game.getEntities().stream().collect(Collectors.toUnmodifiableList());
+
+        for (int i = 0; i < m.size(); i++) {
+            if (m.get(i).equals(Monster.class)) {
+                PositionComponent pc =
+                        (PositionComponent)
+                                m.get(i).getComponent(PositionComponent.class).orElseThrow();
+                return pc.getPosition();
+            }
+        }
+        return null;
     }
 
     /**
@@ -93,21 +119,27 @@ public class SkillTools {
      */
     public static Point getCursorPositionAsPoint() {
         Vector3 mousePosition =
-            Game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+                Game.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
         return new Point(mousePosition.x, mousePosition.y);
     }
 
-    /** Take knock-back when hit */
-    public static void recieveKnockback(Point pos, Entity entity) {
-        PositionComponent epc = (PositionComponent) entity.getComponent(PositionComponent.class).orElseThrow();
+    /**
+     * Take knock-back when hit
+     *
+     * @param pos position as Point to take knock-back
+     * @param entity entitiy to get knock-back
+     */
+    public static void takeKickback(Point pos, Entity entity) {
+        PositionComponent epc =
+                (PositionComponent) entity.getComponent(PositionComponent.class).orElseThrow();
         Point entityPosition = epc.getPosition();
         Point direction = Point.getUnitDirectionalVector(entityPosition, pos);
 
         entity.getComponent(VelocityComponent.class)
-            .ifPresent(
-                vc -> {
-                    ((VelocityComponent) vc).setCurrentXVelocity(direction.x * 0.9f);
-                    ((VelocityComponent) vc).setCurrentYVelocity(direction.y * 0.9f);
-                });
+                .ifPresent(
+                        vc -> {
+                            ((VelocityComponent) vc).setCurrentXVelocity(direction.x * 0.9f);
+                            ((VelocityComponent) vc).setCurrentYVelocity(direction.y * 0.9f);
+                        });
     }
 }

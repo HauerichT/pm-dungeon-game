@@ -22,4 +22,12 @@ public class KeyboardConfig {
             new ConfigKey<>(new String[] {"skill", "first"}, new ConfigIntValue(Input.Keys.Q));
     public static final ConfigKey<Integer> SECOND_SKILL =
             new ConfigKey<>(new String[] {"skill", "second"}, new ConfigIntValue(Input.Keys.R));
+    public static final ConfigKey<Integer> THIRD_SKILL =
+            new ConfigKey<>(new String[] {"skill", "third"}, new ConfigIntValue(Input.Keys.F));
+    public static final ConfigKey<Integer> FOURTH_SKILL =
+            new ConfigKey<>(new String[] {"skill", "fourth"}, new ConfigIntValue(Input.Keys.NUM_1));
+    public static final ConfigKey<Integer> FIFTH_SKILL =
+            new ConfigKey<>(new String[] {"skill", "fifth"}, new ConfigIntValue(Input.Keys.NUM_2));
+    public static final ConfigKey<Integer> SIXTH_SKILL =
+            new ConfigKey<>(new String[] {"skill", "sixth"}, new ConfigIntValue(Input.Keys.NUM_3));
 }

@@ -24,7 +24,6 @@ public class InventoryComponent extends Component {
         super(entity);
         inventory = new ArrayList<>(maxSize);
         this.maxSize = maxSize;
-
     }
 
     /**

@@ -1,5 +1,7 @@
 package ecs.entities;
 
+import static com.badlogic.gdx.math.MathUtils.random;
+
 import ecs.entities.items.Bag;
 import ecs.entities.items.HealPotion;
 import ecs.entities.items.StrengthPotion;
@@ -12,26 +14,24 @@ import ecs.entities.trap.SpikeTrap;
 import ecs.entities.trap.TpTrap;
 import starter.Game;
 
-import static com.badlogic.gdx.math.MathUtils.random;
-
 public class RandomEntityGenerator {
 
     /**
      * Add random Items to dungeon based on level.
-     * <p>
-     * Generate random amount of items based on the current level.
+     *
+     * <p>Generate random amount of items based on the current level.
      *
      * @author timo.haverich@hsbi.de
      */
     public void spwanRandomItems() {
         int level = Game.getLevelCounter();
 
-        int itemAmount = random.nextInt(level/4, (level/4)+1);
+        int itemAmount = random.nextInt(level / 4, (level / 4) + 1);
 
         int randomItem;
 
         for (int i = 0; i < itemAmount; i++) {
-            randomItem = random.nextInt(0,4);
+            randomItem = random.nextInt(0, 4);
             switch (randomItem) {
                 case 0 -> {
                     Item sword = new Sword();
@@ -51,22 +51,20 @@ public class RandomEntityGenerator {
                 }
             }
         }
-
     }
-
 
     /**
      * Add random Monsters to dungeon based on level.
-     * <p>
-     * Generate random amount of monsters based on the current level.
-     * Change the strength of the monsters based on the current level.
+     *
+     * <p>Generate random amount of monsters based on the current level. Change the strength of the
+     * monsters based on the current level.
      *
      * @author timo.haverich@hsbi.de
      */
     public void spawnRandomMonster() {
         int level = Game.getLevelCounter();
 
-        int monsterAmount = random.nextInt(level/4, (level/4)+1);
+        int monsterAmount = random.nextInt(level / 2, (level / 2) + 1);
         boolean totCanBeSpawned = level > 10;
 
         int randomMonster;
@@ -74,10 +72,9 @@ public class RandomEntityGenerator {
         for (int i = 0; i < monsterAmount; i++) {
 
             if (totCanBeSpawned) {
-                randomMonster = random.nextInt(0,3);
-            }
-            else {
-                randomMonster = random.nextInt(0,2);
+                randomMonster = random.nextInt(0, 3);
+            } else {
+                randomMonster = random.nextInt(0, 2);
             }
 
             switch (randomMonster) {
@@ -95,28 +92,26 @@ public class RandomEntityGenerator {
                 }
             }
         }
-
     }
-
 
     /**
      * Add random Traps to dungeon based on level.
-     * <p>
-     * Generate random amount of traps based on the current level.
-     * Change the strength of the traps based on the current level.
+     *
+     * <p>Generate random amount of traps based on the current level. Change the strength of the
+     * traps based on the current level.
      *
      * @author timo.haverich@hsbi.de
      */
     public void spawnRandomTrap() {
         int level = Game.getLevelCounter();
 
-        int trapAmount = random.nextInt(level/6, (level/6)+1);
+        int trapAmount = random.nextInt(level / 6, (level / 6) + 1);
 
         int randomTrap;
 
         for (int i = 0; i < trapAmount; i++) {
 
-            randomTrap = random.nextInt(0,3);
+            randomTrap = random.nextInt(0, 3);
 
             switch (randomTrap) {
                 case 0 -> {
@@ -133,7 +128,23 @@ public class RandomEntityGenerator {
                 }
             }
         }
-
     }
 
+    /**
+     * Add ghost and gravestone to dungeon based on level.
+     *
+     * @author timo.haverich@hsbi.de
+     */
+    public void spawnGhostAndGravestone() {
+
+        int level = Game.getLevelCounter();
+
+        if (level % 5 == 0 && level != 0) {
+            Ghost ghost = new Ghost();
+            Gravestone gravestone = new Gravestone(ghost, Game.getHero().get());
+            Game.addEntity(ghost);
+            Game.addEntity(gravestone);
+            Game.setGhost(ghost);
+        }
+    }
 }

@@ -2,11 +2,13 @@ package ecs.components;
 
 import ecs.components.collision.ICollide;
 import ecs.entities.Entity;
+import ecs.entities.monster.FriendlyMonster;
 import java.util.logging.Logger;
 import level.elements.tile.Tile;
 import logging.CustomLogLevel;
 import semanticAnalysis.types.DSLContextMember;
 import semanticAnalysis.types.DSLType;
+import starter.Game;
 import tools.Point;
 
 @DSLType(name = "hitbox_component")
@@ -18,6 +20,8 @@ public class HitboxComponent extends Component {
     private /*@DSLTypeMember(name="size")*/ Point size;
     private ICollide iCollideEnter;
     private ICollide iCollideLeave;
+    private Entity collide;
+
     private final Logger hitboxLogger = Logger.getLogger(this.getClass().getName());
 
     /**
@@ -68,7 +72,13 @@ public class HitboxComponent extends Component {
      * @param direction direction in which the collision happens
      */
     public void onEnter(HitboxComponent other, Tile.Direction direction) {
-        if (iCollideEnter != null) iCollideEnter.onCollision(this.entity, other.entity, direction);
+        this.collide = other.getEntity();
+        if (!((this.entity.equals(Game.getHero()) && other.entity.equals(FriendlyMonster.class))
+                || (this.entity.equals(FriendlyMonster.class)
+                        && other.entity.equals(Game.getHero())))) {
+            if (iCollideEnter != null)
+                iCollideEnter.onCollision(this.entity, other.entity, direction);
+        }
     }
 
     /**
@@ -145,5 +155,9 @@ public class HitboxComponent extends Component {
     private static MissingComponentException getMissingPositionComponentException() {
         return new MissingComponentException(
                 PositionComponent.class.getName() + " in " + HitboxComponent.class.getName());
+    }
+
+    public Entity getCollide() {
+        return collide;
     }
 }

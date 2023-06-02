@@ -1,7 +1,6 @@
 package ecs.components;
 
 import ecs.entities.Entity;
-import ecs.entities.trap.SpikeTrap;
 import graphic.Animation;
 import java.util.List;
 import java.util.logging.Logger;
@@ -37,14 +36,12 @@ public class AnimationComponent extends Component {
         this.currentAnimation = idleLeft;
     }
 
-
-
     /**
      * @param entity associated entity
      * @param idle Idleanimation
      */
     public AnimationComponent(Entity entity, Animation idle) {
-        this(entity,idle,idle);
+        this(entity, idle, idle);
     }
 
     /**
@@ -55,17 +52,14 @@ public class AnimationComponent extends Component {
         this.idleLeft = new Animation(missingTexture, 100);
         this.idleRight = new Animation(missingTexture, 100);
         this.currentAnimation = new Animation(missingTexture, 100);
-        this.active = new Animation(missingTexture,100);
-        this.inactive = new Animation(missingTexture,100);
+        this.active = new Animation(missingTexture, 100);
+        this.inactive = new Animation(missingTexture, 100);
         animCompLogger.log(
                 CustomLogLevel.ERROR,
                 "The AnimationComponent for entity '"
                         + entity.getClass().getName()
                         + "' was created with default textures!");
     }
-
-
-
 
     /**
      * @param animation new current animation of the entity
@@ -121,10 +115,11 @@ public class AnimationComponent extends Component {
         return idleRight;
     }
 
+    public Animation getActive() {
+        return active;
+    }
 
-    public Animation getActive(){return active;}
-
-    public Animation getInactive(){return inactive;}
+    public Animation getInactive() {
+        return inactive;
+    }
 }
-
-
