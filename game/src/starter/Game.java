@@ -154,7 +154,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
-        if (new File("save.ser").exists()) {
+        if (new File("saveGame.ser").exists()) {
             serializableDungeon.loadGame();
         }
     }
@@ -168,13 +168,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         Hero.addMana(0.005f);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
 
-        if (!new File("gameSer.ser").exists()) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
-                serializableDungeon.saveGame();
-                gameLogger.info("Spielstand gespeichert! Spiel wird verlassen...");
-                Gdx.app.exit();
-            }
-        } else {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.X) && !new File("saveGame.ser").exists()) {
+            serializableDungeon.saveGame();
+            gameLogger.info("Spielstand gespeichert! Spiel wird verlassen...");
+            Gdx.app.exit();
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.X) && new File("saveGame.ser").exists()){
             gameLogger.info("Spielstand bereits gespeichert!");
         }
 

@@ -11,6 +11,8 @@ import ecs.components.ai.idle.FollowHeroWalk;
 import ecs.components.ai.idle.RadiusWalk;
 import graphic.Animation;
 
+import java.io.Serializable;
+
 /** friendly NPC-Ghost */
 public class Ghost extends Entity {
     private float xSpeed = 0.1f;

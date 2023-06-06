@@ -12,6 +12,8 @@ import ecs.entities.monster.Zombie;
 import graphic.Animation;
 import starter.Game;
 
+import java.io.Serializable;
+
 public class SpawnTrap extends Trap {
     private final String active = "trap/spawntrap/active";
 

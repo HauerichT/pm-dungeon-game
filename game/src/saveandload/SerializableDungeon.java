@@ -1,56 +1,57 @@
 package saveandload;
 
 import ecs.entities.Entity;
-import java.io.Serializable;
+import starter.Game;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /** SerializableDungeon is a class which allows to save and load a game */
-public class SerializableDungeon implements Serializable {
-    private List<Entity> entities = new ArrayList<>();
-    private int level;
+public class SerializableDungeon {
+    private SerializableDungeonData data = new SerializableDungeonData();
+
 
     /** Saves the current game */
     public void saveGame() {
+        // Saves current level count
+        data.setLevel(Game.getLevelCounter());
 
+        // Saves current entities
+        List<String> entities = new ArrayList<>();
+        for (Entity entity : Game.getEntities()) {
+            entities.add(entity.getClass().getSimpleName());
+        }
+        data.setEntities(entities);
+
+        FileOutputStream fos;
+        ObjectOutputStream out;
+        try {
+            fos = new FileOutputStream("saveGame.ser");
+            out = new ObjectOutputStream(fos);
+            out.writeObject(data);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     /** Loads the entities of the last saved game in new game */
-    public void loadGame() {}
+    public void loadGame() {
+        FileInputStream fis;
+        ObjectInputStream in;
+        try {
+            fis = new FileInputStream("saveGame.ser");
+            in = new ObjectInputStream(fis);
+            data = (SerializableDungeonData) in.readObject();
+            System.out.println(data.getEntities().toString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
-    /**
-     * Sets the current entities in a level
-     *
-     * @param entities entities to save
-     */
-    public void setEntities(List<Entity> entities) {
-        this.entities = entities;
-    }
+        for(int i = 0; i < data.getEntities().size(); i++) {
+            System.out.println(data.getEntities().get(i));
+        }
 
-    /**
-     * Returns the current saved entities
-     *
-     * @return current saved entities
-     */
-    public List<Entity> getEntities() {
-        return entities;
-    }
-
-    /**
-     * Sets the current level
-     *
-     * @param level current level
-     */
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
-    /**
-     * Returns the current saved level
-     *
-     * @return current saved level
-     */
-    public int getLevel() {
-        return level;
+        new File("saveGame.ser").delete();
     }
 }
