@@ -9,38 +9,48 @@ import starter.Game;
 public class HealthSkill implements ISkillFunction {
 
     private int manaCost;
-
-    /** Konstruktor
-     * @Params mana costs of the Skill
+    /**
+     * Konstruktor
+     *
+     * @param manaCost
      */
     public HealthSkill(int manaCost) {
         this.manaCost = manaCost;
     }
+    /**
+     * Methode to use the Skill
+     *
+     * @param entity which uses the skill
 
-    /** Methode to use the Skill
-     * @Params Entity which uses the Skill
      */
     @Override
     public void execute(Entity entity) {
         Logger l = Logger.getLogger(Game.getHero().getClass().getName());
 
         HealthComponent healh =
-                (HealthComponent)
-                        Game.getHero().get().getComponent(HealthComponent.class).orElseThrow();
+            (HealthComponent)
+                Game.getHero().get().getComponent(HealthComponent.class).orElseThrow();
         if (healh.getMaximalHealthpoints() - healh.getCurrentHealthpoints() > 0
-                && Hero.getMana() >= manaCost) {
+            && Hero.getMana() >= manaCost) {
             healh.setCurrentHealthpoints(
-                    healh.getCurrentHealthpoints()
-                            + (healh.getMaximalHealthpoints() - healh.getCurrentHealthpoints()));
+                healh.getCurrentHealthpoints()
+                    + (healh.getMaximalHealthpoints() - healh.getCurrentHealthpoints()));
+
             l.info("\u001B[32m" + "your healthpoints are fully charged" + "\u001B[0m");
         } else {
             if (Hero.getMana() < manaCost) {
                 l.info("\u001B[32m" + "your mana capacity is to low" + "\u001B[0m");
             } else if (healh.getMaximalHealthpoints() - healh.getCurrentHealthpoints() > 0) {
-                l.info(
+                l.info("\u001B[32m" + "your healthpoints are fully charged" + "\u001B[0m");
+            } else {
+                if (Hero.getMana() < manaCost) {
+                    l.info("\u001B[32m" + "your mana capacity is to low" + "\u001B[0m");
+                } else if (healh.getMaximalHealthpoints() - healh.getCurrentHealthpoints() > 0) {
+                    l.info(
                         "\u001B[32m"
-                                + "Your healthpoints are already fully charged you doo't need to charge them"
-                                + "\u001B[0m");
+                            + "Your healthpoints are already fully charged you doo't need to charge them"
+                            + "\u001B[0m");
+                }
             }
         }
     }

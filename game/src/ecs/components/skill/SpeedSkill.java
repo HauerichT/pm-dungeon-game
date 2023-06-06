@@ -5,8 +5,8 @@ import ecs.entities.Entity;
 import ecs.entities.Hero;
 import java.util.logging.Logger;
 import starter.Game;
+/** Speedskill is a skill that increase the speed of the Hero until he get damage. */
 
-/** Speedskill is a skill that increase the speed of the Hero until he gets damage. */
 public class SpeedSkill implements ISkillFunction {
     private float speed = 0.5f;
     private int manaCost;
