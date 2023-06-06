@@ -11,7 +11,9 @@ public class SerializableDungeon implements Serializable {
     private int level;
 
     /** Saves the current game */
-    public void saveGame() {}
+    public void saveGame() {
+
+    }
 
     /** Loads the entities of the last saved game in new game */
     public void loadGame() {}
