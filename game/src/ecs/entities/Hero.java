@@ -11,6 +11,8 @@ import ecs.components.xp.XPComponent;
 import ecs.damage.Damage;
 import ecs.damage.DamageType;
 import graphic.Animation;
+
+import java.io.Serializable;
 import java.util.logging.Logger;
 import starter.Game;
 import tools.Point;

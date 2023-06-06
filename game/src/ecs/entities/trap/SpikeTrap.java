@@ -11,6 +11,8 @@ import ecs.entities.Trap;
 import graphic.Animation;
 import starter.Game;
 
+import java.io.Serializable;
+
 public class SpikeTrap extends Trap {
     private final String inactive = "trap/spiketrap/inactive";
     private final String active = "trap/spiketrap/active";

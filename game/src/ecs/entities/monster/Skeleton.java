@@ -3,6 +3,8 @@ package ecs.entities.monster;
 import ecs.components.ai.idle.RadiusWalk;
 import ecs.entities.Monster;
 
+import java.io.Serializable;
+
 /** Skeleton is a NPC-Entity which will be spawned in Dungeon. */
 public class Skeleton extends Monster {
 
