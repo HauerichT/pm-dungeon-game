@@ -1,7 +1,6 @@
 package saveandload;
 
 import ecs.entities.Entity;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,19 +10,11 @@ public class SerializableDungeon implements Serializable {
     private List<Entity> entities = new ArrayList<>();
     private int level;
 
-    /**
-     * Saves the current game
-     */
-    public void saveGame() {
+    /** Saves the current game */
+    public void saveGame() {}
 
-    }
-
-    /**
-     * Loads the entities of the last saved game in new game
-     */
-    public void loadGame() {
-
-    }
+    /** Loads the entities of the last saved game in new game */
+    public void loadGame() {}
 
     /**
      * Sets the current entities in a level
