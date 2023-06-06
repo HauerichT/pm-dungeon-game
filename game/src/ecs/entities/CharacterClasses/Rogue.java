@@ -21,6 +21,8 @@ public class Rogue extends Hero {
 
     /**
      * Konstruktor
+     *
+     *
      */
     public Rogue(){
         super(15,
