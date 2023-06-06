@@ -24,10 +24,10 @@ public class Mage extends Hero {
             10,
             0.2f,
             0.2f,
-            "character/knight/runLeft",
-            "character/knight/runRight",
-            "character/knight/idleLeft",
-            "character/knight/idleRight");
+            "character/Mage/runLeft",
+            "character/Mage/runRight",
+            "character/Mage/idleLeft",
+            "character/Mage/idleRight");
 
         setupSkillComponent();
         pc = new PlayableComponent(this);

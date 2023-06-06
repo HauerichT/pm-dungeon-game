@@ -142,7 +142,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         pauseMenu = new PauseMenu<>();
         controller.add(pauseMenu);
         randomEntityGenerator = new RandomEntityGenerator();
-        hero = new Rogue();
+        hero = new Mage();
         inv = new ScreenInventory<>();
         lvUPscreen = new LVup<>();
         controller.add(lvUPscreen);
