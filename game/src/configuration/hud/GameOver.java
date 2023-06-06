@@ -10,6 +10,8 @@ import controller.ScreenController;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
 import java.util.Set;
+
+import ecs.entities.CharacterClasses.Mage;
 import starter.Game;
 import tools.Point;
 
@@ -79,7 +81,7 @@ public class GameOver<T extends Actor> extends ScreenController<T> {
 
                                 Game.toggleGameOver();
                                 Game.lvUP(0);
-                                Hero hero = new Hero();
+                                Hero hero = new Mage();
                                 Game.setHero(hero);
                             }
                         },

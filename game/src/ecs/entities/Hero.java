@@ -19,87 +19,48 @@ import tools.Point;
  * The Hero is the player character. It's entity in the ECS. This class helps to set up the hero
  * with all its components and attributes .
  */
-public class Hero extends Entity implements ILevelUp {
+public abstract class Hero extends Entity implements ILevelUp {
 
-
-
-    private int health = 20;
-    private int dmg = 1;
+    private int health;
     private static float mana = 3;
-    private float xSpeed = 0.25f;
-    private float ySpeed = 0.25f;
-    private Skill firstSkill;
-    private Skill secondSkill;
-    private Skill thirdSkill;
-    private Skill fourthSkill;
-    private Skill fifthSkill;
-    private Skill sixthSkill;
-    private PlayableComponent pc;
-    private SkillComponent skillComponent;
+    private float xSpeed;
+    private float ySpeed;
+    String pathToRunRight;
+    String pathToRunLeft;
+    String pathToIdleRight;
+    String pathToIdleLeft;
 
-    public Hero() {
+    /**
+     * Konstruktor
+     *
+     * @param health of the Hero
+     * @param mana of the Hero
+     * @param xSpeed of the Hero
+     * @param ySpeed of the Hero
+     * @param runLeft animations of the hero
+     * @param runRight animations of the hero
+     * @param idleLeft Images of the hero
+     * @param idleRight Images of the hero
+     */
+    public Hero(int health, float mana, float xSpeed, float ySpeed,String runLeft, String runRight, String idleLeft, String idleRight) {
         super();
+        this.pathToRunLeft = runLeft;
+        this.pathToRunRight = runRight;
+        this.pathToIdleLeft = idleLeft;
+        this.pathToIdleRight = idleRight;
+        this.health = health;
+        this.mana = mana;
+        this.xSpeed = xSpeed;
+        this.ySpeed = ySpeed;
         PositionComponent psc = new PositionComponent(this);
-        pc = new PlayableComponent(this);
+
         setupVelocityComponent();
         setupAnimationComponent();
         setupHitBoxComponent();
-        setupSkillComponent();
-
-        pc.setSkillSlot1(firstSkill);
-        pc.setSkillSlot2(secondSkill);
 
         setupInventoryComponent();
         setupHealthComponent();
         setupXPComponent();
-    }
-
-    private void setupSkillComponent() {
-        skillComponent = new SkillComponent(this);
-
-        int dmg = 1;
-        firstSkill =
-                new Skill(
-                        new MeleeSkill(
-                                "knight/melee/",
-                                new Damage(dmg, DamageType.PHYSICAL, this),
-                                new Point(1, 1),
-                                SkillTools::getHeroPosition),
-                        1);
-
-        secondSkill =
-                new Skill(
-                        new BoomerangSkill(
-                                SkillTools::getCursorPositionAsPoint,
-                                new Damage(1, DamageType.PHYSICAL, this)),
-                        2);
-        skillComponent.addSkill(secondSkill);
-
-        thirdSkill =
-                new Skill(
-                        new LaserSkill(
-                                SkillTools::getCursorPositionAsPoint,
-                                new Damage(1, DamageType.FIRE, this)),
-                        2);
-        skillComponent.addSkill(thirdSkill);
-
-        fourthSkill = new Skill(new SpeedSkill(4), 5);
-        skillComponent.addSkill(fourthSkill);
-
-        fifthSkill = new Skill(new HealthSkill(4), 2);
-        skillComponent.addSkill(fifthSkill);
-
-        sixthSkill =
-                new Skill(
-                        new FireballSkill(
-                                SkillTools::getCursorPositionAsPoint,
-                                new Damage(1, DamageType.FIRE, this)),
-                        1);
-        skillComponent.addSkill(sixthSkill);
-
-
-        System.out.println("Das Mana des Heros betraegt " + mana);
-
     }
 
     private void setupInventoryComponent() {
@@ -107,19 +68,13 @@ public class Hero extends Entity implements ILevelUp {
     }
 
     private void setupVelocityComponent() {
-        String pathToRunRight = "knight/runRight";
         Animation moveRight = AnimationBuilder.buildAnimation(pathToRunRight);
-        String pathToRunLeft = "knight/runLeft";
         Animation moveLeft = AnimationBuilder.buildAnimation(pathToRunLeft);
-        float ySpeed = 0.25f;
-        float xSpeed = 0.25f;
         new VelocityComponent(this, xSpeed, ySpeed, moveLeft, moveRight);
     }
 
     private void setupAnimationComponent() {
-        String pathToIdleRight = "knight/idleRight";
         Animation idleRight = AnimationBuilder.buildAnimation(pathToIdleRight);
-        String pathToIdleLeft = "knight/idleLeft";
         Animation idleLeft = AnimationBuilder.buildAnimation(pathToIdleLeft);
         new AnimationComponent(this, idleLeft, idleRight);
     }
@@ -182,37 +137,6 @@ public class Hero extends Entity implements ILevelUp {
 
         mana -= manaCost;
         manalog2.info("\u001B[34m" + "Current Mana =" + mana + "\u001B[31m");
-    }
-
-    @Override
-    public void onLevelUp(long nexLevel) {
-
-        Logger abilityLog = Logger.getLogger(Game.getHero().getClass().getName());
-        Game.lvUP(nexLevel);
-
-
-        // Gives the hero a new skill when he reaches a certain level
-        if (nexLevel == 1) {
-            pc.setSkillSlot4(fourthSkill);
-            abilityLog.info(
-                    "\u001B[32m" + "Hero learned Speed skill, press 1 to use it" + "\u001B[31m");
-            pc.setSkillSlot3(thirdSkill);
-            abilityLog.info(
-                    "\u001B[32m" + "Hero learned Laser skill, press F to use it" + "\u001B[31m");
-        }
-        if (nexLevel == 2) {
-            pc.setSkillSlot6(sixthSkill);
-
-
-            abilityLog.info(
-                    "\u001B[32m" + "Hero learned Fireball skill, press 3 to use it" + "\u001B[31m");
-
-        }
-        if (nexLevel == 3) {
-            pc.setSkillSlot5(fifthSkill);
-            abilityLog.info(
-                    "\u001B[32m" + "Hero learned Health skill, press 2 to use it" + "\u001B[31m");
-        }
     }
 
     public static float getMana() {

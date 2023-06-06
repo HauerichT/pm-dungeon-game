@@ -24,6 +24,8 @@ import ecs.components.ai.fight.MeleeAI;
 import ecs.components.skill.MeleeComponent;
 import ecs.components.skill.Skill;
 import ecs.entities.*;
+import ecs.entities.CharacterClasses.Mage;
+import ecs.entities.CharacterClasses.Rogue;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
@@ -140,7 +142,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         pauseMenu = new PauseMenu<>();
         controller.add(pauseMenu);
         randomEntityGenerator = new RandomEntityGenerator();
-        hero = new Hero();
+        hero = new Rogue();
         inv = new ScreenInventory<>();
         lvUPscreen = new LVup<>();
         controller.add(lvUPscreen);
