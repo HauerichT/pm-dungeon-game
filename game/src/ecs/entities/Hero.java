@@ -18,13 +18,12 @@ import tools.Point;
  * The Hero is the player character. It's entity in the ECS. This class helps to set up the hero
  * with all its components and attributes .
  */
-public class Hero extends Entity implements ILevelUp{
+public class Hero extends Entity implements ILevelUp {
 
-    private float xSpeed = 0.25f;
-    private float ySpeed = 0.25f;
-    private  int health = 20;
+    private float xSpeed = 0.15f;
+    private float ySpeed = 0.15f;
+    private int health = 20;
     private int dmg = 1;
-
 
     private static float mana = 3;
 
@@ -36,7 +35,6 @@ public class Hero extends Entity implements ILevelUp{
     private Skill sixthSkill;
     private PlayableComponent pc;
     private SkillComponent skillComponent;
-
 
     public Hero() {
         super();
@@ -61,18 +59,28 @@ public class Hero extends Entity implements ILevelUp{
 
         int dmg = 1;
         firstSkill =
-            new Skill(new MeleeSkill(
-                "knight/melee/",
-                new Damage(dmg, DamageType.PHYSICAL, this),
-                new Point(1, 1),
-                SkillTools::getHeroPosition),
-                1);
+                new Skill(
+                        new MeleeSkill(
+                                "knight/melee/",
+                                new Damage(dmg, DamageType.PHYSICAL, this),
+                                new Point(1, 1),
+                                SkillTools::getHeroPosition),
+                        1);
 
-
-        secondSkill = new Skill(new BoomerangSkill(SkillTools::getCursorPositionAsPoint,new Damage(1, DamageType.PHYSICAL, this)), 2);
+        secondSkill =
+                new Skill(
+                        new BoomerangSkill(
+                                SkillTools::getCursorPositionAsPoint,
+                                new Damage(1, DamageType.PHYSICAL, this)),
+                        2);
         skillComponent.addSkill(secondSkill);
 
-        thirdSkill = new Skill(new LaserSkill(SkillTools::getCursorPositionAsPoint,new Damage(1, DamageType.FIRE, this)), 2);
+        thirdSkill =
+                new Skill(
+                        new LaserSkill(
+                                SkillTools::getCursorPositionAsPoint,
+                                new Damage(1, DamageType.FIRE, this)),
+                        2);
         skillComponent.addSkill(thirdSkill);
 
         fourthSkill = new Skill(new SpeedSkill(4), 5);
@@ -81,13 +89,16 @@ public class Hero extends Entity implements ILevelUp{
         fifthSkill = new Skill(new HealthSkill(4), 2);
         skillComponent.addSkill(fifthSkill);
 
-        sixthSkill = new Skill(new FireballSkill(SkillTools::getCursorPositionAsPoint,new Damage(1, DamageType.FIRE, this)),1);
+        sixthSkill =
+                new Skill(
+                        new FireballSkill(
+                                SkillTools::getCursorPositionAsPoint,
+                                new Damage(1, DamageType.FIRE, this)),
+                        1);
         skillComponent.addSkill(sixthSkill);
 
         System.out.println("Das Mana des Heros betraegt " + mana);
-
     }
-
 
     private void setupInventoryComponent() {
         InventoryComponent inventory = new InventoryComponent(this, 5);
@@ -119,38 +130,36 @@ public class Hero extends Entity implements ILevelUp{
         hc.setMaximalHealthpoints(health);
         hc.setCurrentHealthpoints(health);
 
-
         hc.setMaximalHealthpoints(this.health);
         hc.setCurrentHealthpoints(this.health);
     }
 
     private void setupHitBoxComponent() {
         new HitboxComponent(
-            this,
-            (you, other, direction) -> {
-                if (other.getClass() == Monster.class) {
-                    setupVelocityComponent();
-                }
-            },
-            (you, other, direction) -> setupVelocityComponent());
+                this,
+                (you, other, direction) -> {
+                    if (other.getClass() == Monster.class) {
+                        setupVelocityComponent();
+                    }
+                },
+                (you, other, direction) -> setupVelocityComponent());
     }
 
-
-    private void setupXPComponent(){
-        XPComponent heroXP = new XPComponent(this,this);
+    private void setupXPComponent() {
+        XPComponent heroXP = new XPComponent(this, this);
         heroXP.setCurrentLevel(0);
         heroXP.setCurrentXP(0);
     }
 
-    public static void addMana(float manaPerFrame){
-        if (mana < 20){
+    public static void addMana(float manaPerFrame) {
+        if (mana < 20) {
             mana += manaPerFrame;
-        }
-        else {
+        } else {
             System.out.println("Dein Mana ist Voll!");
         }
     }
-    public static void reduceMana(float manaCost){
+
+    public static void reduceMana(float manaCost) {
         mana -= manaCost;
         System.out.println(mana);
     }
@@ -159,21 +168,19 @@ public class Hero extends Entity implements ILevelUp{
     public void onLevelUp(long nexLevel) {
         Game.lvUP(nexLevel);
 
-        //Gives the hero a new skill when he reaches a certain level
-        if (nexLevel == 1){
+        // Gives the hero a new skill when he reaches a certain level
+        if (nexLevel == 1) {
             pc.setSkillSlot4(fourthSkill);
         }
-        if (nexLevel == 2){
+        if (nexLevel == 2) {
             pc.setSkillSlot6(sixthSkill);
-
         }
-        if (nexLevel == 3){
+        if (nexLevel == 3) {
             pc.setSkillSlot5(fifthSkill);
         }
     }
+
     public static float getMana() {
         return mana;
     }
-
-
 }

@@ -2,9 +2,8 @@ package ecs.components;
 
 import ecs.components.collision.ICollide;
 import ecs.entities.Entity;
-import java.util.logging.Logger;
-
 import ecs.entities.monster.FriendlyMonster;
+import java.util.logging.Logger;
 import level.elements.tile.Tile;
 import logging.CustomLogLevel;
 import semanticAnalysis.types.DSLContextMember;
@@ -74,8 +73,11 @@ public class HitboxComponent extends Component {
      */
     public void onEnter(HitboxComponent other, Tile.Direction direction) {
         this.collide = other.getEntity();
-        if (!((this.entity.equals(Game.getHero())&&other.entity.equals(FriendlyMonster.class))||(this.entity.equals(FriendlyMonster.class)&&other.entity.equals(Game.getHero())))) {
-            if (iCollideEnter != null) iCollideEnter.onCollision(this.entity, other.entity, direction);
+        if (!((this.entity.equals(Game.getHero()) && other.entity.equals(FriendlyMonster.class))
+                || (this.entity.equals(FriendlyMonster.class)
+                        && other.entity.equals(Game.getHero())))) {
+            if (iCollideEnter != null)
+                iCollideEnter.onCollision(this.entity, other.entity, direction);
         }
     }
 

@@ -20,17 +20,12 @@ public class GameOver<T extends Actor> extends ScreenController<T> {
     private ScreenButton endButtonReady;
     private ScreenButton restartButtonReady;
 
-    /**
-     * Creates a GameOver Menü with a given Spritebatch
-     */
+    /** Creates a GameOver Menü with a given Spritebatch */
     public GameOver() {
         this(new SpriteBatch());
     }
 
-
-    /**
-     * Creates a GameOver Menü with a given Spritebatch
-     */
+    /** Creates a GameOver Menü with a given Spritebatch */
     public GameOver(SpriteBatch batch) {
         super(batch);
 

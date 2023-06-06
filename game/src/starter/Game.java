@@ -39,7 +39,6 @@ import level.generator.IGenerator;
 import level.generator.postGeneration.WallGenerator;
 import level.generator.randomwalk.RandomWalkGenerator;
 import level.tools.LevelSize;
-import org.antlr.v4.runtime.tree.ErrorNodeImpl;
 import tools.Constants;
 import tools.Point;
 
@@ -94,6 +93,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     /** Counter to save current level */
     private static int levelCounter;
+
     private Logger gameLogger;
     private static GameOver<Actor> gameOver;
 
@@ -253,9 +253,10 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     /**
      * Hide and Show the LV. Text
+     *
      * @param level new Level
      */
-    public static void lvUP(long level){
+    public static void lvUP(long level) {
         lvUPscreen.hideMenu();
         lvUPscreen.showMenu(level);
     }

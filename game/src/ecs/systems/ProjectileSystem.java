@@ -117,7 +117,7 @@ public class ProjectileSystem extends ECS_System {
         if (distanceToStart > totalDistance && !boomerangIsComingBack) {
             boomerangIsComingBack = true;
             Game.removeEntity(projectile);
-            BoomerangSkill boomerangSkill = new BoomerangSkill(SkillTools::getHeroPosition,null);
+            BoomerangSkill boomerangSkill = new BoomerangSkill(SkillTools::getHeroPosition, null);
             boomerangSkill.execute(projectile, true);
         }
     }

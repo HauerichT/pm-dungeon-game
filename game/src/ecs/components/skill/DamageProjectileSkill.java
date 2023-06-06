@@ -9,8 +9,6 @@ import graphic.Animation;
 import starter.Game;
 import tools.Point;
 
-import java.util.logging.Logger;
-
 public abstract class DamageProjectileSkill implements ISkillFunction {
 
     protected String pathToTexturesOfProjectile;
