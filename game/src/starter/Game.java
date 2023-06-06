@@ -29,6 +29,8 @@ import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
 import graphic.hud.ScreenInventory;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
@@ -40,6 +42,7 @@ import level.generator.IGenerator;
 import level.generator.postGeneration.WallGenerator;
 import level.generator.randomwalk.RandomWalkGenerator;
 import level.tools.LevelSize;
+import saveandload.SerializableDungeon;
 import tools.Constants;
 import tools.Point;
 
@@ -85,6 +88,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private static ChooseCharakter<Actor> charakterMenu;
     private static PauseMenu<Actor> pauseMenu;
     private static LVup<Actor> lvUPscreen;
+    private static final SerializableDungeon serializableDungeon = new SerializableDungeon();
     private static Entity hero;
     private int counterGhost;
 
@@ -156,8 +160,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
         Game.systems.forEach(ECS_System::toggleRun);
-
-
+        if (new File("saveGame.ser").exists()) {
+            serializableDungeon.loadGame();
+        }
     }
 
     /** Called at the beginning of each frame. Before the controllers call <code>update</code>. */
@@ -172,10 +177,20 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             controller.add(gameOver);
             gameOverIsActive2 = false;
 
+
         }
-        if (charakterChooseBool){
+        if (charakterChooseBool) {
             controller.add(charakterMenu);
             charakterChooseBool = false;
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.X) && !new File("saveGame.ser").exists()) {
+            serializableDungeon.saveGame();
+            gameLogger.info("Spielstand gespeichert! Spiel wird verlassen...");
+            Gdx.app.exit();
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.X) && new File("saveGame.ser").exists()){
+            gameLogger.info("Spielstand bereits gespeichert!");
+
         }
 
         if (ghost != null) {
