@@ -191,7 +191,7 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
 
 
 
-        // Start button
+        // Load button
         TextButtonStyleBuilder loadButton = new TextButtonStyleBuilder(BitmapFont);
         loadButton.setFontColor(Color.BLACK);
         loadButton.setOverFontColor(Color.BLUE);
@@ -207,27 +207,30 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         SerializableDungeon data = new SerializableDungeon();
-                        if (new File("saveGame.ser").exists()) {
-                            Set<Entity> allEntities = Game.getEntities();
-                            for (Entity allEntity : allEntities) {
-                                Game.removeEntity(allEntity);
-                            }
-                            hideMenu();
-                            data.loadGame();
-                            Hero hero = new Hero();
-                            Game.setHero(hero);
-                            GameOver<Actor> gameOver = new GameOver<>();
-                            Game.setGameOver(gameOver);
-                            PauseMenu<Actor> pauseMenu = new PauseMenu<>();
-                            Game.setPauseMenu(pauseMenu);
-                            Game.systems.forEach(ECS_System::toggleRun);
+                        Set<Entity> allEntities = Game.getEntities();
+                        for (Entity allEntity : allEntities) {
+                            Game.removeEntity(allEntity);
                         }
+                        hideMenu();
+                        data.loadGame();
+                        Hero hero = new Hero();
+                        Game.setHero(hero);
+                        GameOver<Actor> gameOver = new GameOver<>();
+                        Game.setGameOver(gameOver);
+                        PauseMenu<Actor> pauseMenu = new PauseMenu<>();
+                        Game.setPauseMenu(pauseMenu);
+                        Game.systems.forEach(ECS_System::toggleRun);
+
 
 
                     }
                 },
                 loadButton.build());
         newLoadButton.setScale(1);
+        newLoadButton.setVisible(false);
+        if (new File("saveGame.ser").exists()) {
+            newLoadButton.setVisible(true);
+        }
         add((T) newLoadButton);
 
     }
