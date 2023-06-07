@@ -99,7 +99,7 @@ public abstract class Monster extends Entity {
         new AnimationComponent(this, idleLeft, idleRight);
     }
 
-    private void setupVelocityComponent() {
+    public void setupVelocityComponent() {
         Animation moveRight = AnimationBuilder.buildAnimation(this.pathToRunRight);
         Animation moveLeft = AnimationBuilder.buildAnimation(this.pathToRunLeft);
         new VelocityComponent(this, horizontalSpeed, verticalSpeed, moveLeft, moveRight);
@@ -120,7 +120,11 @@ public abstract class Monster extends Entity {
         new HitboxComponent(this);
     }
 
-    public int getHealth() {
-        return health;
+    public void setHorizontalSpeed(float horizontalSpeed) {
+        this.horizontalSpeed = horizontalSpeed;
+    }
+
+    public void setVerticalSpeed(float verticalSpeed) {
+        this.verticalSpeed = verticalSpeed;
     }
 }

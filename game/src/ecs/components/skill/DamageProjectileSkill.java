@@ -42,7 +42,6 @@ public abstract class DamageProjectileSkill implements ISkillFunction {
     public void execute(Entity entity) {
 
         Entity projectile = new Entity();
-        System.out.println(projectile);
         PositionComponent epc =
                 (PositionComponent)
                         entity.getComponent(PositionComponent.class)

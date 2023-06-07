@@ -36,33 +36,36 @@ public class BossMonster extends Monster {
     }
     private void setupRangeAIComponent() {
         aic = new AIComponent(this);
-        aic.setIdleAI(new RadiusWalk(4.0f,1));
+        aic.setIdleAI(new RadiusWalk(6.0f,1));
         aic.setFightAI(
             new RangeAI(
-                3.0f,
+                7.0f,
                 new Skill(
                     new FireballSkill(
                         SkillTools::getHeroPosition,
-                        new Damage(1, DamageType.PHYSICAL, this)),2
+                        new Damage(2, DamageType.PHYSICAL, this)),4
                     )));
     }
 
 
     private void setupMeleeAIComponent() {
-        aic.setIdleAI(new RadiusWalk(1.0f, 1));
+        aic.setIdleAI(new RadiusWalk(3.0f, 1));
         aic.setFightAI(
             new MeleeAI(
                 0.8f,
                 new Skill(
                     new MeleeSkill(
                         "knight/melee",
-                        new Damage(1, DamageType.PHYSICAL, null),
+                        new Damage(4, DamageType.PHYSICAL, null),
                         new Point(1, 1),
                         SkillTools::getHeroPosition),
-                    3)));
+                    1)));
     }
     public boolean changeAIComponent(){
         setupMeleeAIComponent();
+        this.setHorizontalSpeed(0.1f);
+        this.setVerticalSpeed(0.1f);
+        this.setupVelocityComponent();
         return true;
     }
 }

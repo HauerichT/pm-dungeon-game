@@ -15,6 +15,7 @@ import configuration.hud.LVup;
 import configuration.hud.PauseMenu;
 import controller.AbstractController;
 import controller.SystemController;
+import ecs.components.HealthComponent;
 import ecs.components.MissingComponentException;
 import ecs.components.PlayableComponent;
 import ecs.components.PositionComponent;
@@ -181,10 +182,14 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
                 counterGhost = 0;
             }
         }
-        if (bMonster != null && bMonster.getHealth() <= bMonster.getHealth()/2 && !bMonsterMeeleAI){
-            bMonsterMeeleAI = bMonster.changeAIComponent();
+        if (bMonster != null && bMonsterMeeleAI == false){
+            HealthComponent h = (HealthComponent) bMonster.getComponent(HealthComponent.class).orElseThrow();
+            System.out.println(h.getMaximalHealthpoints());
+            System.out.println(h.getCurrentHealthpoints());
+            if (h.getCurrentHealthpoints() <= h.getMaximalHealthpoints()/2) {
+                bMonsterMeeleAI = bMonster.changeAIComponent();
+            }
         }
-
     }
 
     @Override
@@ -200,7 +205,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         if (Game.getLevelCounter() == 2 ){
             bMonster = new BossMonster();
         }
-
     }
 
     private void manageEntitiesSets() {
