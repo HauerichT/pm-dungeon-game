@@ -26,6 +26,9 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
 
     private BitmapFont BitmapFont = new BitmapFont();
     private ScreenImage charakterclassOverlay;
+    private ScreenButton newWizzardButton;
+    private ScreenButton newNinjaButton;
+    private ScreenButton newWarriorButton;
 
     private int charakter = 0;
 
@@ -59,7 +62,7 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
         wizzardButton.setUpImage("hud/CharakterklassenHud/wizzardButton/wizzard_f_run_anim_f0.png");
         wizzardButton.setDownImage("hud/CharakterklassenHud/wizzardButton/wizzard_f_run_anim_f2.png");
 
-        ScreenButton newWizzardButton =
+        newWizzardButton =
             new ScreenButton(
                 "",
                 new Point(290, 220),
@@ -67,6 +70,8 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         charakter = 2;
+                        newWarriorButton.setChecked(false);
+                        newNinjaButton.setChecked(false);
                     }
                 },
                 wizzardButton.build());
@@ -84,7 +89,7 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
         ninjaButton.setUpImage("hud/CharakterklassenHud/ninjaButton/ninjaButton0.png");
         ninjaButton.setDownImage("hud/CharakterklassenHud/ninjaButton/ninjaButton2.png");
 
-        ScreenButton newNinjaButton =
+        newNinjaButton =
             new ScreenButton(
                 "",
                 new Point(380, 215),
@@ -92,8 +97,8 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         charakter = 3;
-
-
+                        newWarriorButton.setChecked(false);
+                        newWizzardButton.setChecked(false);
                     }
                 },
                 ninjaButton.build());
@@ -110,7 +115,7 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
         warriorButton.setUpImage("hud/CharakterklassenHud/knight_m_run_anim_f0.png");
         warriorButton.setDownImage("character/knight/runLeft/knight_m_run_anim_mirrored_f3.png");
 
-        ScreenButton newWarriorButton =
+        newWarriorButton =
             new ScreenButton(
                 "",
                 new Point(170, 220),
@@ -118,6 +123,8 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         charakter = 1;
+                        newNinjaButton.setChecked(false);
+                        newWizzardButton.setChecked(false);
                     }
                 },
                 warriorButton.build());
