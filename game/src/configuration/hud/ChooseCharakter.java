@@ -199,8 +199,6 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                                 }
                                 hideMenu();
                                 data.loadGame();
-                                Hero hero = new Hero();
-                                Game.setHero(hero);
                                 GameOver<Actor> gameOver = new GameOver<>();
                                 Game.setGameOver(gameOver);
                                 PauseMenu<Actor> pauseMenu = new PauseMenu<>();
