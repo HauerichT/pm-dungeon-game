@@ -1,12 +1,6 @@
 package saveandload;
 
 import ecs.entities.Entity;
-import ecs.entities.items.HealPotion;
-import ecs.entities.items.StrengthPotion;
-import ecs.entities.items.Sword;
-import ecs.entities.monster.Skeleton;
-import ecs.entities.monster.Tot;
-import ecs.entities.monster.Zombie;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +25,7 @@ public class SerializableDungeon {
             fos = new FileOutputStream("saveGame.ser");
             out = new ObjectOutputStream(fos);
             out.writeObject(data);
+            System.out.println("GESPEICHERT!");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -44,28 +39,13 @@ public class SerializableDungeon {
             fis = new FileInputStream("saveGame.ser");
             in = new ObjectInputStream(fis);
             data = (SerializableDungeonData) in.readObject();
-            System.out.println(data.getEntities().toString());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        /*
+
         for (int i = 0; i < data.getEntities().size(); i++) {
-            System.out.println(data.getEntities().get(i));
-            if (data.getEntities().get(i).contains("Skeleton")) {
-                new Skeleton();
-            } else if (data.getEntities().get(i).contains("Tot")) {
-                new Tot();
-            } else if (data.getEntities().get(i).contains("Zombie")) {
-                new Zombie();
-            } else if (data.getEntities().get(i).contains("HealPotion")) {
-                new HealPotion();
-            } else if (data.getEntities().get(i).contains("StrengthPotion")) {
-                new StrengthPotion();
-            } else if (data.getEntities().get(i).contains("Sword")) {
-                new Sword();
-            }
+            System.out.println(data.getEntities().get(i).getClass().getSimpleName());
         }
-        */
         new File("saveGame.ser").delete();
     }
 }

@@ -28,16 +28,17 @@ public class Hero extends Entity implements ILevelUp {
 
     private static float mana = 1;
 
-    private Skill firstSkill;
-    private Skill secondSkill;
-    private Skill thirdSkill;
-    private Skill fourthSkill;
-    private Skill fifthSkill;
-    private Skill sixthSkill;
+    private transient Skill firstSkill;
+    private transient Skill secondSkill;
+    private transient Skill thirdSkill;
+    private transient Skill fourthSkill;
+    private transient Skill fifthSkill;
+    private transient Skill sixthSkill;
     private transient PlayableComponent pc;
     private transient SkillComponent skillComponent;
     private transient XPComponent heroXP;
     private transient PositionComponent psc;
+    private transient InventoryComponent inventory;
 
     public Hero() {
         super();
@@ -101,7 +102,7 @@ public class Hero extends Entity implements ILevelUp {
     }
 
     private void setupInventoryComponent() {
-        InventoryComponent inventory = new InventoryComponent(this, 5);
+        inventory = new InventoryComponent(this, 5);
     }
 
     private void setupVelocityComponent() {

@@ -15,9 +15,9 @@ import starter.Game;
 public class Entity implements Serializable {
     private static int nextId = 0;
     public final int id = nextId++;
-    private HashMap<Class, Component> components;
-    private final Logger entityLogger;
-    private boolean isBoomerang = false;
+    private transient HashMap<Class, Component> components;
+    private transient final Logger entityLogger;
+    private transient boolean isBoomerang = false;
 
     public Entity() {
         components = new HashMap<>();
