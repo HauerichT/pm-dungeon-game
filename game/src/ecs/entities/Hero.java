@@ -1,5 +1,7 @@
 package ecs.entities;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import configuration.hud.GameOver;
 import dslToGame.AnimationBuilder;
 import ecs.components.*;
 import ecs.components.AnimationComponent;
@@ -128,7 +130,8 @@ public class Hero extends Entity implements ILevelUp {
         Logger healtLog = Logger.getLogger(Game.getHero().getClass().getName());
 
         hc = new HealthComponent(this);
-        hc.setOnDeath(entity -> Game.toggleGameOver());
+        hc.setOnDeath(entity -> Game.setGameOver(new GameOver<>()));
+
 
         int health = 20;
         hc.setMaximalHealthpoints(health);

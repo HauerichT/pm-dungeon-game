@@ -16,6 +16,7 @@ import configuration.hud.LVup;
 import configuration.hud.PauseMenu;
 import controller.AbstractController;
 import controller.SystemController;
+import ecs.components.HealthComponent;
 import ecs.components.MissingComponentException;
 import ecs.components.PlayableComponent;
 import ecs.components.PositionComponent;
@@ -94,7 +95,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private static Ghost ghost;
 
     private static RandomEntityGenerator randomEntityGenerator;
-    private static boolean gameStarted = false;
+    private static boolean gameOverMenuActive = false;
+    private static boolean pauseMenuActive = false;
     private static boolean charakterChooseBool = false;
     private static ScreenInventory<Actor> inv;
 
@@ -167,10 +169,24 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         Hero.addMana(0.005f);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
-        if (gameStarted) {
+
+
+        HealthComponent healh =
+            (HealthComponent)
+                hero.getComponent(HealthComponent.class).orElseThrow();
+        int healthpoints = healh.getCurrentHealthpoints();
+        if (healthpoints <= 0){
+
+        }
+
+        if (gameOverMenuActive) {
             controller.add(gameOver);
+            gameOver.showMenu();
+            gameOverMenuActive = false;
+        }
+        if (pauseMenuActive) {
             controller.add(pauseMenu);
-            gameStarted = false;
+            pauseMenuActive = false;
         }
         if (charakterChooseBool) {
             controller.add(charakterMenu);
@@ -404,7 +420,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      */
     public static void setGameOver(GameOver<Actor> gameOver) {
         Game.gameOver = gameOver;
-        gameStarted = true;
+        gameOverMenuActive = true;
+
     }
 
     /**
@@ -414,6 +431,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      */
     public static void setPauseMenu(PauseMenu<Actor> pauseMenu) {
         Game.pauseMenu = pauseMenu;
+        pauseMenuActive = true;
     }
 
     /**
