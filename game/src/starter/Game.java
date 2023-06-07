@@ -406,7 +406,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     }
 
     /**
-     * setting the gameOver Screen
+     * setting the Game-Over Screen
      * @param gameOver instance of the GameOver class to
      */
     public static void setGameOver(GameOver<Actor> gameOver){
@@ -415,16 +415,16 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     }
 
     /**
-     * setting the gameOver Screen
-     * @param pauseMenu instance of the PauseMenu class to
+     * setting the Pause Menu Screen
+     * @param pauseMenu instance of the PauseMenu class
      */
     public static void setPauseMenu(PauseMenu<Actor> pauseMenu){
         Game.pauseMenu = pauseMenu;
     }
 
     /**
-     * setting the CharakterMenu Screen
-     * @param charakterMenu instance of the CharakterMenu class to
+     * setting the Charakter Menu Screen
+     * @param charakterMenu instance of the CharakterMenu class
      */
     public static void setCharakterMenu(ChooseCharakter<Actor> charakterMenu){
         Game.charakterMenu = charakterMenu;
