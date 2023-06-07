@@ -24,8 +24,8 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
 
     private BitmapFont BitmapFont = new BitmapFont();
     private ScreenImage charakterclassOverlay;
-    private ScreenButton newWizzardButton;
-    private ScreenButton newNinjaButton;
+    private ScreenButton newMageButton;
+    private ScreenButton newRogueButton;
     private ScreenButton newWarriorButton;
 
     private int charakter = 0;
@@ -50,18 +50,18 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
         charakterclassOverlay.setScale(0.5f, 0.5f);
         add((T) charakterclassOverlay);
 
-        // Wizzard button
-        TextButtonStyleBuilder wizzardButton = new TextButtonStyleBuilder(BitmapFont);
-        wizzardButton.setFontColor(Color.BLACK);
-        wizzardButton.setOverFontColor(Color.BLUE);
-        wizzardButton.setDownFontColor(Color.BROWN);
-        wizzardButton.setCheckedImage(
+        // Mage button
+        TextButtonStyleBuilder mageButton = new TextButtonStyleBuilder(BitmapFont);
+        mageButton.setFontColor(Color.BLACK);
+        mageButton.setOverFontColor(Color.BLUE);
+        mageButton.setDownFontColor(Color.BROWN);
+        mageButton.setCheckedImage(
                 "hud/CharakterklassenHud/wizzardButton/wizzard_f_run_anim_f1.png");
-        wizzardButton.setUpImage("hud/CharakterklassenHud/wizzardButton/wizzard_f_run_anim_f0.png");
-        wizzardButton.setDownImage(
+        mageButton.setUpImage("hud/CharakterklassenHud/wizzardButton/wizzard_f_run_anim_f0.png");
+        mageButton.setDownImage(
                 "hud/CharakterklassenHud/wizzardButton/wizzard_f_run_anim_f2.png");
 
-        newWizzardButton =
+        newMageButton =
                 new ScreenButton(
                         "",
                         new Point(290, 220),
@@ -70,26 +70,26 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                             public void clicked(InputEvent event, float x, float y) {
                                 charakter = 2;
                                 newWarriorButton.setChecked(false);
-                                newNinjaButton.setChecked(false);
+                                newRogueButton.setChecked(false);
                                 charakterInfo.info(
                                         "\u001B[32m" + "Mage wurde ausgewaehlt" + "\u001B[32m");
                             }
                         },
-                        wizzardButton.build());
-        newWizzardButton.setScale(1, 1);
+                        mageButton.build());
+        newMageButton.setScale(1, 1);
 
-        add((T) newWizzardButton);
+        add((T) newMageButton);
 
-        // Ninja button
-        TextButtonStyleBuilder ninjaButton = new TextButtonStyleBuilder(BitmapFont);
-        ninjaButton.setFontColor(Color.BLACK);
-        ninjaButton.setOverFontColor(Color.BLUE);
-        ninjaButton.setDownFontColor(Color.BROWN);
-        ninjaButton.setCheckedImage("hud/CharakterklassenHud/ninjaButton/ninjaButton1.png");
-        ninjaButton.setUpImage("hud/CharakterklassenHud/ninjaButton/ninjaButton0.png");
-        ninjaButton.setDownImage("hud/CharakterklassenHud/ninjaButton/ninjaButton2.png");
+        // Rogue button
+        TextButtonStyleBuilder rogueButton = new TextButtonStyleBuilder(BitmapFont);
+        rogueButton.setFontColor(Color.BLACK);
+        rogueButton.setOverFontColor(Color.BLUE);
+        rogueButton.setDownFontColor(Color.BROWN);
+        rogueButton.setCheckedImage("hud/CharakterklassenHud/ninjaButton/ninjaButton1.png");
+        rogueButton.setUpImage("hud/CharakterklassenHud/ninjaButton/ninjaButton0.png");
+        rogueButton.setDownImage("hud/CharakterklassenHud/ninjaButton/ninjaButton2.png");
 
-        newNinjaButton =
+        newRogueButton =
                 new ScreenButton(
                         "",
                         new Point(380, 215),
@@ -98,15 +98,15 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                             public void clicked(InputEvent event, float x, float y) {
                                 charakter = 3;
                                 newWarriorButton.setChecked(false);
-                                newWizzardButton.setChecked(false);
+                                newMageButton.setChecked(false);
                                 charakterInfo.info(
                                         "\u001B[32m" + "Rogue wurde ausgewaehlt" + "\u001B[32m");
                             }
                         },
-                        ninjaButton.build());
-        newNinjaButton.setScale(1, 1);
+                        rogueButton.build());
+        newRogueButton.setScale(1, 1);
 
-        add((T) newNinjaButton);
+        add((T) newRogueButton);
 
         // Warrior button
         TextButtonStyleBuilder warriorButton = new TextButtonStyleBuilder(BitmapFont);
@@ -126,8 +126,8 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                             @Override
                             public void clicked(InputEvent event, float x, float y) {
                                 charakter = 1;
-                                newNinjaButton.setChecked(false);
-                                newWizzardButton.setChecked(false);
+                                newRogueButton.setChecked(false);
+                                newMageButton.setChecked(false);
                                 charakterInfo.info(
                                         "\u001B[32m" + "Warrior wurde ausgewaehlt" + "\u001B[32m");
                             }
