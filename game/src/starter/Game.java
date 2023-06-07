@@ -29,7 +29,6 @@ import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
 import graphic.hud.ScreenInventory;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -133,7 +132,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         camera.update();
     }
 
-
     /** Called once at the beginning of the game. */
     protected void setup() {
 
@@ -159,8 +157,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
         Game.systems.forEach(ECS_System::toggleRun);
-
-
     }
 
     /** Called at the beginning of each frame. Before the controllers call <code>update</code>. */
@@ -171,11 +167,10 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         Hero.addMana(0.005f);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
-        if (gameStarted){
+        if (gameStarted) {
             controller.add(gameOver);
             controller.add(pauseMenu);
             gameStarted = false;
-
         }
         if (charakterChooseBool) {
             controller.add(charakterMenu);
@@ -186,9 +181,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             serializableDungeon.saveGame();
             gameLogger.info("Spielstand gespeichert! Spiel wird verlassen...");
             Gdx.app.exit();
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.X) && new File("saveGame.ser").exists()){
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.X) && new File("saveGame.ser").exists()) {
             gameLogger.info("Spielstand bereits gespeichert!");
-
         }
 
         if (ghost != null) {
@@ -298,8 +292,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
     }
 
-
-
     /** Update inventory menu */
     public static void updateInventory(Entity worldItemEntity, int emptySlots) {
         inv.addItemToScreenInventory(worldItemEntity, emptySlots);
@@ -407,26 +399,29 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     /**
      * setting the Game-Over Screen
+     *
      * @param gameOver instance of the GameOver class to
      */
-    public static void setGameOver(GameOver<Actor> gameOver){
+    public static void setGameOver(GameOver<Actor> gameOver) {
         Game.gameOver = gameOver;
         gameStarted = true;
     }
 
     /**
      * setting the Pause Menu Screen
+     *
      * @param pauseMenu instance of the PauseMenu class
      */
-    public static void setPauseMenu(PauseMenu<Actor> pauseMenu){
+    public static void setPauseMenu(PauseMenu<Actor> pauseMenu) {
         Game.pauseMenu = pauseMenu;
     }
 
     /**
      * setting the Charakter Menu Screen
+     *
      * @param charakterMenu instance of the CharakterMenu class
      */
-    public static void setCharakterMenu(ChooseCharakter<Actor> charakterMenu){
+    public static void setCharakterMenu(ChooseCharakter<Actor> charakterMenu) {
         Game.charakterMenu = charakterMenu;
         charakterChooseBool = true;
     }

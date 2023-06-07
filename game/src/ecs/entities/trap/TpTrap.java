@@ -9,8 +9,6 @@ import ecs.entities.Trap;
 import graphic.Animation;
 import starter.Game;
 
-import java.io.Serializable;
-
 public class TpTrap extends Trap {
 
     private final String active = "trap/tptrap/active";

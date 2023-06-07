@@ -7,16 +7,14 @@ import ecs.entities.items.Sword;
 import ecs.entities.monster.Skeleton;
 import ecs.entities.monster.Tot;
 import ecs.entities.monster.Zombie;
-import starter.Game;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import starter.Game;
 
 /** SerializableDungeon is a class which allows to save and load a game */
 public class SerializableDungeon {
     private SerializableDungeonData data = new SerializableDungeonData();
-
 
     /** Saves the current game */
     public void saveGame() {
@@ -24,10 +22,7 @@ public class SerializableDungeon {
         data.setLevel(Game.getLevelCounter());
 
         // Saves current entities
-        List<String> entities = new ArrayList<>();
-        for (Entity entity : Game.getEntities()) {
-            entities.add(entity.getClass().getSimpleName());
-        }
+        List<Entity> entities = new ArrayList<>(Game.getEntities());
         data.setEntities(entities);
 
         FileOutputStream fos;
@@ -53,11 +48,10 @@ public class SerializableDungeon {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
-
-        for(int i = 0; i < data.getEntities().size(); i++) {
+        /*
+        for (int i = 0; i < data.getEntities().size(); i++) {
             System.out.println(data.getEntities().get(i));
-            if (data.getEntities().get(i).contains("Skeleton")){
+            if (data.getEntities().get(i).contains("Skeleton")) {
                 new Skeleton();
             } else if (data.getEntities().get(i).contains("Tot")) {
                 new Tot();
@@ -71,8 +65,7 @@ public class SerializableDungeon {
                 new Sword();
             }
         }
-
-
+        */
         new File("saveGame.ser").delete();
     }
 }

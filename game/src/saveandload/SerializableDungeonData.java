@@ -8,7 +8,7 @@ import java.util.List;
 
 /** SerializableDungeonData is a class which saves the data to write to file */
 public class SerializableDungeonData implements Serializable {
-    private List<String> entities = new ArrayList<>();
+    private List<Entity> entities = new ArrayList<>();
     private int level;
 
     /**
@@ -16,7 +16,7 @@ public class SerializableDungeonData implements Serializable {
      *
      * @param entities entities to save
      */
-    public void setEntities(List<String> entities) {
+    public void setEntities(List<Entity> entities) {
         this.entities = entities;
     }
 
@@ -25,7 +25,7 @@ public class SerializableDungeonData implements Serializable {
      *
      * @return current saved entities
      */
-    public List<String> getEntities() {
+    public List<Entity> getEntities() {
         return entities;
     }
 

@@ -39,8 +39,6 @@ public class PauseMenu<T extends Actor> extends ScreenController<T> {
                 (Constants.WINDOW_HEIGHT) / 1.5f + screenText.getHeight(),
                 Align.center | Align.bottom);
 
-
-
         TextButtonStyleBuilder saveButton = new TextButtonStyleBuilder(bitmapFont);
         saveButton.setFontColor(Color.BLACK);
         saveButton.setOverFontColor(Color.BLUE);
@@ -59,9 +57,8 @@ public class PauseMenu<T extends Actor> extends ScreenController<T> {
                                 serializableDungeon.saveGame();
                                 Gdx.app.exit();
                             }
-                        },saveButton.build()
-                );
-
+                        },
+                        saveButton.build());
 
         add((T) screenButton);
         add((T) screenText);

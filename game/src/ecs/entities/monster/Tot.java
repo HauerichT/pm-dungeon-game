@@ -3,8 +3,6 @@ package ecs.entities.monster;
 import ecs.components.ai.idle.FollowHeroWalk;
 import ecs.entities.Monster;
 
-import java.io.Serializable;
-
 /** Tot is a NPC-Entity which will be spawned in Dungeon. */
 public class Tot extends Monster {
 

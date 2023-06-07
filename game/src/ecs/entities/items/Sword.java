@@ -2,8 +2,6 @@ package ecs.entities.items;
 
 import ecs.entities.Item;
 
-import java.io.Serializable;
-
 /** Sword is an item which will be spawned in Dungeon and can be collected by Hero. */
 public class Sword extends Item {
 

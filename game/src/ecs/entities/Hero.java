@@ -11,8 +11,6 @@ import ecs.components.xp.XPComponent;
 import ecs.damage.Damage;
 import ecs.damage.DamageType;
 import graphic.Animation;
-
-import java.io.Serializable;
 import java.util.logging.Logger;
 import starter.Game;
 import tools.Point;
@@ -36,12 +34,14 @@ public class Hero extends Entity implements ILevelUp {
     private Skill fourthSkill;
     private Skill fifthSkill;
     private Skill sixthSkill;
-    private PlayableComponent pc;
-    private SkillComponent skillComponent;
+    private transient PlayableComponent pc;
+    private transient SkillComponent skillComponent;
+    private transient XPComponent heroXP;
+    private transient PositionComponent psc;
 
     public Hero() {
         super();
-        PositionComponent psc = new PositionComponent(this);
+        psc = new PositionComponent(this);
         pc = new PlayableComponent(this);
         setupVelocityComponent();
         setupAnimationComponent();
@@ -150,7 +150,7 @@ public class Hero extends Entity implements ILevelUp {
     }
 
     private void setupXPComponent() {
-        XPComponent heroXP = new XPComponent(this, this);
+        heroXP = new XPComponent(this, this);
         heroXP.setCurrentLevel(0);
         heroXP.setCurrentXP(0);
     }
@@ -180,7 +180,6 @@ public class Hero extends Entity implements ILevelUp {
 
     @Override
     public void onLevelUp(long nexLevel) {
-
         Logger abilityLog = Logger.getLogger(Game.getHero().getClass().getName());
         Game.lvUP(nexLevel);
         // Gives the hero a new skill when he reaches a certain level

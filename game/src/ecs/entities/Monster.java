@@ -15,8 +15,6 @@ import graphic.Animation;
 import starter.Game;
 import tools.Point;
 
-import java.io.Serializable;
-
 /** Used to create Monster. (Superclass) */
 public abstract class Monster extends Entity {
 
