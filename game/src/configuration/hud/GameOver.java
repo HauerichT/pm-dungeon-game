@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import controller.ScreenController;
+import ecs.entities.CharacterClasses.Mage;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
 import java.util.Set;
@@ -81,7 +82,7 @@ public class GameOver<T extends Actor> extends ScreenController<T> {
                                 ChooseCharakter<Actor> charakterMenu = new ChooseCharakter<>();
                                 Game.setCharakterMenu(charakterMenu);
                                 Game.lvUP(0);
-                                Hero hero = new Hero();
+                                Hero hero = new Mage();
                                 Game.setHero(hero);
                                 hideMenu();
                             }

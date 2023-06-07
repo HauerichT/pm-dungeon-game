@@ -119,4 +119,6 @@ public class Chest extends Entity {
                         + " in Entity "
                         + e.getClass().getName());
     }
+
+    public static class Schurke {}
 }

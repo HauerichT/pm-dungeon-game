@@ -16,7 +16,7 @@ public class Entity implements Serializable {
     private static int nextId = 0;
     public final int id = nextId++;
     private transient HashMap<Class, Component> components;
-    private transient final Logger entityLogger;
+    private final transient Logger entityLogger;
     private boolean isBoomerang = false;
 
     public Entity() {
@@ -35,9 +35,7 @@ public class Entity implements Serializable {
         components.put(component.getClass(), component);
     }
 
-    /**
-     * Set new Component Map
-     */
+    /** Set new Component Map */
     public void setNewComponentMap() {
         components = new HashMap<>();
     }

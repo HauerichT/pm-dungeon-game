@@ -7,11 +7,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import controller.ScreenController;
+import ecs.entities.CharacterClasses.Mage;
+import ecs.entities.CharacterClasses.Rogue;
+import ecs.entities.CharacterClasses.Warrior;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
 import ecs.systems.ECS_System;
 import java.io.File;
 import java.util.Set;
+import java.util.logging.Logger;
 import saveandload.SerializableDungeon;
 import starter.Game;
 import tools.Point;
@@ -20,6 +24,9 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
 
     private BitmapFont BitmapFont = new BitmapFont();
     private ScreenImage charakterclassOverlay;
+    private ScreenButton newWizzardButton;
+    private ScreenButton newNinjaButton;
+    private ScreenButton newWarriorButton;
 
     private int charakter = 0;
 
@@ -34,6 +41,8 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
      */
     public ChooseCharakter(SpriteBatch batch) {
         super(batch);
+
+        Logger charakterInfo = Logger.getLogger(Game.getHero().getClass().getName());
 
         // Game Over Screen Text
         charakterclassOverlay =
@@ -52,7 +61,7 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
         wizzardButton.setDownImage(
                 "hud/CharakterklassenHud/wizzardButton/wizzard_f_run_anim_f2.png");
 
-        ScreenButton newWizzardButton =
+        newWizzardButton =
                 new ScreenButton(
                         "",
                         new Point(290, 220),
@@ -60,10 +69,15 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                             @Override
                             public void clicked(InputEvent event, float x, float y) {
                                 charakter = 2;
+                                newWarriorButton.setChecked(false);
+                                newNinjaButton.setChecked(false);
+                                charakterInfo.info(
+                                        "\u001B[32m" + "Mage wurde ausgewaehlt" + "\u001B[32m");
                             }
                         },
                         wizzardButton.build());
         newWizzardButton.setScale(1, 1);
+
         add((T) newWizzardButton);
 
         // Ninja button
@@ -75,7 +89,7 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
         ninjaButton.setUpImage("hud/CharakterklassenHud/ninjaButton/ninjaButton0.png");
         ninjaButton.setDownImage("hud/CharakterklassenHud/ninjaButton/ninjaButton2.png");
 
-        ScreenButton newNinjaButton =
+        newNinjaButton =
                 new ScreenButton(
                         "",
                         new Point(380, 215),
@@ -83,10 +97,15 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                             @Override
                             public void clicked(InputEvent event, float x, float y) {
                                 charakter = 3;
+                                newWarriorButton.setChecked(false);
+                                newWizzardButton.setChecked(false);
+                                charakterInfo.info(
+                                        "\u001B[32m" + "Rogue wurde ausgewaehlt" + "\u001B[32m");
                             }
                         },
                         ninjaButton.build());
         newNinjaButton.setScale(1, 1);
+
         add((T) newNinjaButton);
 
         // Warrior button
@@ -99,7 +118,7 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
         warriorButton.setUpImage("hud/CharakterklassenHud/knight_m_run_anim_f0.png");
         warriorButton.setDownImage("character/knight/runLeft/knight_m_run_anim_mirrored_f3.png");
 
-        ScreenButton newWarriorButton =
+        newWarriorButton =
                 new ScreenButton(
                         "",
                         new Point(170, 220),
@@ -107,10 +126,15 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                             @Override
                             public void clicked(InputEvent event, float x, float y) {
                                 charakter = 1;
+                                newNinjaButton.setChecked(false);
+                                newWizzardButton.setChecked(false);
+                                charakterInfo.info(
+                                        "\u001B[32m" + "Warrior wurde ausgewaehlt" + "\u001B[32m");
                             }
                         },
                         warriorButton.build());
         newWarriorButton.setScale(1, 1);
+
         add((T) newWarriorButton);
 
         // End button
@@ -152,10 +176,16 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                             public void clicked(InputEvent event, float x, float y) {
                                 if (charakter == 1) {
                                     // Instanz von warrior
+                                    Hero warrior = new Warrior();
+                                    Game.setHero(warrior);
                                 } else if (charakter == 2) {
                                     // Instanz von mage
+                                    Hero mage = new Mage();
+                                    Game.setHero(mage);
                                 } else if (charakter == 3) {
                                     // Instanz von rogue
+                                    Hero rogue = new Rogue();
+                                    Game.setHero(rogue);
                                 }
 
                                 Set<Entity> allEntities = Game.getEntities();
@@ -164,14 +194,13 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                                 }
                                 hideMenu();
                                 Game.lvUP(0);
-                                Hero hero = new Hero();
-                                Game.setHero(hero);
                                 PauseMenu<Actor> pauseMenu = new PauseMenu<>();
                                 Game.setPauseMenu(pauseMenu);
                                 Game.systems.forEach(ECS_System::toggleRun);
                             }
                         },
                         startButton.build());
+
         newStartButton.setScale(1);
         add((T) newStartButton);
 
@@ -197,18 +226,16 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                                 }
                                 hideMenu();
                                 data.loadGame();
-                                GameOver<Actor> gameOver = new GameOver<>();
-                                Game.setGameOver(gameOver);
-                                Hero hero = new Hero();
-                                Game.setHero(hero);
                                 PauseMenu<Actor> pauseMenu = new PauseMenu<>();
                                 Game.setPauseMenu(pauseMenu);
                                 Game.systems.forEach(ECS_System::toggleRun);
                             }
                         },
                         loadButton.build());
+
         newLoadButton.setScale(1);
         newLoadButton.setVisible(false);
+
         if (new File("saveGame.ser").exists()) {
             newLoadButton.setVisible(true);
         }

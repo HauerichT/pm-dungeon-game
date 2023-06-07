@@ -23,9 +23,12 @@ import ecs.components.PositionComponent;
 import ecs.components.ai.AIComponent;
 import ecs.components.ai.fight.IFightAI;
 import ecs.components.ai.fight.MeleeAI;
+import ecs.components.ai.fight.RangeAI;
 import ecs.components.skill.MeleeComponent;
 import ecs.components.skill.Skill;
 import ecs.entities.*;
+import ecs.entities.CharacterClasses.Mage;
+import ecs.entities.monster.BossMonster;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
@@ -93,6 +96,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private int counterGhost;
 
     private static Ghost ghost;
+    private static BossMonster bMonster;
+    private static boolean bMonsterMeeleAI = false;
 
     private static RandomEntityGenerator randomEntityGenerator;
     private static boolean gameOverMenuActive = false;
@@ -148,7 +153,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         systems = new SystemController();
         controller.add(systems);
         randomEntityGenerator = new RandomEntityGenerator();
-        hero = new Hero();
+        hero = new Mage();
         inv = new ScreenInventory<>();
         lvUPscreen = new LVup<>();
         controller.add(lvUPscreen);
@@ -170,18 +175,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         Hero.addMana(0.005f);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
 
-
-        HealthComponent healh =
-            (HealthComponent)
-                hero.getComponent(HealthComponent.class).orElseThrow();
-        int healthpoints = healh.getCurrentHealthpoints();
-        if (healthpoints <= 0){
-
-        }
-
         if (gameOverMenuActive) {
             controller.add(gameOver);
-            gameOver.showMenu();
+            toggleGameOver();
             gameOverMenuActive = false;
         }
         if (pauseMenuActive) {
@@ -208,6 +204,13 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
                 counterGhost = 0;
             }
         }
+        if (bMonster != null && bMonsterMeeleAI == false) {
+            HealthComponent h =
+                    (HealthComponent) bMonster.getComponent(HealthComponent.class).orElseThrow();
+            if (h.getCurrentHealthpoints() <= h.getMaximalHealthpoints() / 2) {
+                bMonsterMeeleAI = bMonster.changeAIComponent();
+            }
+        }
     }
 
     @Override
@@ -220,6 +223,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         randomEntityGenerator.spwanRandomItems();
         randomEntityGenerator.spawnGhostAndGravestone();
         getHero().ifPresent(this::placeOnLevelStart);
+        if (Game.getLevelCounter() == 5) {
+            bMonster = new BossMonster();
+        }
     }
 
     private void manageEntitiesSets() {
@@ -336,6 +342,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         if (fightAI.getClass() == MeleeAI.class) {
             ((MeleeAI) fightAI).getFightSkill().reduceCoolDown();
         }
+        if (fightAI.getClass() == RangeAI.class) {
+            ((RangeAI) fightAI).getFightSkill().reduceCoolDown();
+        }
     }
 
     /* Updates all MeleeSkills for each entity that has one */
@@ -421,7 +430,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public static void setGameOver(GameOver<Actor> gameOver) {
         Game.gameOver = gameOver;
         gameOverMenuActive = true;
-
     }
 
     /**

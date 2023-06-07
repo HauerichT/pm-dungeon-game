@@ -1,7 +1,6 @@
 package saveandload;
 
 import ecs.entities.Entity;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

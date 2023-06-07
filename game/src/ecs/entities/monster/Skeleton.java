@@ -1,6 +1,5 @@
 package ecs.entities.monster;
 
-import ecs.components.ai.idle.IIdleAI;
 import ecs.components.ai.idle.RadiusWalk;
 import ecs.entities.Monster;
 

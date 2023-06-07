@@ -1,23 +1,20 @@
 package saveandload;
 
-import ecs.components.AnimationComponent;
-import ecs.components.HitboxComponent;
-import ecs.components.ItemComponent;
 import ecs.components.PositionComponent;
 import ecs.entities.*;
-
+import ecs.entities.CharacterClasses.Mage;
+import ecs.entities.CharacterClasses.Rogue;
+import ecs.entities.CharacterClasses.Warrior;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
 import starter.Game;
 
 /** SerializableDungeon is a class which allows to save and load a game */
 public class SerializableDungeon {
     private SerializableDungeonData data = new SerializableDungeonData();
     private Logger serLogger = Logger.getLogger(this.getClass().getName());
-
 
     /** Saves the current game */
     public void saveGame() {
@@ -53,12 +50,11 @@ public class SerializableDungeon {
         }
 
         for (int i = 0; i < data.getEntities().size(); i++) {
-            System.out.println(data.getEntities().get(i).getClass().getName());
+            System.out.println(data.getEntities().get(i));
             if (data.getEntities().get(i).getClass().getName().contains("monster")) {
                 Monster e = (Monster) data.getEntities().get(i);
 
                 e.setNewComponentMap();
-
                 e.setupPositionComponent();
                 e.setupHitboxComponent();
                 e.setupAnimationComponent();
@@ -67,29 +63,25 @@ public class SerializableDungeon {
                 e.setupHealthComponent();
                 e.setupAIComponent();
                 Game.addEntity(e);
-            }
-            else if (data.getEntities().get(i).getClass().getName().contains("item")) {
+            } else if (data.getEntities().get(i).getClass().getName().contains("item")) {
                 Item e = (Item) data.getEntities().get(i);
-
                 e.setNewComponentMap();
-
                 new PositionComponent(e);
                 Game.addEntity(e);
-            }
-            else if (data.getEntities().get(i).getClass().getName().contains("trap")) {
+            } else if (data.getEntities().get(i).getClass().getName().contains("trap")) {
                 Trap e = (Trap) data.getEntities().get(i);
 
                 e.setNewComponentMap();
 
                 new PositionComponent(e);
                 Game.addEntity(e);
+            } else if (data.getEntities().get(i).getClass().getName().contains("Mage")) {
+                Game.setHero(new Mage());
+            } else if (data.getEntities().get(i).getClass().getName().contains("Rogue")) {
+                Game.setHero(new Rogue());
+            } else if (data.getEntities().get(i).getClass().getName().contains("Warrior")) {
+                Game.setHero(new Warrior());
             }
-            else if (data.getEntities().get(i).getClass().getName().contains("hero")) {
-                Hero e = (Hero) data.getEntities().get(i);
-                e.setNewComponentMap();
-                Game.addEntity(e);
-            }
-
         }
         new File("saveGame.ser").delete();
         serLogger.info("\u001B[32m" + "Spiel geladen!" + "\u001B[0m");
