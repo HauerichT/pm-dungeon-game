@@ -30,7 +30,10 @@ public abstract class Monster extends Entity {
     private final String pathToRunLeft;
     private final String pathToRunRight;
 
-    private final IIdleAI idleAI;
+    private transient final IIdleAI idleAI;
+    private transient XPComponent monsterXP;
+    private transient HealthComponent hc;
+    private transient AIComponent ai;
 
     public Monster(
             String idleLeft,
@@ -68,49 +71,50 @@ public abstract class Monster extends Entity {
         setupXPComponent();
     }
 
-    private void setupPositionComponent() {
+    public void setupPositionComponent() {
         new PositionComponent(this);
     }
 
-    private void setupAIComponent() {
-        AIComponent ai = new AIComponent(this);
-        ai.setIdleAI(idleAI);
+    public void setupAIComponent() {
+        ai = new AIComponent(this);
+        //ai.setIdleAI(idleAI);
         ai.setFightAI(
-                new MeleeAI(
-                        0.8f,
-                        new Skill(
-                                new MeleeSkill(
-                                        "knight/melee",
-                                        new Damage(this.dmg, DamageType.PHYSICAL, null),
-                                        new Point(1, 1),
-                                        SkillTools::getHeroPosition),
-                                3)));
+            new MeleeAI(
+                0.8f,
+                new Skill(
+                    new MeleeSkill(
+                        "knight/melee",
+                        new Damage(this.dmg, DamageType.PHYSICAL, null),
+                        new Point(1, 1),
+                        SkillTools::getHeroPosition),
+                    3)));
     }
 
-    private void setupAnimationComponent() {
+    public void setupAnimationComponent() {
         Animation idleRight = AnimationBuilder.buildAnimation(this.pathToIdleRight);
         Animation idleLeft = AnimationBuilder.buildAnimation(this.pathToIdleLeft);
         new AnimationComponent(this, idleLeft, idleRight);
     }
 
-    private void setupVelocityComponent() {
+    public void setupVelocityComponent() {
         Animation moveRight = AnimationBuilder.buildAnimation(this.pathToRunRight);
         Animation moveLeft = AnimationBuilder.buildAnimation(this.pathToRunLeft);
         new VelocityComponent(this, horizontalSpeed, verticalSpeed, moveLeft, moveRight);
     }
 
-    private void setupHealthComponent() {
-        HealthComponent hc = new HealthComponent(this);
+    public void setupHealthComponent() {
+        hc = new HealthComponent(this);
         hc.setMaximalHealthpoints(this.health + Game.getLevelCounter() / 5);
         hc.setCurrentHealthpoints(this.health + Game.getLevelCounter() / 5);
     }
 
-    private void setupXPComponent() {
-        XPComponent monsterXP = new XPComponent(this);
+    public void setupXPComponent() {
+        monsterXP = new XPComponent(this);
         monsterXP.setLootXP(exp);
     }
 
-    private void setupHitboxComponent() {
+    public void setupHitboxComponent() {
         new HitboxComponent(this);
     }
+
 }

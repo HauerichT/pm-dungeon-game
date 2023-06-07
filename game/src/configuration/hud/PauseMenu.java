@@ -53,7 +53,6 @@ public class PauseMenu<T extends Actor> extends ScreenController<T> {
                         new TextButtonListener() {
                             @Override
                             public void clicked(InputEvent event, float x, float y) {
-                                System.out.println("TEST");
                                 serializableDungeon.saveGame();
                                 Gdx.app.exit();
                             }

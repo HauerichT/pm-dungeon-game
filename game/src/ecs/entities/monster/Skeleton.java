@@ -1,11 +1,11 @@
 package ecs.entities.monster;
 
+import ecs.components.ai.idle.IIdleAI;
 import ecs.components.ai.idle.RadiusWalk;
 import ecs.entities.Monster;
 
 /** Skeleton is a NPC-Entity which will be spawned in Dungeon. */
 public class Skeleton extends Monster {
-
     public Skeleton() {
         super(
                 "character/monster/skeleton/idleLeft",

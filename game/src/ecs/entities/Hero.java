@@ -39,6 +39,7 @@ public class Hero extends Entity implements ILevelUp {
     private transient XPComponent heroXP;
     private transient PositionComponent psc;
     private transient InventoryComponent inventory;
+    private transient HealthComponent hc;
 
     public Hero() {
         super();
@@ -126,7 +127,7 @@ public class Hero extends Entity implements ILevelUp {
     private void setupHealthComponent() {
         Logger healtLog = Logger.getLogger(Game.getHero().getClass().getName());
 
-        HealthComponent hc = new HealthComponent(this);
+        hc = new HealthComponent(this);
         hc.setOnDeath(entity -> Game.toggleGameOver());
 
         int health = 20;
