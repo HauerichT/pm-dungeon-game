@@ -7,6 +7,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import controller.ScreenController;
+import ecs.components.HealthComponent;
+import ecs.entities.CharacterClasses.Mage;
+import ecs.entities.CharacterClasses.Rogue;
+import ecs.entities.CharacterClasses.Warrior;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
 import ecs.systems.ECS_System;
@@ -163,10 +167,16 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                     public void clicked(InputEvent event, float x, float y) {
                         if (charakter == 1){
                             //Instanz von warrior
+                            Hero warrior = new Warrior();
+                            Game.setHero(warrior);
                         } else if (charakter == 2){
                             //Instanz von mage
+                            Hero mage = new Mage();
+                            Game.setHero(mage);
                         } else if (charakter == 3){
                             //Instanz von rogue
+                            Hero rogue = new Rogue();
+                            Game.setHero(rogue);
                         }
 
                         Set<Entity> allEntities = Game.getEntities();
@@ -175,8 +185,6 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                         }
                         hideMenu();
                         Game.lvUP(0);
-                        Hero hero = new Hero();
-                        Game.setHero(hero);
                         GameOver<Actor> gameOver = new GameOver<>();
                         Game.setGameOver(gameOver);
                         PauseMenu<Actor> pauseMenu = new PauseMenu<>();
@@ -213,16 +221,13 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                         }
                         hideMenu();
                         data.loadGame();
-                        Hero hero = new Hero();
+                        Hero hero = new Warrior();
                         Game.setHero(hero);
                         GameOver<Actor> gameOver = new GameOver<>();
                         Game.setGameOver(gameOver);
                         PauseMenu<Actor> pauseMenu = new PauseMenu<>();
                         Game.setPauseMenu(pauseMenu);
                         Game.systems.forEach(ECS_System::toggleRun);
-
-
-
                     }
                 },
                 loadButton.build());
