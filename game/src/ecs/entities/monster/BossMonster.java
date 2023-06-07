@@ -19,6 +19,11 @@ import tools.Point;
 public class BossMonster extends Monster {
     AIComponent ai = null;
 
+    /**
+     * Konstruktor
+     * Creates a new BossMonster which is more Powerfull as a normal Monster
+     */
+
     public BossMonster(){
         super("character/monster/BossMonster/idleLeft",
             "character/monster/BossMonster/runRight",
