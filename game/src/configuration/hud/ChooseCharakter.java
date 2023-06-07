@@ -33,7 +33,10 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
     }
 
 
-    /** Creates a ChooseCharakter Menü with a given Spritebatch */
+    /** Creates a ChooseCharakter Menü with a given Spritebatch
+     * Creates Start button, End button and load button
+     * Creates Wizzard, Warrior and Rogue button
+     */
     public ChooseCharakter(SpriteBatch batch) {
         super(batch);
 
