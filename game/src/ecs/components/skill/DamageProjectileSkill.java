@@ -7,6 +7,7 @@ import ecs.damage.Damage;
 import ecs.entities.Entity;
 import graphic.Animation;
 import starter.Game;
+import tools.Constants;
 import tools.Point;
 
 public abstract class DamageProjectileSkill implements ISkillFunction {
@@ -19,6 +20,8 @@ public abstract class DamageProjectileSkill implements ISkillFunction {
     protected Point projectileHitboxSize;
 
     protected ITargetSelection selectionFunction;
+
+
 
     public DamageProjectileSkill(
             String pathToTexturesOfProjectile,
@@ -73,4 +76,5 @@ public abstract class DamageProjectileSkill implements ISkillFunction {
         new HitboxComponent(
                 projectile, new Point(0.25f, 0.25f), projectileHitboxSize, collide, null);
     }
+
 }

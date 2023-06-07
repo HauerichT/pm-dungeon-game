@@ -59,7 +59,6 @@ public abstract class Hero extends Entity implements ILevelUp {
         setupVelocityComponent();
         setupAnimationComponent();
         setupHitBoxComponent();
-
         setupInventoryComponent();
         setupHealthComponent();
         setupXPComponent();

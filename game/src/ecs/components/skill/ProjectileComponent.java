@@ -9,10 +9,14 @@ public class ProjectileComponent extends Component {
     private Point goalLocation;
     private Point startPosition;
 
+
+
+
     public ProjectileComponent(Entity entity, Point startPosition, Point goalLocation) {
         super(entity);
         this.goalLocation = goalLocation;
         this.startPosition = startPosition;
+
     }
 
     /**
@@ -32,4 +36,6 @@ public class ProjectileComponent extends Component {
     public Point getStartPosition() {
         return startPosition;
     }
+
+
 }

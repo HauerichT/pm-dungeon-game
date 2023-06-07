@@ -18,6 +18,8 @@ public class Warrior extends Hero {
 
     /**
      * Konstruktor
+     * Creates a new Warrior which has one Skill at the beginning
+     * The next Skill will be added at Level 1
      */
     public Warrior(){
         super(30,

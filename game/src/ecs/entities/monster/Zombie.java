@@ -19,6 +19,7 @@ public class Zombie extends Monster {
                 0.02f,
                 2,
                 3,
-                55);
+                55,
+                "Zombie");
     }
 }

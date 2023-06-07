@@ -16,17 +16,21 @@ import configuration.hud.LVup;
 import configuration.hud.PauseMenu;
 import controller.AbstractController;
 import controller.SystemController;
+import ecs.components.HealthComponent;
 import ecs.components.MissingComponentException;
 import ecs.components.PlayableComponent;
 import ecs.components.PositionComponent;
 import ecs.components.ai.AIComponent;
 import ecs.components.ai.fight.IFightAI;
 import ecs.components.ai.fight.MeleeAI;
+import ecs.components.ai.fight.RangeAI;
 import ecs.components.skill.MeleeComponent;
+import ecs.components.skill.ProjectileComponent;
 import ecs.components.skill.Skill;
 import ecs.entities.*;
 import ecs.entities.CharacterClasses.Mage;
 import ecs.entities.CharacterClasses.Rogue;
+import ecs.entities.monster.BossMonster;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
@@ -95,6 +99,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private int counterGhost;
 
     private static Ghost ghost;
+    private static BossMonster bMonster;
+    private static boolean bMonsterMeeleAI = false;
 
     private static RandomEntityGenerator randomEntityGenerator;
     private static boolean gameStarted = false;
@@ -160,7 +166,10 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
+
         Game.systems.forEach(ECS_System::toggleRun);
+
+
 
 
     }
@@ -200,6 +209,14 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
                 counterGhost = 0;
             }
         }
+        if (bMonster != null && bMonsterMeeleAI == false){
+            HealthComponent h = (HealthComponent) bMonster.getComponent(HealthComponent.class).orElseThrow();
+            System.out.println(h.getMaximalHealthpoints());
+            System.out.println(h.getCurrentHealthpoints());
+            if (h.getCurrentHealthpoints() <= h.getMaximalHealthpoints()/2) {
+                bMonsterMeeleAI = bMonster.changeAIComponent();
+            }
+        }
     }
 
     @Override
@@ -212,6 +229,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         randomEntityGenerator.spwanRandomItems();
         randomEntityGenerator.spawnGhostAndGravestone();
         getHero().ifPresent(this::placeOnLevelStart);
+        if (Game.getLevelCounter() == 2 ){
+            bMonster = new BossMonster();
+        }
     }
 
     private void manageEntitiesSets() {
@@ -330,6 +350,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         if (fightAI.getClass() == MeleeAI.class) {
             ((MeleeAI) fightAI).getFightSkill().reduceCoolDown();
         }
+        if (fightAI.getClass() == RangeAI.class) {
+            ((RangeAI) fightAI).getFightSkill().reduceCoolDown();
+        }
     }
 
     /* Updates all MeleeSkills for each entity that has one */
@@ -343,6 +366,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             mc.getMeleeSkill().update(a);
         }
     }
+
 
     /**
      * Given entity will be added to the game in the next frame

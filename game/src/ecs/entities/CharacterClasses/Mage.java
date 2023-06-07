@@ -6,7 +6,6 @@ import ecs.damage.Damage;
 import ecs.damage.DamageType;
 import ecs.entities.Hero;
 import starter.Game;
-import tools.Point;
 
 import java.util.logging.Logger;
 
@@ -18,6 +17,8 @@ public class Mage extends Hero {
 
     /**
      * Konstruktor
+     * Creates a new Mage which has one Skill at the beginning
+     * The next Skill will be added at Level 1
      */
     public Mage(){
         super(15,
@@ -31,7 +32,7 @@ public class Mage extends Hero {
 
         setupSkillComponent();
         pc = new PlayableComponent(this);
-        pc.setSkillSlot1(firstSkill);
+        pc.setSkillSlot4(firstSkill);
 
     }
     private void setupSkillComponent() {
@@ -63,7 +64,7 @@ public class Mage extends Hero {
 
             // Gives the hero a new skill when he reaches a certain level
             if (nexLevel == 1) {
-                pc.setSkillSlot4(secondSkill);
+                pc.setSkillSlot5(secondSkill);
                 abilityLog.info(
                     "\u001B[32m" + "Mage learned Laser skill, press 1 to use it" + "\u001B[31m");
             }
