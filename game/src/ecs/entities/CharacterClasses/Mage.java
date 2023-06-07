@@ -17,6 +17,8 @@ public class Mage extends Hero {
 
     /**
      * Konstruktor
+     * Creates a new Mage which has one Skill at the beginning
+     * The next Skill will be added at Level 1
      */
     public Mage(){
         super(15,

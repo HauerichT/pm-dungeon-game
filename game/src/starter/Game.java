@@ -21,6 +21,7 @@ import ecs.components.PositionComponent;
 import ecs.components.ai.AIComponent;
 import ecs.components.ai.fight.IFightAI;
 import ecs.components.ai.fight.MeleeAI;
+import ecs.components.ai.fight.RangeAI;
 import ecs.components.skill.MeleeComponent;
 import ecs.components.skill.ProjectileComponent;
 import ecs.components.skill.Skill;
@@ -90,6 +91,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private int counterGhost;
 
     private static Ghost ghost;
+    private static BossMonster bMonster;
+    private static boolean bMonsterMeeleAI = false;
 
     private static RandomEntityGenerator randomEntityGenerator;
     private static boolean inventoryShown = false;
@@ -178,6 +181,10 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
                 counterGhost = 0;
             }
         }
+        if (bMonster != null && bMonster.getHealth() <= bMonster.getHealth()/2 && !bMonsterMeeleAI){
+            bMonsterMeeleAI = bMonster.changeAIComponent();
+        }
+
     }
 
     @Override
@@ -190,7 +197,10 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         randomEntityGenerator.spwanRandomItems();
         randomEntityGenerator.spawnGhostAndGravestone();
         getHero().ifPresent(this::placeOnLevelStart);
-        new BossMonster();
+        if (Game.getLevelCounter() == 2 ){
+            bMonster = new BossMonster();
+        }
+
     }
 
     private void manageEntitiesSets() {
@@ -316,6 +326,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         if (fightAI.getClass() == MeleeAI.class) {
             ((MeleeAI) fightAI).getFightSkill().reduceCoolDown();
         }
+        if (fightAI.getClass() == RangeAI.class) {
+            ((RangeAI) fightAI).getFightSkill().reduceCoolDown();
+        }
     }
 
     /* Updates all MeleeSkills for each entity that has one */
@@ -329,6 +342,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             mc.getMeleeSkill().update(a);
         }
     }
+
 
     /**
      * Given entity will be added to the game in the next frame

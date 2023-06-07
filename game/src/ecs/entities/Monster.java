@@ -69,10 +69,9 @@ public abstract class Monster extends Entity {
         setupPositionComponent();
         setupHealthComponent();
         setupXPComponent();
-        if (monster != "BossMonster"){
-            setupMeleeAIComponent();
-            setupHitboxComponent();
-        }
+        setupMeleeAIComponent();
+        setupHitboxComponent();
+
     }
 
     private void setupPositionComponent() {

@@ -7,6 +7,7 @@ import ecs.damage.Damage;
 import ecs.entities.Entity;
 import graphic.Animation;
 import starter.Game;
+import tools.Constants;
 import tools.Point;
 
 public abstract class DamageProjectileSkill implements ISkillFunction {
@@ -19,6 +20,8 @@ public abstract class DamageProjectileSkill implements ISkillFunction {
     protected Point projectileHitboxSize;
 
     protected ITargetSelection selectionFunction;
+
+
 
     public DamageProjectileSkill(
             String pathToTexturesOfProjectile,
@@ -39,6 +42,7 @@ public abstract class DamageProjectileSkill implements ISkillFunction {
     public void execute(Entity entity) {
 
         Entity projectile = new Entity();
+        System.out.println(projectile);
         PositionComponent epc =
                 (PositionComponent)
                         entity.getComponent(PositionComponent.class)

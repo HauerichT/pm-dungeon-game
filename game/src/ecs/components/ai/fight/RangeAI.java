@@ -1,9 +1,11 @@
 package ecs.components.ai.fight;
 
 import com.badlogic.gdx.ai.pfa.GraphPath;
+import ecs.components.HealthComponent;
 import ecs.components.ai.AITools;
 import ecs.components.skill.Skill;
 import ecs.entities.Entity;
+import ecs.entities.monster.BossMonster;
 import level.elements.tile.Tile;
 import tools.Constants;
 
