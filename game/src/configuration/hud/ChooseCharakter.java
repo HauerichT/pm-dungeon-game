@@ -21,6 +21,7 @@ import tools.Point;
 
 import java.io.File;
 import java.util.Set;
+import java.util.logging.Logger;
 
 public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
 
@@ -46,6 +47,7 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
      */
     public ChooseCharakter(SpriteBatch batch) {
         super(batch);
+        Logger charakterInfo = Logger.getLogger(Game.getHero().getClass().getName());
 
 
         // Game Over Screen Text
@@ -72,6 +74,7 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                         charakter = 2;
                         newWarriorButton.setChecked(false);
                         newNinjaButton.setChecked(false);
+                        charakterInfo.info("\u001B[32m" + "Mage wurde ausgewaehlt" + "\u001B[32m");
                     }
                 },
                 wizzardButton.build());
@@ -99,6 +102,7 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                         charakter = 3;
                         newWarriorButton.setChecked(false);
                         newWizzardButton.setChecked(false);
+                        charakterInfo.info("\u001B[32m" + "Rogue wurde ausgewaehlt" + "\u001B[32m");
                     }
                 },
                 ninjaButton.build());
@@ -125,6 +129,7 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                         charakter = 1;
                         newNinjaButton.setChecked(false);
                         newWizzardButton.setChecked(false);
+                        charakterInfo.info("\u001B[32m" + "Warrior wurde ausgewaehlt" + "\u001B[32m");
                     }
                 },
                 warriorButton.build());
