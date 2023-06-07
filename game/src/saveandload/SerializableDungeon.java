@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import ecs.entities.CharacterClasses.Mage;
+import ecs.entities.CharacterClasses.Rogue;
+import ecs.entities.CharacterClasses.Warrior;
 import starter.Game;
 
 /** SerializableDungeon is a class which allows to save and load a game */
@@ -54,7 +57,7 @@ public class SerializableDungeon {
         }
 
         for (int i = 0; i < data.getEntities().size(); i++) {
-            System.out.println(data.getEntities().get(i).getClass().getName());
+            System.out.println(data.getEntities().get(i));
             if (data.getEntities().get(i).getClass().getName().contains("monster")) {
                 Monster e = (Monster) data.getEntities().get(i);
 
@@ -70,9 +73,7 @@ public class SerializableDungeon {
             }
             else if (data.getEntities().get(i).getClass().getName().contains("item")) {
                 Item e = (Item) data.getEntities().get(i);
-
                 e.setNewComponentMap();
-
                 new PositionComponent(e);
                 Game.addEntity(e);
             }
@@ -84,12 +85,15 @@ public class SerializableDungeon {
                 new PositionComponent(e);
                 Game.addEntity(e);
             }
-            else if (data.getEntities().get(i).getClass().getName().contains("hero")) {
-                Hero e = (Hero) data.getEntities().get(i);
-                e.setNewComponentMap();
-                Game.addEntity(e);
+            else if (data.getEntities().get(i).getClass().getName().contains("Mage")) {
+                Game.setHero(new Mage());
             }
-
+            else if (data.getEntities().get(i).getClass().getName().contains("Rogue")) {
+                Game.setHero(new Rogue());
+            }
+                else if (data.getEntities().get(i).getClass().getName().contains("Warrior")) {
+                Game.setHero(new Warrior());
+            }
         }
         new File("saveGame.ser").delete();
         serLogger.info("\u001B[32m" + "Spiel geladen!" + "\u001B[0m");

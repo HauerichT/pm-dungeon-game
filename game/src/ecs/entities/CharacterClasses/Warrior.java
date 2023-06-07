@@ -10,11 +10,14 @@ import tools.Point;
 
 import java.util.logging.Logger;
 
+/**
+ * used to create a Warrior
+ */
 public class Warrior extends Hero {
-    private Skill firstSkill;
-    private Skill secondSkill;
-    private PlayableComponent pc;
-    private SkillComponent skillComponent;
+    private transient Skill firstSkill;
+    private transient Skill secondSkill;
+    private transient PlayableComponent pc;
+    private transient SkillComponent skillComponent;
 
     /**
      * Konstruktor

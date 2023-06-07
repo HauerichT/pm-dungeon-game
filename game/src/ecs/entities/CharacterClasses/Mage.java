@@ -9,11 +9,14 @@ import starter.Game;
 
 import java.util.logging.Logger;
 
+/**
+ * used to create a Mage
+ */
 public class Mage extends Hero {
     private transient Skill firstSkill;
     private transient Skill secondSkill;
-    private PlayableComponent pc;
-    private SkillComponent skillComponent;
+    private transient PlayableComponent pc;
+    private transient SkillComponent skillComponent;
 
     /**
      * Konstruktor

@@ -75,6 +75,7 @@ public abstract class Hero extends Entity implements ILevelUp {
         inventory = new InventoryComponent(this, 5);
     }
 
+
     private void setupVelocityComponent() {
         Animation moveRight = AnimationBuilder.buildAnimation(pathToRunRight);
         Animation moveLeft = AnimationBuilder.buildAnimation(pathToRunLeft);
@@ -122,7 +123,6 @@ public abstract class Hero extends Entity implements ILevelUp {
 
         /**
          * Adding Mana is called per Frame in Game.java
-         *
          * @param manaPerFrame float value to add Mana to the Hero
          */
         public static void addMana ( float manaPerFrame){
@@ -137,7 +137,6 @@ public abstract class Hero extends Entity implements ILevelUp {
 
     /**
      * Reducing Mana after the Hero used a skill
-     *
      * @param manaCost Mana cost when you use a skill.
      */
     public static void reduceMana(float manaCost) {
@@ -148,7 +147,6 @@ public abstract class Hero extends Entity implements ILevelUp {
     }
 
     /**
-     *
      * @return the actuel mana of the Hero
      */
     public static float getMana() {

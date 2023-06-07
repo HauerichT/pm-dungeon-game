@@ -43,9 +43,9 @@ public abstract class Monster extends Entity {
      * @param idleRight Images of the Monster
      * @param runLeft animations of the Monster
      * @param runRight animations of the Monster
-     * @param idleAi Walkstrategie for the Monster
-     * @param ySpeed of the Monster
-     * @param xSpeed of the Monster
+     * @param IIdleAI Movementtrategie for the Monster
+     * @param horizontalSpeed of the Monster
+     * @param verticalSpeed of the Monster
      * @param dmg of the v
      * @param health of the Monster
      * @param exp which the Monster drops for the Hero

@@ -10,13 +10,16 @@ import tools.Point;
 
 import java.util.logging.Logger;
 
+/**
+ * used to create a Rogue
+ */
 public class Rogue extends Hero {
 
-    private Skill firstSkill;
-    private Skill secondSkill;
-    private Skill thirdSkill;
-    private PlayableComponent pc;
-    private SkillComponent skillComponent;
+    private transient Skill firstSkill;
+    private transient Skill secondSkill;
+    private transient Skill thirdSkill;
+    private transient PlayableComponent pc;
+    private transient SkillComponent skillComponent;
 
 
     /**

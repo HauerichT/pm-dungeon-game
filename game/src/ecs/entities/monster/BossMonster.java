@@ -10,9 +10,11 @@ import ecs.damage.DamageType;
 import ecs.entities.Monster;
 import tools.Point;
 
-
+/**
+ * used to create a BossMonster
+ */
 public class BossMonster extends Monster {
-    AIComponent aic = null;
+     transient AIComponent aic = null;
 
     /**
      * Konstruktor
