@@ -16,8 +16,6 @@ import graphic.Animation;
 import starter.Game;
 import tools.Point;
 
-import java.io.Serializable;
-
 /** Friendly Monster that will spawn if the hero use his "friendly monster" skill. */
 public class FriendlyMonster extends Entity {
     private float horizontalSpeed = 0.2f;
@@ -32,6 +30,8 @@ public class FriendlyMonster extends Entity {
     private final String pathToRunRight = "character/monster/zombie/runRight";
 
     private final IIdleAI idleAI = new FollowHeroWalk();
+    private transient AIComponent ai;
+    private transient HealthComponent hc;
 
     public FriendlyMonster() {
         super();
@@ -48,7 +48,7 @@ public class FriendlyMonster extends Entity {
     }
 
     private void setupAIComponent() {
-        AIComponent ai = new AIComponent(this);
+        ai = new AIComponent(this);
         ai.setIdleAI(idleAI);
         ai.setFightAI(
                 new MeleeAI(
@@ -75,7 +75,7 @@ public class FriendlyMonster extends Entity {
     }
 
     private void setupHealthComponent() {
-        HealthComponent hc = new HealthComponent(this);
+        hc = new HealthComponent(this);
         hc.setMaximalHealthpoints(this.health + Game.getLevelCounter() / 5);
         hc.setCurrentHealthpoints(this.health + Game.getLevelCounter() / 5);
     }

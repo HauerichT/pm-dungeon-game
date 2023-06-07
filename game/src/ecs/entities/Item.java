@@ -5,8 +5,6 @@ import ecs.items.ItemData;
 import ecs.items.ItemType;
 import ecs.items.WorldItemBuilder;
 import graphic.Animation;
-
-import java.io.Serializable;
 import java.util.List;
 
 public abstract class Item extends Entity {

@@ -9,8 +9,6 @@ import ecs.components.PositionComponent;
 import graphic.Animation;
 import starter.Game;
 
-import java.io.Serializable;
-
 /** Gravestone for the friendly NPC-Ghost ---> Ghost Class */
 public class Gravestone extends Entity {
     private final Entity ghost;
