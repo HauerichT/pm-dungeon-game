@@ -80,6 +80,8 @@ public class GameOver<T extends Actor> extends ScreenController<T> {
                                 }
 
                                 Game.toggleGameOver();
+                                ChooseCharakter<Actor> charakterMenu = new ChooseCharakter<>();
+                                Game.setCharakterMenu(charakterMenu);
                                 Game.lvUP(0);
                                 Hero hero = new Mage();
                                 Game.setHero(hero);

@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import configuration.Configuration;
 import configuration.KeyboardConfig;
+import configuration.hud.ChooseCharakter;
 import configuration.hud.GameOver;
 import configuration.hud.LVup;
 import configuration.hud.PauseMenu;
@@ -71,6 +72,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     protected IGenerator generator;
 
     private boolean doSetup = true;
+
     private static boolean paused = false;
     private static boolean gameOverIsActive = false;
     /** All entities that are currently active in the dungeon */
@@ -85,6 +87,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     public static ILevel currentLevel;
 
+    private static ChooseCharakter<Actor> charakterMenu;
     private static PauseMenu<Actor> pauseMenu;
     private static LVup<Actor> lvUPscreen;
     private static final SerializableDungeon serializableDungeon = new SerializableDungeon();
@@ -94,7 +97,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private static Ghost ghost;
 
     private static RandomEntityGenerator randomEntityGenerator;
-    private static boolean inventoryShown = false;
+    private static boolean gameStarted = false;
+    private static boolean charakterChooseBool = false;
     private static ScreenInventory<Actor> inv;
 
     /** Counter to save current level */
@@ -131,8 +135,10 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         camera.update();
     }
 
+
     /** Called once at the beginning of the game. */
     protected void setup() {
+
         doSetup = false;
         controller = new ArrayList<>();
         setupCameras();
@@ -143,22 +149,20 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         gameLogger = Logger.getLogger(this.getClass().getName());
         systems = new SystemController();
         controller.add(systems);
-        pauseMenu = new PauseMenu<>();
-        controller.add(pauseMenu);
         randomEntityGenerator = new RandomEntityGenerator();
         hero = new Mage();
         inv = new ScreenInventory<>();
         lvUPscreen = new LVup<>();
         controller.add(lvUPscreen);
         controller.add(inv);
-        gameOver = new GameOver<>();
-        controller.add(gameOver);
+        charakterMenu = new ChooseCharakter<>();
+        controller.add(charakterMenu);
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
-        if (new File("saveGame.ser").exists()) {
-            serializableDungeon.loadGame();
-        }
+        Game.systems.forEach(ECS_System::toggleRun);
+
+
     }
 
     /** Called at the beginning of each frame. Before the controllers call <code>update</code>. */
@@ -169,6 +173,16 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         Hero.addMana(0.005f);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
+        if (gameStarted){
+            controller.add(gameOver);
+            controller.add(pauseMenu);
+            gameStarted = false;
+
+        }
+        if (charakterChooseBool) {
+            controller.add(charakterMenu);
+            charakterChooseBool = false;
+        }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.X) && !new File("saveGame.ser").exists()) {
             serializableDungeon.saveGame();
@@ -176,9 +190,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             Gdx.app.exit();
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.X) && new File("saveGame.ser").exists()){
             gameLogger.info("Spielstand bereits gespeichert!");
+
         }
 
-        // check if ghost is active
         if (ghost != null) {
             counterGhost++;
             if (counterGhost == 200) {
@@ -286,14 +300,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
     }
 
-    /** Toggle inventory menu */
-    public static void toggleInventory() {
-        inventoryShown = !inventoryShown;
-        if (inv != null) {
-            if (inventoryShown) inv.showMenu();
-            else inv.hideMenu();
-        }
-    }
+
 
     /** Update inventory menu */
     public static void updateInventory(Entity worldItemEntity, int emptySlots) {
@@ -398,6 +405,32 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      */
     public static void setHero(Entity hero) {
         Game.hero = hero;
+    }
+
+    /**
+     * setting the Game-Over Screen
+     * @param gameOver instance of the GameOver class to
+     */
+    public static void setGameOver(GameOver<Actor> gameOver){
+        Game.gameOver = gameOver;
+        gameStarted = true;
+    }
+
+    /**
+     * setting the Pause Menu Screen
+     * @param pauseMenu instance of the PauseMenu class
+     */
+    public static void setPauseMenu(PauseMenu<Actor> pauseMenu){
+        Game.pauseMenu = pauseMenu;
+    }
+
+    /**
+     * setting the Charakter Menu Screen
+     * @param charakterMenu instance of the CharakterMenu class
+     */
+    public static void setCharakterMenu(ChooseCharakter<Actor> charakterMenu){
+        Game.charakterMenu = charakterMenu;
+        charakterChooseBool = true;
     }
 
     /** set ghost */

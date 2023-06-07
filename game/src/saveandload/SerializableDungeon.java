@@ -1,6 +1,12 @@
 package saveandload;
 
 import ecs.entities.Entity;
+import ecs.entities.items.HealPotion;
+import ecs.entities.items.StrengthPotion;
+import ecs.entities.items.Sword;
+import ecs.entities.monster.Skeleton;
+import ecs.entities.monster.Tot;
+import ecs.entities.monster.Zombie;
 import starter.Game;
 
 import java.io.*;
@@ -48,9 +54,24 @@ public class SerializableDungeon {
             ex.printStackTrace();
         }
 
+
         for(int i = 0; i < data.getEntities().size(); i++) {
             System.out.println(data.getEntities().get(i));
+            if (data.getEntities().get(i).contains("Skeleton")){
+                new Skeleton();
+            } else if (data.getEntities().get(i).contains("Tot")) {
+                new Tot();
+            } else if (data.getEntities().get(i).contains("Zombie")) {
+                new Zombie();
+            } else if (data.getEntities().get(i).contains("HealPotion")) {
+                new HealPotion();
+            } else if (data.getEntities().get(i).contains("StrengthPotion")) {
+                new StrengthPotion();
+            } else if (data.getEntities().get(i).contains("Sword")) {
+                new Sword();
+            }
         }
+
 
         new File("saveGame.ser").delete();
     }

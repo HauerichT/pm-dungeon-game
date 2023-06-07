@@ -40,6 +40,14 @@ public class PauseMenu<T extends Actor> extends ScreenController<T> {
                 Align.center | Align.bottom);
 
 
+
+        TextButtonStyleBuilder saveButton = new TextButtonStyleBuilder(bitmapFont);
+        saveButton.setFontColor(Color.BLACK);
+        saveButton.setOverFontColor(Color.BLUE);
+        saveButton.setDownFontColor(Color.BROWN);
+        saveButton.setCheckedImage("hud/btn_end.png");
+        saveButton.setUpImage("hud/btn_end.png");
+        saveButton.setDownImage("hud/btn_restart.png");
         ScreenButton screenButton =
                 new ScreenButton(
                         "Save Game and Close",
@@ -51,7 +59,7 @@ public class PauseMenu<T extends Actor> extends ScreenController<T> {
                                 serializableDungeon.saveGame();
                                 Gdx.app.exit();
                             }
-                        }
+                        },saveButton.build()
                 );
 
 
