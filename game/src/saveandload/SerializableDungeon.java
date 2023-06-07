@@ -39,6 +39,7 @@ public class SerializableDungeon {
 
     /** Loads the entities of the last saved game in new game */
     public void loadGame() {
+
         FileInputStream fis;
         ObjectInputStream in;
         try {
@@ -48,7 +49,7 @@ public class SerializableDungeon {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
+        Game.setLevelCounter(data.getLevel());
         for (int i = 0; i < data.getEntities().size(); i++) {
             System.out.println(data.getEntities().get(i));
             if (data.getEntities().get(i).getClass().getName().contains("monster")) {

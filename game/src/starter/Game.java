@@ -105,6 +105,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private static boolean charakterChooseBool = false;
     private static ScreenInventory<Actor> inv;
 
+
+
     /** Counter to save current level */
     private static int levelCounter;
 
@@ -410,6 +412,12 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      */
     public static int getLevelCounter() {
         return levelCounter;
+    }
+    /**
+     * set current level
+     */
+    public static void setLevelCounter(int levelCounter) {
+        Game.levelCounter = levelCounter;
     }
 
     /**

@@ -229,6 +229,7 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                                 PauseMenu<Actor> pauseMenu = new PauseMenu<>();
                                 Game.setPauseMenu(pauseMenu);
                                 Game.systems.forEach(ECS_System::toggleRun);
+
                             }
                         },
                         loadButton.build());
