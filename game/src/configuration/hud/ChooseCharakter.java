@@ -166,8 +166,6 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                                 Game.lvUP(0);
                                 Hero hero = new Hero();
                                 Game.setHero(hero);
-                                GameOver<Actor> gameOver = new GameOver<>();
-                                Game.setGameOver(gameOver);
                                 PauseMenu<Actor> pauseMenu = new PauseMenu<>();
                                 Game.setPauseMenu(pauseMenu);
                                 Game.systems.forEach(ECS_System::toggleRun);
@@ -201,8 +199,6 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                                 data.loadGame();
                                 Hero hero = new Hero();
                                 Game.setHero(hero);
-                                GameOver<Actor> gameOver = new GameOver<>();
-                                Game.setGameOver(gameOver);
                                 PauseMenu<Actor> pauseMenu = new PauseMenu<>();
                                 Game.setPauseMenu(pauseMenu);
                                 Game.systems.forEach(ECS_System::toggleRun);
