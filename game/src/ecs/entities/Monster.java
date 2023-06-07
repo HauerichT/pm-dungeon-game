@@ -11,9 +11,12 @@ import ecs.components.skill.SkillTools;
 import ecs.components.xp.XPComponent;
 import ecs.damage.Damage;
 import ecs.damage.DamageType;
+import ecs.entities.monster.BossMonster;
 import graphic.Animation;
 import starter.Game;
 import tools.Point;
+
+import java.util.Objects;
 
 /** Used to create Monster. (Superclass) */
 public abstract class Monster extends Entity {
@@ -31,6 +34,7 @@ public abstract class Monster extends Entity {
     private final String pathToRunRight;
 
     private final IIdleAI idleAI;
+    String monster;
 
     public Monster(
             String idleLeft,
@@ -42,9 +46,9 @@ public abstract class Monster extends Entity {
             float verticalSpeed,
             int dmg,
             int health,
-            int exp) {
+            int exp,
+            String monster) {
         super();
-
         this.pathToIdleLeft = idleLeft;
         this.pathToIdleRight = idleRight;
         this.pathToRunLeft = runLeft;
@@ -58,21 +62,24 @@ public abstract class Monster extends Entity {
         this.dmg = dmg;
         this.health = health;
         this.exp = exp;
+        this.monster = monster;
 
         setupVelocityComponent();
         setupAnimationComponent();
         setupPositionComponent();
-        setupAIComponent();
-        setupHitboxComponent();
         setupHealthComponent();
         setupXPComponent();
+        if (monster != "BossMonster"){
+            setupMeleeAIComponent();
+            setupHitboxComponent();
+        }
     }
 
     private void setupPositionComponent() {
         new PositionComponent(this);
     }
 
-    private void setupAIComponent() {
+    private void setupMeleeAIComponent() {
         AIComponent ai = new AIComponent(this);
         ai.setIdleAI(idleAI);
         ai.setFightAI(
@@ -112,5 +119,9 @@ public abstract class Monster extends Entity {
 
     private void setupHitboxComponent() {
         new HitboxComponent(this);
+    }
+
+    public int getHealth() {
+        return health;
     }
 }

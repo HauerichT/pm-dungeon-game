@@ -22,10 +22,12 @@ import ecs.components.ai.AIComponent;
 import ecs.components.ai.fight.IFightAI;
 import ecs.components.ai.fight.MeleeAI;
 import ecs.components.skill.MeleeComponent;
+import ecs.components.skill.ProjectileComponent;
 import ecs.components.skill.Skill;
 import ecs.entities.*;
 import ecs.entities.CharacterClasses.Mage;
 import ecs.entities.CharacterClasses.Rogue;
+import ecs.entities.monster.BossMonster;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
@@ -152,6 +154,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
+
+
     }
 
     /** Called at the beginning of each frame. Before the controllers call <code>update</code>. */
@@ -186,6 +190,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         randomEntityGenerator.spwanRandomItems();
         randomEntityGenerator.spawnGhostAndGravestone();
         getHero().ifPresent(this::placeOnLevelStart);
+        new BossMonster();
     }
 
     private void manageEntitiesSets() {
