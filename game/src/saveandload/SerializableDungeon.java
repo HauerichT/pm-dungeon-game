@@ -28,6 +28,7 @@ public class SerializableDungeon {
         List<Entity> entities = new ArrayList<>(Game.getEntities());
         data.setEntities(entities);
 
+
         FileOutputStream fos;
         ObjectOutputStream out;
         try {

@@ -74,7 +74,7 @@ public abstract class Monster extends Entity {
         setupPositionComponent();
         setupHealthComponent();
         setupXPComponent();
-        setupMeleeAIComponent();
+        setupAIComponent();
         setupHitboxComponent();
 
     }
@@ -83,10 +83,6 @@ public abstract class Monster extends Entity {
         new PositionComponent(this);
     }
 
-    private void setupMeleeAIComponent() {
-        AIComponent ai = new AIComponent(this);
-        ai.setIdleAI(idleAI);
-    }
 
     public void setupAIComponent() {
         ai = new AIComponent(this);

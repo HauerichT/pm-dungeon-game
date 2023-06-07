@@ -29,15 +29,7 @@ public abstract class Hero extends Entity implements ILevelUp {
     String pathToRunLeft;
     String pathToIdleRight;
     String pathToIdleLeft;
-
-    private transient Skill firstSkill;
-    private transient Skill secondSkill;
-    private transient Skill thirdSkill;
-    private transient Skill fourthSkill;
-    private transient Skill fifthSkill;
-    private transient Skill sixthSkill;
     private transient PlayableComponent pc;
-    private transient SkillComponent skillComponent;
     private transient XPComponent heroXP;
     private transient PositionComponent psc;
     private transient InventoryComponent inventory;
@@ -153,33 +145,6 @@ public abstract class Hero extends Entity implements ILevelUp {
 
         mana -= manaCost;
         manalog2.info("\u001B[34m" + "Current Mana =" + mana + "\u001B[31m");
-    }
-
-
-
-    @Override
-    public void onLevelUp(long nexLevel) {
-        Logger abilityLog = Logger.getLogger(Game.getHero().getClass().getName());
-        Game.lvUP(nexLevel);
-        // Gives the hero a new skill when he reaches a certain level
-        if (nexLevel == 1) {
-            pc.setSkillSlot4(fourthSkill);
-            abilityLog.info(
-                    "\u001B[32m" + "Hero learned Speed skill, press 1 to use it" + "\u001B[31m");
-            pc.setSkillSlot3(thirdSkill);
-            abilityLog.info(
-                    "\u001B[32m" + "Hero learned Laser skill, press F to use it" + "\u001B[31m");
-        }
-        if (nexLevel == 2) {
-            pc.setSkillSlot6(sixthSkill);
-            abilityLog.info(
-                    "\u001B[32m" + "Hero learned Fireball skill, press 3 to use it" + "\u001B[31m");
-        }
-        if (nexLevel == 3) {
-            pc.setSkillSlot5(fifthSkill);
-            abilityLog.info(
-                    "\u001B[32m" + "Hero learned Health skill, press 2 to use it" + "\u001B[31m");
-        }
     }
 
     public static float getMana() {

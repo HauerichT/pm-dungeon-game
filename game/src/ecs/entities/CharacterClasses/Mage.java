@@ -10,8 +10,8 @@ import starter.Game;
 import java.util.logging.Logger;
 
 public class Mage extends Hero {
-    private Skill firstSkill;
-    private Skill secondSkill;
+    private transient Skill firstSkill;
+    private transient Skill secondSkill;
     private PlayableComponent pc;
     private SkillComponent skillComponent;
 
@@ -66,7 +66,7 @@ public class Mage extends Hero {
             if (nexLevel == 1) {
                 pc.setSkillSlot5(secondSkill);
                 abilityLog.info(
-                    "\u001B[32m" + "Mage learned Laser skill, press 1 to use it" + "\u001B[31m");
+                    "\u001B[32m" + "Mage learned Laser skill, press 2 to use it" + "\u001B[31m");
             }
     }
 }
