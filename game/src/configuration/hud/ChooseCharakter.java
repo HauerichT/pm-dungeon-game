@@ -10,9 +10,12 @@ import controller.ScreenController;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
 import ecs.systems.ECS_System;
+import saveandload.SerializableDungeon;
+import saveandload.SerializableDungeonData;
 import starter.Game;
 import tools.Point;
 
+import java.io.File;
 import java.util.Set;
 
 public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
@@ -52,7 +55,7 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
         ScreenButton newWizzardButton =
             new ScreenButton(
                 "",
-                new Point(290, 260),
+                new Point(290, 220),
                 new TextButtonListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
@@ -77,7 +80,7 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
         ScreenButton newNinjaButton =
             new ScreenButton(
                 "",
-                new Point(380, 255),
+                new Point(380, 215),
                 new TextButtonListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
@@ -103,7 +106,7 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
         ScreenButton newWarriorButton =
             new ScreenButton(
                 "",
-                new Point(170, 260),
+                new Point(170, 220),
                 new TextButtonListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
@@ -173,12 +176,56 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                         Game.setHero(hero);
                         GameOver<Actor> gameOver = new GameOver<>();
                         Game.setGameOver(gameOver);
+                        PauseMenu<Actor> pauseMenu = new PauseMenu<>();
+                        Game.setPauseMenu(pauseMenu);
                         Game.systems.forEach(ECS_System::toggleRun);
                     }
                 },
                 startButton.build());
         newStartButton.setScale(1);
         add((T) newStartButton);
+
+
+
+
+        // Start button
+        TextButtonStyleBuilder loadButton = new TextButtonStyleBuilder(BitmapFont);
+        loadButton.setFontColor(Color.BLACK);
+        loadButton.setOverFontColor(Color.BLUE);
+        loadButton.setDownFontColor(Color.BROWN);
+        loadButton.setCheckedImage("hud/btn_end.png");
+        loadButton.setUpImage("hud/btn_end.png");
+        loadButton.setDownImage("hud/btn_restart.png");
+        ScreenButton newLoadButton =
+            new ScreenButton(
+                "Load Game",
+                new Point(150, 350),
+                new TextButtonListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        SerializableDungeon data = new SerializableDungeon();
+                        if (new File("saveGame.ser").exists()) {
+                            Set<Entity> allEntities = Game.getEntities();
+                            for (Entity allEntity : allEntities) {
+                                Game.removeEntity(allEntity);
+                            }
+                            hideMenu();
+                            data.loadGame();
+                            Hero hero = new Hero();
+                            Game.setHero(hero);
+                            GameOver<Actor> gameOver = new GameOver<>();
+                            Game.setGameOver(gameOver);
+                            PauseMenu<Actor> pauseMenu = new PauseMenu<>();
+                            Game.setPauseMenu(pauseMenu);
+                            Game.systems.forEach(ECS_System::toggleRun);
+                        }
+
+
+                    }
+                },
+                loadButton.build());
+        newLoadButton.setScale(1);
+        add((T) newLoadButton);
 
     }
 

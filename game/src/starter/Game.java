@@ -95,7 +95,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private static Ghost ghost;
 
     private static RandomEntityGenerator randomEntityGenerator;
-    private static boolean gameOverIsActive2 = false;
+    private static boolean gameStarted = false;
     private static boolean charakterChooseBool = false;
     private static ScreenInventory<Actor> inv;
 
@@ -136,6 +136,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     /** Called once at the beginning of the game. */
     protected void setup() {
+
         doSetup = false;
         controller = new ArrayList<>();
         setupCameras();
@@ -146,8 +147,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         gameLogger = Logger.getLogger(this.getClass().getName());
         systems = new SystemController();
         controller.add(systems);
-        pauseMenu = new PauseMenu<>();
-        controller.add(pauseMenu);
         randomEntityGenerator = new RandomEntityGenerator();
         hero = new Hero();
         inv = new ScreenInventory<>();
@@ -160,9 +159,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
         Game.systems.forEach(ECS_System::toggleRun);
-        if (new File("saveGame.ser").exists()) {
-            serializableDungeon.loadGame();
-        }
+
+
     }
 
     /** Called at the beginning of each frame. Before the controllers call <code>update</code>. */
@@ -173,10 +171,10 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         Hero.addMana(0.005f);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
-        if (gameOverIsActive2){
+        if (gameStarted){
             controller.add(gameOver);
-            gameOverIsActive2 = false;
-
+            controller.add(pauseMenu);
+            gameStarted = false;
 
         }
         if (charakterChooseBool) {
@@ -413,12 +411,20 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      */
     public static void setGameOver(GameOver<Actor> gameOver){
         Game.gameOver = gameOver;
-        gameOverIsActive2 = true;
+        gameStarted = true;
+    }
+
+    /**
+     * setting the gameOver Screen
+     * @param pauseMenu instance of the PauseMenu class to
+     */
+    public static void setPauseMenu(PauseMenu<Actor> pauseMenu){
+        Game.pauseMenu = pauseMenu;
     }
 
     /**
      * setting the CharakterMenu Screen
-     * @param charakterMenu instance of the GameOver class to
+     * @param charakterMenu instance of the CharakterMenu class to
      */
     public static void setCharakterMenu(ChooseCharakter<Actor> charakterMenu){
         Game.charakterMenu = charakterMenu;
