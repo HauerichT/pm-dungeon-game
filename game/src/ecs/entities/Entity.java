@@ -37,7 +37,6 @@ public class Entity implements Serializable {
 
     /**
      * Set new Component Map
-     *
      */
     public void setNewComponentMap() {
         components = new HashMap<>();

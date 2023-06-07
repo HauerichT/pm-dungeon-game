@@ -34,7 +34,7 @@ public class SerializableDungeon {
             fos = new FileOutputStream("saveGame.ser");
             out = new ObjectOutputStream(fos);
             out.writeObject(data);
-            serLogger.info("Spiel gespeichert!");
+            serLogger.info("\u001B[32m" + "Spiel gespeichert!" + "\u001B[0m");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -56,7 +56,9 @@ public class SerializableDungeon {
             System.out.println(data.getEntities().get(i).getClass().getName());
             if (data.getEntities().get(i).getClass().getName().contains("monster")) {
                 Monster e = (Monster) data.getEntities().get(i);
+
                 e.setNewComponentMap();
+
                 e.setupPositionComponent();
                 e.setupHitboxComponent();
                 e.setupAnimationComponent();
@@ -68,12 +70,18 @@ public class SerializableDungeon {
             }
             else if (data.getEntities().get(i).getClass().getName().contains("item")) {
                 Item e = (Item) data.getEntities().get(i);
+
                 e.setNewComponentMap();
+
+                new PositionComponent(e);
                 Game.addEntity(e);
             }
             else if (data.getEntities().get(i).getClass().getName().contains("trap")) {
                 Trap e = (Trap) data.getEntities().get(i);
+
                 e.setNewComponentMap();
+
+                new PositionComponent(e);
                 Game.addEntity(e);
             }
             else if (data.getEntities().get(i).getClass().getName().contains("hero")) {
@@ -84,6 +92,6 @@ public class SerializableDungeon {
 
         }
         new File("saveGame.ser").delete();
-        serLogger.info("Spielstand geladen!");
+        serLogger.info("\u001B[32m" + "Spiel geladen!" + "\u001B[0m");
     }
 }
