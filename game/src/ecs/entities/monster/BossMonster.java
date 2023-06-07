@@ -16,7 +16,8 @@ public class BossMonster extends Monster {
 
     /**
      * Konstruktor
-     * Creates a new BossMonster which is more Powerfull as a normal Monster
+     *
+     * creates a new BossMonster which is more Powerfull as a normal Monster
      */
 
     public BossMonster(){
@@ -29,8 +30,7 @@ public class BossMonster extends Monster {
             0.02f,
             10,
             20,
-            200,
-            "BossMonster");
+            200);
         setupRangeAIComponent();
 
     }
@@ -61,6 +61,9 @@ public class BossMonster extends Monster {
                         SkillTools::getHeroPosition),
                     1)));
     }
+    /**
+     * Changes the AIComponent of the BossMonster from Range to Melee
+     */
     public boolean changeAIComponent(){
         setupMeleeAIComponent();
         this.setHorizontalSpeed(0.1f);

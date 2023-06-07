@@ -62,6 +62,11 @@ public class Rogue extends Hero {
         thirdSkill = new Skill(new SpeedSkill(4), 20);
         skillComponent.addSkill(thirdSkill);
     }
+
+    /**
+     * gives the Rogue the third Skill
+     * @param nexLevel is the new level of the entity
+     */
     @Override
     public void onLevelUp(long nexLevel) {
 

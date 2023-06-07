@@ -17,7 +17,6 @@ import starter.Game;
 import tools.Point;
 
 
-
 /** Used to create Monster. (Superclass) */
 public abstract class Monster extends Entity {
 
@@ -27,20 +26,30 @@ public abstract class Monster extends Entity {
     private int health;
     private int dmg;
     private int exp;
-
     private final String pathToIdleLeft;
     private final String pathToIdleRight;
     private final String pathToRunLeft;
     private final String pathToRunRight;
-
-    String monster;
-
     private transient final IIdleAI idleAI;
     private transient XPComponent monsterXP;
     private transient HealthComponent hc;
     private transient AIComponent ai;
 
 
+    /**
+     * Konstruktor
+     *
+     * @param idleLeft Images of the Monster
+     * @param idleRight Images of the Monster
+     * @param runLeft animations of the Monster
+     * @param runRight animations of the Monster
+     * @param idleAi Walkstrategie for the Monster
+     * @param ySpeed of the Monster
+     * @param xSpeed of the Monster
+     * @param dmg of the v
+     * @param health of the Monster
+     * @param exp which the Monster drops for the Hero
+     */
     public Monster(
             String idleLeft,
             String idleRight,
@@ -51,8 +60,7 @@ public abstract class Monster extends Entity {
             float verticalSpeed,
             int dmg,
             int health,
-            int exp,
-            String monster) {
+            int exp) {
         super();
         this.pathToIdleLeft = idleLeft;
         this.pathToIdleRight = idleRight;
@@ -67,7 +75,6 @@ public abstract class Monster extends Entity {
         this.dmg = dmg;
         this.health = health;
         this.exp = exp;
-        this.monster = monster;
 
         setupVelocityComponent();
         setupAnimationComponent();
@@ -79,11 +86,16 @@ public abstract class Monster extends Entity {
 
     }
 
+    /**
+     * gives the Monster a new Position
+     */
     public void setupPositionComponent() {
         new PositionComponent(this);
     }
 
-
+    /**
+     * gives the Monster the ability to fight with a MeleeSkill
+     */
     public void setupAIComponent() {
         ai = new AIComponent(this);
         //ai.setIdleAI(idleAI);
@@ -100,39 +112,61 @@ public abstract class Monster extends Entity {
                     3)));
     }
 
+    /**
+     * gives the Monster animations
+     */
     public void setupAnimationComponent() {
         Animation idleRight = AnimationBuilder.buildAnimation(this.pathToIdleRight);
         Animation idleLeft = AnimationBuilder.buildAnimation(this.pathToIdleLeft);
         new AnimationComponent(this, idleLeft, idleRight);
     }
 
+    /**
+     * gives the Monster ability to move
+     */
     public void setupVelocityComponent() {
         Animation moveRight = AnimationBuilder.buildAnimation(this.pathToRunRight);
         Animation moveLeft = AnimationBuilder.buildAnimation(this.pathToRunLeft);
         new VelocityComponent(this, horizontalSpeed, verticalSpeed, moveLeft, moveRight);
     }
 
+    /**
+     * gives the Monster Healthpoints
+     */
     public void setupHealthComponent() {
         hc = new HealthComponent(this);
         hc.setMaximalHealthpoints(this.health + Game.getLevelCounter() / 5);
         hc.setCurrentHealthpoints(this.health + Game.getLevelCounter() / 5);
     }
 
+    /**
+     * gives the Monster exp which it drops when it dies
+     */
     public void setupXPComponent() {
         monsterXP = new XPComponent(this);
         monsterXP.setLootXP(exp);
     }
 
+    /**
+     * gives the Monster a HitBox
+     */
     public void setupHitboxComponent() {
         new HitboxComponent(this);
     }
 
 
+    /**
+     * @param horizontalSpeed sets the horizontal speed of the Monster
+     */
     public void setHorizontalSpeed(float horizontalSpeed) {
         this.horizontalSpeed = horizontalSpeed;
     }
 
+    /**
+     * @param verticalSpeed sets the vertival speed of the Monster
+     */
     public void setVerticalSpeed(float verticalSpeed) {
         this.verticalSpeed = verticalSpeed;
     }
+
 }

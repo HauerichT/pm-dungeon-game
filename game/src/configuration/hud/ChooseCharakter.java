@@ -16,12 +16,11 @@ import ecs.entities.Hero;
 import ecs.systems.ECS_System;
 import java.io.File;
 import java.util.Set;
-
 import java.util.logging.Logger;
-
 import saveandload.SerializableDungeon;
 import starter.Game;
 import tools.Point;
+
 
 
 public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
@@ -45,7 +44,9 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
      */
     public ChooseCharakter(SpriteBatch batch) {
         super(batch);
+
         Logger charakterInfo = Logger.getLogger(Game.getHero().getClass().getName());
+
 
         // Game Over Screen Text
         charakterclassOverlay =
@@ -65,6 +66,7 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                 "hud/CharakterklassenHud/wizzardButton/wizzard_f_run_anim_f2.png");
 
 
+
         newWizzardButton =
             new ScreenButton(
                 "",
@@ -81,19 +83,6 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                 wizzardButton.build());
         newWizzardButton.setScale(1,1);
 
-        ScreenButton newWizzardButton =
-                new ScreenButton(
-                        "",
-                        new Point(290, 220),
-                        new TextButtonListener() {
-                            @Override
-                            public void clicked(InputEvent event, float x, float y) {
-                                charakter = 2;
-                            }
-                        },
-                        wizzardButton.build());
-        newWizzardButton.setScale(1, 1);
-
         add((T) newWizzardButton);
 
         // Ninja button
@@ -104,6 +93,7 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
         ninjaButton.setCheckedImage("hud/CharakterklassenHud/ninjaButton/ninjaButton1.png");
         ninjaButton.setUpImage("hud/CharakterklassenHud/ninjaButton/ninjaButton0.png");
         ninjaButton.setDownImage("hud/CharakterklassenHud/ninjaButton/ninjaButton2.png");
+
 
 
         newNinjaButton =
@@ -122,30 +112,18 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                 ninjaButton.build());
         newNinjaButton.setScale(1,1);
 
-        ScreenButton newNinjaButton =
-                new ScreenButton(
-                        "",
-                        new Point(380, 215),
-                        new TextButtonListener() {
-                            @Override
-                            public void clicked(InputEvent event, float x, float y) {
-                                charakter = 3;
-                            }
-                        },
-                        ninjaButton.build());
-        newNinjaButton.setScale(1, 1);
-
         add((T) newNinjaButton);
+
 
         // Warrior button
         TextButtonStyleBuilder warriorButton = new TextButtonStyleBuilder(BitmapFont);
         warriorButton.setFontColor(Color.BLACK);
         warriorButton.setOverFontColor(Color.BLUE);
         warriorButton.setDownFontColor(Color.BROWN);
-        warriorButton.setCheckedImage(
-                "character/knight/idleLeft/knight_m_idle_anim_mirrored_f1.png");
+        warriorButton.setCheckedImage("character/knight/idleLeft/knight_m_idle_anim_mirrored_f1.png");
         warriorButton.setUpImage("hud/CharakterklassenHud/knight_m_run_anim_f0.png");
         warriorButton.setDownImage("character/knight/runLeft/knight_m_run_anim_mirrored_f3.png");
+
 
 
         newWarriorButton =
@@ -163,19 +141,6 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                 },
                 warriorButton.build());
         newWarriorButton.setScale(1,1);
-
-        ScreenButton newWarriorButton =
-                new ScreenButton(
-                        "",
-                        new Point(170, 220),
-                        new TextButtonListener() {
-                            @Override
-                            public void clicked(InputEvent event, float x, float y) {
-                                charakter = 1;
-                            }
-                        },
-                        warriorButton.build());
-        newWarriorButton.setScale(1, 1);
 
         add((T) newWarriorButton);
 
@@ -210,6 +175,7 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
         startButton.setUpImage("hud/btn_end.png");
         startButton.setDownImage("hud/btn_restart.png");
         ScreenButton newStartButton =
+
 
             new ScreenButton(
                 "Start",
@@ -246,37 +212,6 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                 },
                 startButton.build());
 
-                new ScreenButton(
-                        "Start",
-                        new Point(300, 50),
-                        new TextButtonListener() {
-                            @Override
-                            public void clicked(InputEvent event, float x, float y) {
-                                if (charakter == 1) {
-                                    // Instanz von warrior
-                                } else if (charakter == 2) {
-                                    // Instanz von mage
-                                } else if (charakter == 3) {
-                                    // Instanz von rogue
-                                }
-
-                                Set<Entity> allEntities = Game.getEntities();
-                                for (Entity allEntity : allEntities) {
-                                    Game.removeEntity(allEntity);
-                                }
-                                hideMenu();
-                                Game.lvUP(0);
-
-
-                                GameOver<Actor> gameOver = new GameOver<>();
-                                Game.setGameOver(gameOver);
-                                PauseMenu<Actor> pauseMenu = new PauseMenu<>();
-                                Game.setPauseMenu(pauseMenu);
-                                Game.systems.forEach(ECS_System::toggleRun);
-                            }
-                        },
-                        startButton.build());
-
         newStartButton.setScale(1);
         add((T) newStartButton);
 
@@ -289,6 +224,7 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
         loadButton.setUpImage("hud/btn_end.png");
         loadButton.setDownImage("hud/btn_restart.png");
         ScreenButton newLoadButton =
+
 
             new ScreenButton(
                 "Load Game",
@@ -314,30 +250,10 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                 },
                 loadButton.build());
 
-                new ScreenButton(
-                        "Load Game",
-                        new Point(150, 350),
-                        new TextButtonListener() {
-                            @Override
-                            public void clicked(InputEvent event, float x, float y) {
-                                SerializableDungeon data = new SerializableDungeon();
-                                Set<Entity> allEntities = Game.getEntities();
-                                for (Entity allEntity : allEntities) {
-                                    Game.removeEntity(allEntity);
-                                }
-                                hideMenu();
-                                data.loadGame();
-                                GameOver<Actor> gameOver = new GameOver<>();
-                                Game.setGameOver(gameOver);
-                                PauseMenu<Actor> pauseMenu = new PauseMenu<>();
-                                Game.setPauseMenu(pauseMenu);
-                                Game.systems.forEach(ECS_System::toggleRun);
-                            }
-                        },
-                        loadButton.build());
 
         newLoadButton.setScale(1);
         newLoadButton.setVisible(false);
+
         if (new File("saveGame.ser").exists()) {
             newLoadButton.setVisible(true);
         }

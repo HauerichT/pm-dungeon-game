@@ -56,6 +56,10 @@ public class Mage extends Hero {
 
     }
 
+    /**
+     * gives the Mage the second Skill
+     * @param nexLevel is the new level of the entity
+     */
     @Override
     public void onLevelUp(long nexLevel) {
 

@@ -36,6 +36,7 @@ public abstract class Hero extends Entity implements ILevelUp {
     private transient HealthComponent hc;
 
 
+
     /**
      * Konstruktor
      *
@@ -43,10 +44,10 @@ public abstract class Hero extends Entity implements ILevelUp {
      * @param mana of the Hero
      * @param xSpeed of the Hero
      * @param ySpeed of the Hero
-     * @param runLeft animations of the hero
-     * @param runRight animations of the hero
-     * @param idleLeft Images of the hero
-     * @param idleRight Images of the hero
+     * @param runLeft animations of the Hero
+     * @param runRight animations of the Hero
+     * @param idleLeft Images of the Hero
+     * @param idleRight Images of the Hero
      */
     public Hero(int health, float mana, float xSpeed, float ySpeed,String runLeft, String runRight, String idleLeft, String idleRight) {
         super();
@@ -60,13 +61,12 @@ public abstract class Hero extends Entity implements ILevelUp {
         this.ySpeed = ySpeed;
         psc = new PositionComponent(this);
         pc = new PlayableComponent(this);
-
-        setupVelocityComponent();
-        setupAnimationComponent();
-        setupHitBoxComponent();
         setupInventoryComponent();
         setupHealthComponent();
         setupXPComponent();
+        setupVelocityComponent();
+        setupAnimationComponent();
+        setupHitBoxComponent();
     }
 
 
@@ -147,6 +147,10 @@ public abstract class Hero extends Entity implements ILevelUp {
         manalog2.info("\u001B[34m" + "Current Mana =" + mana + "\u001B[31m");
     }
 
+    /**
+     *
+     * @return the actuel mana of the Hero
+     */
     public static float getMana() {
         return mana;
     }

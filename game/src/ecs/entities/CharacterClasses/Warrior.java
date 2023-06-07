@@ -50,6 +50,11 @@ public class Warrior extends Hero {
         secondSkill = new Skill(new HealthSkill(5), 10);
         skillComponent.addSkill(secondSkill);
     }
+
+    /**
+     * gives the Warrior the second Skill
+     * @param nexLevel is the new level of the entity
+     */
     @Override
     public void onLevelUp(long nexLevel) {
 
