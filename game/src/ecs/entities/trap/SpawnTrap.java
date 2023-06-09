@@ -37,7 +37,7 @@ public class SpawnTrap extends Trap {
         }
     }
 
-    private void setupHitboxComponent() {
+    public void setupHitboxComponent() {
         new HitboxComponent(
                 this,
                 (you, other, direction) -> {

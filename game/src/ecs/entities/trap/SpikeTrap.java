@@ -24,7 +24,7 @@ public class SpikeTrap extends Trap {
         setupHitboxComponent();
     }
 
-    void setupAnimationComponent(int a) {
+    public void setupAnimationComponent(int a) {
         Animation inactive = AnimationBuilder.buildAnimation(this.inactive);
         Animation active = AnimationBuilder.buildAnimation(this.active);
         if (a == 0) {
@@ -34,7 +34,7 @@ public class SpikeTrap extends Trap {
         }
     }
 
-    private void setupHitboxComponent() {
+    public void setupHitboxComponent() {
         new HitboxComponent(
                 this,
                 (you, other, direction) -> {

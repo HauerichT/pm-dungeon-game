@@ -31,11 +31,9 @@ public class Warrior extends Hero {
                 "character/knight/idleLeft",
                 "character/knight/idleRight");
         setupSkillComponent();
-        pc = new PlayableComponent(this);
-        pc.setSkillSlot1(firstSkill);
     }
 
-    private void setupSkillComponent() {
+    public void setupSkillComponent() {
         skillComponent = new SkillComponent(this);
 
         firstSkill =
@@ -49,6 +47,9 @@ public class Warrior extends Hero {
 
         secondSkill = new Skill(new HealthSkill(5), 10);
         skillComponent.addSkill(secondSkill);
+
+        pc = new PlayableComponent(this);
+        pc.setSkillSlot1(firstSkill);
     }
 
     /**

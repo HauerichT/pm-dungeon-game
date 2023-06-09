@@ -191,14 +191,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             charakterChooseBool = false;
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.X) && !new File("saveGame.ser").exists()) {
-            serializableDungeon.saveGame();
-            gameLogger.info("Spielstand gespeichert! Spiel wird verlassen...");
-            Gdx.app.exit();
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.X) && new File("saveGame.ser").exists()) {
-            gameLogger.info("Spielstand bereits gespeichert!");
-        }
-
         if (ghost != null) {
             counterGhost++;
             if (counterGhost == 200) {

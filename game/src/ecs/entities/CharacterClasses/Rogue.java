@@ -33,12 +33,9 @@ public class Rogue extends Hero {
                 "character/Rogue/idleLeft",
                 "character/Rogue/idleRight");
         setupSkillComponent();
-        pc = new PlayableComponent(this);
-        pc.setSkillSlot1(firstSkill);
-        pc.setSkillSlot2(secondSkill);
     }
 
-    private void setupSkillComponent() {
+    public void setupSkillComponent() {
         skillComponent = new SkillComponent(this);
 
         firstSkill =
@@ -60,6 +57,10 @@ public class Rogue extends Hero {
 
         thirdSkill = new Skill(new SpeedSkill(4), 20);
         skillComponent.addSkill(thirdSkill);
+
+        pc = new PlayableComponent(this);
+        pc.setSkillSlot1(firstSkill);
+        pc.setSkillSlot2(secondSkill);
     }
 
     /**

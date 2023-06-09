@@ -63,8 +63,8 @@ public abstract class Hero extends Entity implements ILevelUp {
         this.mana = mana;
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
-        psc = new PositionComponent(this);
-        pc = new PlayableComponent(this);
+        setupPositionComponent();
+        setupPlayableComponent();
         setupInventoryComponent();
         setupHealthComponent();
         setupXPComponent();
@@ -73,23 +73,31 @@ public abstract class Hero extends Entity implements ILevelUp {
         setupHitBoxComponent();
     }
 
-    private void setupInventoryComponent() {
+    public void setupInventoryComponent() {
         inventory = new InventoryComponent(this, 5);
     }
 
-    private void setupVelocityComponent() {
+    public void setupPositionComponent() {
+        this.psc = new PositionComponent(this);
+    }
+
+    public void setupPlayableComponent() {
+        this.pc = new PlayableComponent(this);
+    }
+
+    public void setupVelocityComponent() {
         Animation moveRight = AnimationBuilder.buildAnimation(pathToRunRight);
         Animation moveLeft = AnimationBuilder.buildAnimation(pathToRunLeft);
         new VelocityComponent(this, xSpeed, ySpeed, moveLeft, moveRight);
     }
 
-    private void setupAnimationComponent() {
+    public void setupAnimationComponent() {
         Animation idleRight = AnimationBuilder.buildAnimation(pathToIdleRight);
         Animation idleLeft = AnimationBuilder.buildAnimation(pathToIdleLeft);
         new AnimationComponent(this, idleLeft, idleRight);
     }
 
-    private void setupHealthComponent() {
+    public void setupHealthComponent() {
         Logger healtLog = Logger.getLogger(Game.getHero().getClass().getName());
 
         hc = new HealthComponent(this);
@@ -105,7 +113,7 @@ public abstract class Hero extends Entity implements ILevelUp {
         healtLog.info("\u001B[33m" + "Health = " + health + "\u001B[31m");
     }
 
-    private void setupHitBoxComponent() {
+    public void setupHitBoxComponent() {
         new HitboxComponent(
                 this,
                 (you, other, direction) -> {
@@ -116,7 +124,7 @@ public abstract class Hero extends Entity implements ILevelUp {
                 (you, other, direction) -> setupVelocityComponent());
     }
 
-    private void setupXPComponent() {
+    public void setupXPComponent() {
         heroXP = new XPComponent(this, this);
         heroXP.setCurrentLevel(0);
         heroXP.setCurrentXP(0);
