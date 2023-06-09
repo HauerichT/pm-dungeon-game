@@ -52,7 +52,7 @@ public class Rogue extends Hero {
                         new BoomerangSkill(
                                 SkillTools::getCursorPositionAsPoint,
                                 new Damage(2, DamageType.PHYSICAL, this)),
-                        1);
+                        2.5f);
         skillComponent.addSkill(secondSkill);
 
         thirdSkill = new Skill(new SpeedSkill(4), 20);

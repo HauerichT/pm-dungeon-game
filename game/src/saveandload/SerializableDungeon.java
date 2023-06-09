@@ -1,18 +1,18 @@
 package saveandload;
 
 import ecs.components.PositionComponent;
+import ecs.components.xp.XPComponent;
 import ecs.entities.*;
 import ecs.entities.CharacterClasses.Mage;
 import ecs.entities.CharacterClasses.Rogue;
 import ecs.entities.CharacterClasses.Warrior;
+import ecs.entities.trap.SpawnTrap;
+import ecs.entities.trap.SpikeTrap;
+import ecs.entities.trap.TpTrap;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
-import ecs.entities.trap.SpawnTrap;
-import ecs.entities.trap.SpikeTrap;
-import ecs.entities.trap.TpTrap;
 import starter.Game;
 
 /** SerializableDungeon is a class which allows to save and load a game */
@@ -24,6 +24,13 @@ public class SerializableDungeon {
     public void saveGame() {
         // Saves current level count
         data.setLevel(Game.getLevelCounter());
+        Game.getHero()
+                .flatMap(hero -> hero.getComponent(XPComponent.class))
+                .ifPresent(
+                        xp -> {
+                            data.setHeroXPLevel((int) ((XPComponent) xp).getCurrentLevel());
+                            data.setHeroXP(((XPComponent) xp).getCurrentXP());
+                        });
 
         // Saves current entities
         List<Entity> entities = new ArrayList<>(Game.getEntities());
@@ -43,7 +50,6 @@ public class SerializableDungeon {
 
     /** Loads the entities of the last saved game in new game */
     public void loadGame() {
-
         FileInputStream fis;
         ObjectInputStream in;
         try {
@@ -55,11 +61,9 @@ public class SerializableDungeon {
         }
 
         Game.setLevelCounter(data.getLevel());
-        for (int i = 0; i < data.getEntities().size(); i++) {
-            System.out.println(data.getEntities().get(i).getClass().getName());
-            System.out.println(data.getEntities().get(i).getClass().getCanonicalName());
-            System.out.println(data.getEntities().get(i).getClass().getSimpleName());
 
+        // Loads the saved entities with their components
+        for (int i = 0; i < data.getEntities().size(); i++) {
             if (data.getEntities().get(i).getClass().getName().contains("monster")) {
                 Monster e = (Monster) data.getEntities().get(i);
                 e.setNewComponentMap();
@@ -74,6 +78,7 @@ public class SerializableDungeon {
             } else if (data.getEntities().get(i).getClass().getName().contains("items")) {
                 Item e = (Item) data.getEntities().get(i);
                 e.setNewComponentMap();
+                e.setupItemData();
                 new PositionComponent(e);
                 Game.addEntity(e);
             } else if (data.getEntities().get(i).getClass().getName().contains("TpTrap")) {
@@ -107,7 +112,9 @@ public class SerializableDungeon {
                 e.setupAnimationComponent();
                 e.setupHealthComponent();
                 e.setupHitBoxComponent();
-                e.setupXPComponent();
+                e.setupXPComponent(data.getHeroXPLevel(), data.getHeroXP());
+                e.onLevelUp(data.getHeroXPLevel());
+
                 e.setupSkillComponent();
                 Game.addEntity(e);
                 Game.setHero(e);
@@ -121,11 +128,12 @@ public class SerializableDungeon {
                 e.setupAnimationComponent();
                 e.setupHealthComponent();
                 e.setupHitBoxComponent();
-                e.setupXPComponent();
+                e.setupXPComponent(data.getHeroXPLevel(), data.getHeroXP());
+                e.onLevelUp(data.getHeroXPLevel());
                 e.setupSkillComponent();
                 Game.addEntity(e);
                 Game.setHero(e);
-            }  else if (data.getEntities().get(i).getClass().getName().contains("Warrior")) {
+            } else if (data.getEntities().get(i).getClass().getName().contains("Warrior")) {
                 Warrior e = (Warrior) data.getEntities().get(i);
                 e.setNewComponentMap();
                 e.setupPositionComponent();
@@ -135,7 +143,8 @@ public class SerializableDungeon {
                 e.setupAnimationComponent();
                 e.setupHealthComponent();
                 e.setupHitBoxComponent();
-                e.setupXPComponent();
+                e.setupXPComponent(data.getHeroXPLevel(), data.getHeroXP());
+                e.onLevelUp(data.getHeroXPLevel());
                 e.setupSkillComponent();
                 Game.addEntity(e);
                 Game.setHero(e);

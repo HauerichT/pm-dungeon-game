@@ -130,6 +130,12 @@ public abstract class Hero extends Entity implements ILevelUp {
         heroXP.setCurrentXP(0);
     }
 
+    public void setupXPComponent(int currentLevel, long currentXP) {
+        heroXP = new XPComponent(this, this);
+        heroXP.setCurrentLevel(currentLevel);
+        heroXP.setCurrentXP(currentXP);
+    }
+
     /**
      * Adding Mana is called per Frame in Game.java
      *
@@ -157,7 +163,7 @@ public abstract class Hero extends Entity implements ILevelUp {
     }
 
     /**
-     * @return the actuel mana of the Hero
+     * @return the current mana of the Hero
      */
     public static float getMana() {
         return mana;

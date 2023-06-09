@@ -58,8 +58,7 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
         mageButton.setCheckedImage(
                 "hud/CharakterklassenHud/wizzardButton/wizzard_f_run_anim_f1.png");
         mageButton.setUpImage("hud/CharakterklassenHud/wizzardButton/wizzard_f_run_anim_f0.png");
-        mageButton.setDownImage(
-                "hud/CharakterklassenHud/wizzardButton/wizzard_f_run_anim_f2.png");
+        mageButton.setDownImage("hud/CharakterklassenHud/wizzardButton/wizzard_f_run_anim_f2.png");
 
         newMageButton =
                 new ScreenButton(
@@ -229,7 +228,6 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                                 PauseMenu<Actor> pauseMenu = new PauseMenu<>();
                                 Game.setPauseMenu(pauseMenu);
                                 Game.systems.forEach(ECS_System::toggleRun);
-
                             }
                         },
                         loadButton.build());

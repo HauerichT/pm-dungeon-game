@@ -9,6 +9,8 @@ import java.util.List;
 public class SerializableDungeonData implements Serializable {
     private List<Entity> entities = new ArrayList<>();
     private int level;
+    private int heroXPLevel;
+    private long heroXP;
 
     /**
      * Sets the current entities in a level
@@ -26,6 +28,42 @@ public class SerializableDungeonData implements Serializable {
      */
     public List<Entity> getEntities() {
         return entities;
+    }
+
+    /**
+     * Sets the current level of the hero
+     *
+     * @param xpLevel current level of the hero
+     */
+    public void setHeroXPLevel(int xpLevel) {
+        this.heroXPLevel = xpLevel;
+    }
+
+    /**
+     * Returns the current saved level of the hero
+     *
+     * @return current saved level of the hero
+     */
+    public int getHeroXPLevel() {
+        return heroXPLevel;
+    }
+
+    /**
+     * Sets the current level of the hero
+     *
+     * @param xp current level of the hero
+     */
+    public void setHeroXP(long xp) {
+        this.heroXP = xp;
+    }
+
+    /**
+     * Returns the current saved level of the hero
+     *
+     * @return current saved level of the hero
+     */
+    public long getHeroXP() {
+        return heroXP;
     }
 
     /**

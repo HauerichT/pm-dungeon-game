@@ -33,7 +33,6 @@ import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
 import graphic.hud.ScreenInventory;
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
@@ -104,8 +103,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private static boolean pauseMenuActive = false;
     private static boolean charakterChooseBool = false;
     private static ScreenInventory<Actor> inv;
-
-
 
     /** Counter to save current level */
     private static int levelCounter;
@@ -198,7 +195,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
                 counterGhost = 0;
             }
         }
-        if (bMonster != null && bMonsterMeeleAI == false) {
+        if (bMonster != null && !bMonsterMeeleAI) {
             HealthComponent h =
                     (HealthComponent) bMonster.getComponent(HealthComponent.class).orElseThrow();
             if (h.getCurrentHealthpoints() <= h.getMaximalHealthpoints() / 2) {
@@ -405,9 +402,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public static int getLevelCounter() {
         return levelCounter;
     }
-    /**
-     * set current level
-     */
+    /** set current level */
     public static void setLevelCounter(int levelCounter) {
         Game.levelCounter = levelCounter;
     }

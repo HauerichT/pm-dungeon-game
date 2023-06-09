@@ -9,5 +9,4 @@ public abstract class Trap extends Entity {
         super();
         new PositionComponent(this);
     }
-
 }
