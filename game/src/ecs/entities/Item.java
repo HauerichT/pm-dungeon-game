@@ -21,6 +21,7 @@ public abstract class Item extends Entity {
         setupItemData();
     }
 
+    /** Set up the item data */
     public void setupItemData() {
         ItemData item =
                 new ItemData(

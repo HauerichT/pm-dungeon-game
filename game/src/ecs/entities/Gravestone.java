@@ -14,19 +14,29 @@ public class Gravestone extends Entity {
     private final Entity ghost;
     private final Entity hero;
     private Entity collide;
-    private final RandomEntityGenerator randomEntityGenerator;
+    private transient RandomEntityGenerator randomEntityGenerator;
 
     public Gravestone(Entity ghost, Entity hero) {
         super();
         new PositionComponent(this);
-        randomEntityGenerator = new RandomEntityGenerator();
+        setupRandomEntityGenerator();
         setupHitboxComponent();
         setupAnimationComponent(false);
         this.ghost = ghost;
         this.hero = hero;
     }
 
-    private void setupAnimationComponent(boolean a) {
+    /** Set up the random entity generator */
+    public void setupRandomEntityGenerator() {
+        randomEntityGenerator = new RandomEntityGenerator();
+    }
+
+    /**
+     * Set up the animation component
+     *
+     * @param a checks if gravestone active
+     */
+    public void setupAnimationComponent(boolean a) {
         String gravestone = "character/grabstein/grave.png";
         Animation graveStone = AnimationBuilder.buildAnimation(gravestone);
         new AnimationComponent(this, graveStone);
@@ -50,7 +60,8 @@ public class Gravestone extends Entity {
         }
     }
 
-    private void setupHitboxComponent() {
+    /** Set up the hitbox component */
+    public void setupHitboxComponent() {
         new HitboxComponent(
                 this,
                 (you, other, direction) -> setupAnimationComponent(true),

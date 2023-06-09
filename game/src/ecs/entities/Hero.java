@@ -34,8 +34,6 @@ public abstract class Hero extends Entity implements ILevelUp {
     private transient HealthComponent hc;
 
     /**
-     * Konstruktor
-     *
      * @param health of the Hero
      * @param mana of the Hero
      * @param xSpeed of the Hero
@@ -73,30 +71,36 @@ public abstract class Hero extends Entity implements ILevelUp {
         setupHitBoxComponent();
     }
 
+    /** Set up the inventory component */
     public void setupInventoryComponent() {
         inventory = new InventoryComponent(this, 5);
     }
 
+    /** Set up the position component */
     public void setupPositionComponent() {
         this.psc = new PositionComponent(this);
     }
 
+    /** Set up the playable component */
     public void setupPlayableComponent() {
         this.pc = new PlayableComponent(this);
     }
 
+    /** Set up the velocity component */
     public void setupVelocityComponent() {
         Animation moveRight = AnimationBuilder.buildAnimation(pathToRunRight);
         Animation moveLeft = AnimationBuilder.buildAnimation(pathToRunLeft);
         new VelocityComponent(this, xSpeed, ySpeed, moveLeft, moveRight);
     }
 
+    /** Set up the animation component */
     public void setupAnimationComponent() {
         Animation idleRight = AnimationBuilder.buildAnimation(pathToIdleRight);
         Animation idleLeft = AnimationBuilder.buildAnimation(pathToIdleLeft);
         new AnimationComponent(this, idleLeft, idleRight);
     }
 
+    /** Set up the health component */
     public void setupHealthComponent() {
         Logger healtLog = Logger.getLogger(Game.getHero().getClass().getName());
 
@@ -113,6 +117,7 @@ public abstract class Hero extends Entity implements ILevelUp {
         healtLog.info("\u001B[33m" + "Health = " + health + "\u001B[31m");
     }
 
+    /** Set up the hitbox component */
     public void setupHitBoxComponent() {
         new HitboxComponent(
                 this,
@@ -124,12 +129,19 @@ public abstract class Hero extends Entity implements ILevelUp {
                 (you, other, direction) -> setupVelocityComponent());
     }
 
+    /** Set up the xp component */
     public void setupXPComponent() {
         heroXP = new XPComponent(this, this);
         heroXP.setCurrentLevel(0);
         heroXP.setCurrentXP(0);
     }
 
+    /**
+     * Set up the playable component
+     *
+     * @param currentLevel the current level of the hero
+     * @param currentXP the amount of xp the hero have
+     */
     public void setupXPComponent(int currentLevel, long currentXP) {
         heroXP = new XPComponent(this, this);
         heroXP.setCurrentLevel(currentLevel);

@@ -22,17 +22,16 @@ public class Ghost extends Entity {
     private final String pathToRunLeft = "character/ghost/idleLeft/left0.png";
     private final String pathToRunRight = "character/ghost/idleRight/right0.png";
     private Boolean hasAnimationComponent = true;
-    private AIComponent ai;
-    private AnimationComponent ac;
+    private transient AIComponent ai;
+    private transient AnimationComponent ac;
     private Boolean followWalk = false;
 
     public Ghost() {
         super();
         new PositionComponent(this);
         setupVelocityComponent();
-        ai = new AIComponent(this);
-        ai.setIdleAI(new RadiusWalk(0.5f, 0));
-        setAnimationComponent();
+        setupAIComponent();
+        setupAnimationComponent();
     }
 
     /** Is called in the Game.java and switches the walking behavior of the ghost by time. */
@@ -51,7 +50,14 @@ public class Ghost extends Entity {
         }
     }
 
-    private void setupVelocityComponent() {
+    /** Set up the AI component */
+    public void setupAIComponent() {
+        ai = new AIComponent(this);
+        ai.setIdleAI(new RadiusWalk(0.5f, 0));
+    }
+
+    /** Set up the velocity component */
+    public void setupVelocityComponent() {
         if (hasAnimationComponent) {
             Animation moveRight = AnimationBuilder.buildAnimation(this.pathToRunRight);
             Animation moveLeft = AnimationBuilder.buildAnimation(this.pathToRunLeft);
@@ -63,7 +69,8 @@ public class Ghost extends Entity {
         }
     }
 
-    private void setAnimationComponent() {
+    /** Set up the animation component */
+    public void setupAnimationComponent() {
         if (!hasAnimationComponent) {
             Animation idleRight = AnimationBuilder.buildAnimation(this.pathToIdleRightinvisible);
             Animation idleLeft = AnimationBuilder.buildAnimation(this.pathToIdleLeftinvisible);
@@ -75,10 +82,9 @@ public class Ghost extends Entity {
         }
     }
 
-    public AIComponent getAi() {
-        return ai;
-    }
-
+    /**
+     * @return if follow walk is active
+     */
     public Boolean getFollowWalk() {
         return followWalk;
     }
@@ -96,7 +102,7 @@ public class Ghost extends Entity {
             xSpeed = 0.25f;
             ySpeed = 0.25f;
             setupVelocityComponent();
-            setAnimationComponent();
+            setupAnimationComponent();
             followWalk = true;
         }
     }
@@ -114,7 +120,7 @@ public class Ghost extends Entity {
             xSpeed = 0.05f;
             ySpeed = 0.05f;
             setupVelocityComponent();
-            setAnimationComponent();
+            setupAnimationComponent();
             new PositionComponent(this);
             ai.setIdleAI(new RadiusWalk(1.0f, 0));
             followWalk = false;
@@ -124,7 +130,7 @@ public class Ghost extends Entity {
     private void ghostInvisible() {
         hasAnimationComponent = false;
         setupVelocityComponent();
-        setAnimationComponent();
+        setupAnimationComponent();
         ai.setIdleAI(new RadiusWalk(1.0f, 0));
         followWalk = false;
     }

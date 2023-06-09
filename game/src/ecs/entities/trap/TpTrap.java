@@ -21,6 +21,7 @@ public class TpTrap extends Trap {
         this.hero = hero;
     }
 
+    /** Set up the animation component */
     public void setupAnimationComponent(boolean b) {
         Animation active = AnimationBuilder.buildAnimation(this.active);
         if (!b) {
@@ -30,6 +31,7 @@ public class TpTrap extends Trap {
         }
     }
 
+    /** Set up the hitbox component */
     public void setupHitboxComponent() {
         new HitboxComponent(
                 this,

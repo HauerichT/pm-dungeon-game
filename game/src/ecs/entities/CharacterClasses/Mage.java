@@ -32,6 +32,7 @@ public class Mage extends Hero {
         setupSkillComponent();
     }
 
+    /** Set up the skill component */
     public void setupSkillComponent() {
         skillComponent = new SkillComponent(this);
 

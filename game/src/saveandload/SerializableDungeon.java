@@ -64,6 +64,7 @@ public class SerializableDungeon {
 
         // Loads the saved entities with their components
         for (int i = 0; i < data.getEntities().size(); i++) {
+            System.out.println(data.getEntities().get(i).getClass().getName());
             if (data.getEntities().get(i).getClass().getName().contains("monster")) {
                 Monster e = (Monster) data.getEntities().get(i);
                 e.setNewComponentMap();
@@ -114,7 +115,6 @@ public class SerializableDungeon {
                 e.setupHitBoxComponent();
                 e.setupXPComponent(data.getHeroXPLevel(), data.getHeroXP());
                 e.onLevelUp(data.getHeroXPLevel());
-
                 e.setupSkillComponent();
                 Game.addEntity(e);
                 Game.setHero(e);
@@ -148,6 +148,22 @@ public class SerializableDungeon {
                 e.setupSkillComponent();
                 Game.addEntity(e);
                 Game.setHero(e);
+            } else if (data.getEntities().get(i).getClass().getName().contains("Gravestone")) {
+                Gravestone e = (Gravestone) data.getEntities().get(i);
+                e.setNewComponentMap();
+                new PositionComponent(e);
+                e.setupRandomEntityGenerator();
+                e.setupHitboxComponent();
+                e.setupAnimationComponent(false);
+                Game.addEntity(e);
+            } else if (data.getEntities().get(i).getClass().getName().contains("Ghost")) {
+                Ghost e = (Ghost) data.getEntities().get(i);
+                e.setNewComponentMap();
+                new PositionComponent(e);
+                e.setupVelocityComponent();
+                e.setupAIComponent();
+                e.setupAnimationComponent();
+                Game.addEntity(e);
             }
         }
         new File("saveGame.ser").delete();

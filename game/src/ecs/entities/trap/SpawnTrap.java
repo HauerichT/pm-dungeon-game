@@ -23,6 +23,7 @@ public class SpawnTrap extends Trap {
         setupHitboxComponent();
     }
 
+    /** Set up the animation component */
     public void setupAnimationComponent(int a) {
         Animation active = AnimationBuilder.buildAnimation(this.active);
         if (a == 0) {
@@ -37,6 +38,7 @@ public class SpawnTrap extends Trap {
         }
     }
 
+    /** Set up the hitbox component */
     public void setupHitboxComponent() {
         new HitboxComponent(
                 this,
