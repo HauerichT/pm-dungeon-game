@@ -101,7 +101,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private static boolean charakterChooseBool = false;
     private static ScreenInventory<Actor> inv;
 
-    private static boolean healthbar = false;
+    private static boolean HpAndMp = false;
 
 
 
@@ -112,7 +112,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private static GameOver<Actor> gameOver;
 
 
-    private static Healthbar<Actor> HealthBarHero;
+    private static HealthAndMana<Actor> HpAndMpHero;
 
     public static void main(String[] args) {
         // start the game
@@ -176,27 +176,28 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         updateMeleeSkills();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         Hero.addMana(0.005f);
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)){
             controller.remove(pauseMenu);
-            controller.remove(HealthBarHero);
+            controller.remove(HpAndMpHero);
             pauseMenu = new PauseMenu<>();
             controller.add(pauseMenu);
             togglePause();
         }
         if (gameOverMenuActive) {
-            healthbar = false;
-            HealthBarHero.hideMenu();
-            HealthBarHero = new Healthbar<>();
-            controller.add(HealthBarHero);
+            HpAndMp = false;
+            HpAndMpHero.hideMenu();
+            HpAndMpHero = new HealthAndMana<>();
+            controller.add(HpAndMpHero);
             gameOver = new GameOver<>();
             controller.add(gameOver);
             toggleGameOver();
             gameOverMenuActive = false;
         }
-        if (healthbar){
-            HealthBarHero.hideMenu();
-            HealthBarHero = new Healthbar<>();
-            controller.add(HealthBarHero);
+        if (HpAndMp){
+            HpAndMpHero.hideMenu();
+            HpAndMpHero = new HealthAndMana<>(Hero.getMana());
+            controller.add(HpAndMpHero);
         }
 
 
@@ -305,13 +306,13 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
         if (pauseMenu != null) {
             if (paused){
-                healthbar = false;
+                HpAndMp = false;
                 pauseMenu.showMenu();
 
             }
             else{
                 pauseMenu.hideMenu();
-                healthbar = true;
+                HpAndMp = true;
 
             }
         }
@@ -442,9 +443,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         Game.levelCounter = levelCounter;
     }
 
-    public static void setHealthBarHero(Healthbar<Actor> healthBarHero) {
-        HealthBarHero = healthBarHero;
-        healthbar = true;
+    public static void setHPandMPbarHero() {
+        HpAndMpHero = new HealthAndMana<>(Hero.getHealth(),Hero.getMana());
+        HpAndMp = true;
     }
 
 

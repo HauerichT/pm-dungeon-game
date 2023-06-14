@@ -1,13 +1,10 @@
 package ecs.entities;
 
-import configuration.hud.GameOver;
-import configuration.hud.Healthbar;
 import dslToGame.AnimationBuilder;
 import ecs.components.*;
 import ecs.components.AnimationComponent;
 import ecs.components.PositionComponent;
 import ecs.components.VelocityComponent;
-import ecs.components.skill.*;
 import ecs.components.xp.ILevelUp;
 import ecs.components.xp.XPComponent;
 import graphic.Animation;
@@ -22,7 +19,8 @@ public abstract class Hero extends Entity implements ILevelUp {
 
 
     private static int health;
-    private static float mana = 3;
+    private static float mana;
+    private static float startMana;
     private float xSpeed;
     private float ySpeed;
     String pathToRunRight;
@@ -63,6 +61,7 @@ public abstract class Hero extends Entity implements ILevelUp {
         this.pathToIdleRight = idleRight;
         this.health = health;
         this.mana = mana;
+        this.startMana = mana;
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
         psc = new PositionComponent(this);
@@ -133,11 +132,9 @@ public abstract class Hero extends Entity implements ILevelUp {
      * @param manaPerFrame float value to add Mana to the Hero
      */
     public static void addMana(float manaPerFrame) {
-        Logger manalog = Logger.getLogger(Game.getHero().getClass().getName());
-        if (mana < 20) {
+        if (mana < startMana) {
             mana += manaPerFrame;
         } else {
-            manalog.info("Dein Mana ist voll");
         }
     }
 

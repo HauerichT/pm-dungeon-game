@@ -192,12 +192,9 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                                 for (Entity allEntity : allEntities) {
                                     Game.removeEntity(allEntity);
                                 }
-                                Healthbar<Actor> healthbar = new Healthbar<>(Hero.getHealth());
-                                Game.setHealthBarHero(healthbar);
+                                Game.setHPandMPbarHero();
                                 hideMenu();
                                 Game.lvUP(0);
-                                //PauseMenu<Actor> pauseMenu = new PauseMenu<>();
-                                //Game.setPauseMenu(pauseMenu);
                                 Game.systems.forEach(ECS_System::toggleRun);
                             }
                         },
@@ -228,8 +225,7 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                                 }
                                 hideMenu();
                                 data.loadGame();
-                                Healthbar<Actor> healthbar = new Healthbar<>(Hero.getHealth());
-                                Game.setHealthBarHero(healthbar);
+                                Game.setHPandMPbarHero();
                                 Game.systems.forEach(ECS_System::toggleRun);
 
                             }

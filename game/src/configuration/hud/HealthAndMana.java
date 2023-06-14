@@ -4,36 +4,42 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import controller.ScreenController;
 import ecs.components.HealthComponent;
-import ecs.components.PositionComponent;
-import ecs.components.ai.AIComponent;
-import graphic.Painter;
 import starter.Game;
-import tools.Constants;
 import tools.Point;
 
-public class Healthbar<T extends Actor> extends ScreenController<T> {
+public class HealthAndMana<T extends Actor> extends ScreenController<T> {
 
 
     private ScreenImage healthbarback;
     private ScreenImage healthbar;
 
+    private ScreenImage manaBarback;
+    private ScreenImage manabar;
+
 
     private static int heroStartHealth;
+    private static float heroStartMana;
+    private static float heroMana;
 
     /** Creates a new PauseMenu with a new Spritebatch */
-    public Healthbar() {
+    public HealthAndMana() {
         this(new SpriteBatch());
     }
-    public Healthbar(int health) {
+    public HealthAndMana(int health, float mana) {
         this(new SpriteBatch());
         this.heroStartHealth = 100/health;
+        this.heroStartMana = 100/mana;
+    }
+    public HealthAndMana(float mana) {
+        this(new SpriteBatch());
+        this.heroMana = mana;
     }
 
     /** Creates a new PauseMenu with a given Spritebatch */
-    public Healthbar(SpriteBatch batch) {
+    public HealthAndMana(SpriteBatch batch) {
         super(batch);
 
-
+        //Healthbar
         if (Game.getHero() != null) {
             // Game Over Screen Text
 
@@ -56,13 +62,24 @@ public class Healthbar<T extends Actor> extends ScreenController<T> {
                 remove((T)healthbar);
             }
 
+            manaBarback = new ScreenImage("hud/ManaBarHud/ManaBarBack.png", new Point(2, 72));
+            manaBarback.setScale(0.54F, 0.4F);
+            remove((T) manaBarback);
+            add((T) manaBarback);
 
+
+            manabar = new ScreenImage("hud/ManaBarHud/Manapoints.png", new Point(7, 75));
+            manabar.setScale((heroStartMana*heroMana) /1.96F, 0.45F);
+            add((T) manabar);
+            if (healh.getCurrentHealthpoints() <= 0) {
+                remove((T) manabar);
+            }
             showMenu();
-
 
         }
 
     }
+
 
     /** shows the Menu */
     public void showMenu() {
