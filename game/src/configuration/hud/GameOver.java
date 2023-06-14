@@ -11,6 +11,8 @@ import ecs.entities.CharacterClasses.Mage;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
 import java.util.Set;
+
+import ecs.systems.ECS_System;
 import starter.Game;
 import tools.Point;
 
@@ -82,8 +84,10 @@ public class GameOver<T extends Actor> extends ScreenController<T> {
                                 ChooseCharakter<Actor> charakterMenu = new ChooseCharakter<>();
                                 Game.setCharakterMenu(charakterMenu);
                                 Game.lvUP(0);
+                                Game.setLevelCounter(0);
                                 Hero hero = new Mage();
                                 Game.setHero(hero);
+                                Game.systems.forEach(ECS_System::toggleRun);
                                 hideMenu();
                             }
                         },

@@ -10,10 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import configuration.Configuration;
 import configuration.KeyboardConfig;
-import configuration.hud.ChooseCharakter;
-import configuration.hud.GameOver;
-import configuration.hud.LVup;
-import configuration.hud.PauseMenu;
+import configuration.hud.*;
 import controller.AbstractController;
 import controller.SystemController;
 import ecs.components.HealthComponent;
@@ -101,9 +98,10 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     private static RandomEntityGenerator randomEntityGenerator;
     private static boolean gameOverMenuActive = false;
-    private static boolean pauseMenuActive = false;
     private static boolean charakterChooseBool = false;
     private static ScreenInventory<Actor> inv;
+
+    private static boolean healthbar = false;
 
 
 
@@ -112,6 +110,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     private Logger gameLogger;
     private static GameOver<Actor> gameOver;
+
+
+    private static Healthbar<Actor> HealthBarHero;
 
     public static void main(String[] args) {
         // start the game
@@ -175,17 +176,30 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         updateMeleeSkills();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         Hero.addMana(0.005f);
-        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
-
+        if (Gdx.input.isKeyJustPressed(Input.Keys.P)){
+            controller.remove(pauseMenu);
+            controller.remove(HealthBarHero);
+            pauseMenu = new PauseMenu<>();
+            controller.add(pauseMenu);
+            togglePause();
+        }
         if (gameOverMenuActive) {
+            healthbar = false;
+            HealthBarHero.hideMenu();
+            HealthBarHero = new Healthbar<>();
+            controller.add(HealthBarHero);
+            gameOver = new GameOver<>();
             controller.add(gameOver);
             toggleGameOver();
             gameOverMenuActive = false;
         }
-        if (pauseMenuActive) {
-            controller.add(pauseMenu);
-            pauseMenuActive = false;
+        if (healthbar){
+            HealthBarHero.hideMenu();
+            HealthBarHero = new Healthbar<>();
+            controller.add(HealthBarHero);
         }
+
+
         if (charakterChooseBool) {
             controller.add(charakterMenu);
             charakterChooseBool = false;
@@ -290,8 +304,16 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             systems.forEach(ECS_System::toggleRun);
         }
         if (pauseMenu != null) {
-            if (paused) pauseMenu.showMenu();
-            else pauseMenu.hideMenu();
+            if (paused){
+                healthbar = false;
+                pauseMenu.showMenu();
+
+            }
+            else{
+                pauseMenu.hideMenu();
+                healthbar = true;
+
+            }
         }
     }
 
@@ -420,6 +442,12 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         Game.levelCounter = levelCounter;
     }
 
+    public static void setHealthBarHero(Healthbar<Actor> healthBarHero) {
+        HealthBarHero = healthBarHero;
+        healthbar = true;
+    }
+
+
     /**
      * set the reference of the playable character careful: old hero will not be removed from the
      * game
@@ -435,8 +463,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      *
      * @param gameOver instance of the GameOver class to
      */
-    public static void setGameOver(GameOver<Actor> gameOver) {
-        Game.gameOver = gameOver;
+    public static void setGameOver() {
         gameOverMenuActive = true;
     }
 
@@ -445,10 +472,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      *
      * @param pauseMenu instance of the PauseMenu class
      */
-    public static void setPauseMenu(PauseMenu<Actor> pauseMenu) {
-        Game.pauseMenu = pauseMenu;
-        pauseMenuActive = true;
-    }
 
     /**
      * setting the Charakter Menu Screen

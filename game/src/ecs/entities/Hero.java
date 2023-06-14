@@ -1,6 +1,7 @@
 package ecs.entities;
 
 import configuration.hud.GameOver;
+import configuration.hud.Healthbar;
 import dslToGame.AnimationBuilder;
 import ecs.components.*;
 import ecs.components.AnimationComponent;
@@ -19,7 +20,8 @@ import starter.Game;
  */
 public abstract class Hero extends Entity implements ILevelUp {
 
-    private int health;
+
+    private static int health;
     private static float mana = 3;
     private float xSpeed;
     private float ySpeed;
@@ -93,7 +95,10 @@ public abstract class Hero extends Entity implements ILevelUp {
         Logger healtLog = Logger.getLogger(Game.getHero().getClass().getName());
 
         hc = new HealthComponent(this);
-        hc.setOnDeath(entity -> Game.setGameOver(new GameOver<>()));
+
+        hc.setOnDeath(entity -> Game.setGameOver());
+
+
 
         int health = 20;
         hc.setMaximalHealthpoints(health);
@@ -154,4 +159,11 @@ public abstract class Hero extends Entity implements ILevelUp {
     public static float getMana() {
         return mana;
     }
+
+    public static int getHealth() {
+        return health;
+    }
+
+
+
 }
