@@ -26,6 +26,7 @@ import ecs.components.skill.Skill;
 import ecs.entities.*;
 import ecs.entities.CharacterClasses.Mage;
 import ecs.entities.monster.BossMonster;
+import ecs.entities.monster.MonsterChest;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
@@ -240,6 +241,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         randomEntityGenerator.spwanRandomItems();
         randomEntityGenerator.spawnGhostAndGravestone();
         getHero().ifPresent(this::placeOnLevelStart);
+
         if (Game.getLevelCounter() == 5) {
             bMonster = new BossMonster();
         }

@@ -2,6 +2,7 @@ package ecs.items;
 
 import ecs.components.*;
 import ecs.entities.Entity;
+import tools.Point;
 
 /** Class which creates all needed Components for a basic WorldItem */
 public class WorldItemBuilder {
@@ -22,6 +23,26 @@ public class WorldItemBuilder {
                 (a, b, direction) -> {
                     itemData.triggerCollect(a, b);
                 });
+        return droppedItem;
+    }
+    /**
+     * Creates an Entity which then can be added to the game
+     *
+     * @param itemData the Data which should be given to the world Item
+     * @param point point to set the item on a position
+     * @return the newly created Entity
+     */
+    public static Entity buildWorldItemOnPoint(ItemData itemData, Point point) {
+        Entity droppedItem = new Entity();
+        PositionComponent pc = new PositionComponent(droppedItem);
+        pc.setPosition(point);
+        new AnimationComponent(droppedItem, itemData.getWorldTexture());
+        new ItemComponent(droppedItem, itemData);
+        HitboxComponent component = new HitboxComponent(droppedItem);
+        component.setiCollideEnter(
+            (a, b, direction) -> {
+                itemData.triggerCollect(a, b);
+            });
         return droppedItem;
     }
 }

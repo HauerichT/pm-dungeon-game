@@ -12,6 +12,8 @@ import ecs.entities.CharacterClasses.Rogue;
 import ecs.entities.CharacterClasses.Warrior;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
+import ecs.entities.Monster;
+import ecs.entities.monster.MonsterChest;
 import ecs.systems.ECS_System;
 import java.io.File;
 import java.util.Set;
@@ -193,6 +195,8 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                                     Game.removeEntity(allEntity);
                                 }
                                 Game.setHPandMPbarHero();
+                                Entity monsterChest = new MonsterChest();
+                                Game.addEntity(monsterChest);
                                 hideMenu();
                                 Game.lvUP(0);
                                 Game.systems.forEach(ECS_System::toggleRun);
