@@ -26,7 +26,6 @@ import ecs.components.skill.Skill;
 import ecs.entities.*;
 import ecs.entities.CharacterClasses.Mage;
 import ecs.entities.monster.BossMonster;
-import ecs.entities.monster.MonsterChest;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
@@ -103,13 +102,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     private static boolean HpAndMp = false;
 
-
     /** Counter to save current level */
     private static int levelCounter;
 
     private Logger gameLogger;
     private static GameOver<Actor> gameOver;
-
 
     private static HealthAndMana<Actor> HpAndMpHero;
 
@@ -176,7 +173,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         Hero.addMana(0.005f);
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.P)){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
             controller.remove(pauseMenu);
             controller.remove(HpAndMpHero);
             pauseMenu = new PauseMenu<>();
@@ -193,12 +190,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             toggleGameOver();
             gameOverMenuActive = false;
         }
-        if (HpAndMp){
+        if (HpAndMp) {
             HpAndMpHero.hideMenu();
             HpAndMpHero = new HealthAndMana<>(Hero.getMana());
             controller.add(HpAndMpHero);
         }
-
 
         if (charakterChooseBool) {
             controller.add(charakterMenu);
@@ -297,15 +293,13 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             systems.forEach(ECS_System::toggleRun);
         }
         if (pauseMenu != null) {
-            if (paused){
+            if (paused) {
                 HpAndMp = false;
                 pauseMenu.showMenu();
 
-            }
-            else{
+            } else {
                 pauseMenu.hideMenu();
                 HpAndMp = true;
-
             }
         }
     }
@@ -434,10 +428,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     }
 
     public static void setHPandMPbarHero() {
-        HpAndMpHero = new HealthAndMana<>(Hero.getHealth(),Hero.getMana());
+        HpAndMpHero = new HealthAndMana<>(Hero.getHealth(), Hero.getMana());
         HpAndMp = true;
     }
-
 
     /**
      * set the reference of the playable character careful: old hero will not be removed from the

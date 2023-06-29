@@ -6,7 +6,6 @@ import ecs.entities.items.Bag;
 import ecs.entities.items.HealPotion;
 import ecs.entities.items.StrengthPotion;
 import ecs.entities.items.Sword;
-import ecs.entities.monster.MonsterChest;
 import ecs.entities.monster.Skeleton;
 import ecs.entities.monster.Tot;
 import ecs.entities.monster.Zombie;
@@ -64,7 +63,6 @@ public class RandomEntityGenerator {
      */
     public void spawnRandomMonster() {
         int level = Game.getLevelCounter();
-
 
         int monsterAmount = random.nextInt(level / 2, (level / 2) + 1);
         boolean totCanBeSpawned = level > 10;

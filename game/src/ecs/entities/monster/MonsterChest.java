@@ -1,5 +1,8 @@
 package ecs.entities.monster;
 
+import static com.badlogic.gdx.math.MathUtils.random;
+import static ecs.entities.Chest.defaultInteractionRadius;
+
 import dslToGame.AnimationBuilder;
 import ecs.components.*;
 import ecs.components.ai.AIComponent;
@@ -15,15 +18,10 @@ import ecs.entities.Entity;
 import ecs.items.ItemData;
 import ecs.items.ItemDataGenerator;
 import graphic.Animation;
-import starter.Game;
-import tools.Point;
-
-
 import java.util.List;
 import java.util.stream.IntStream;
-
-import static com.badlogic.gdx.math.MathUtils.random;
-import static ecs.entities.Chest.defaultInteractionRadius;
+import starter.Game;
+import tools.Point;
 
 public class MonsterChest extends Entity {
     private transient XPComponent monsterXP;
@@ -32,7 +30,7 @@ public class MonsterChest extends Entity {
 
     private transient PositionComponent pos;
 
-    public MonsterChest(){
+    public MonsterChest() {
         super();
         setupAnimationComponent();
         setupPositionComponent();
@@ -40,33 +38,40 @@ public class MonsterChest extends Entity {
     }
 
     public void setupAnimationComponent() {
-        Animation idleRight = AnimationBuilder.buildAnimation("objects/treasurechest/chest_full_open_anim_f0.png");
-        Animation idleLeft = AnimationBuilder.buildAnimation("objects/treasurechest/chest_full_open_anim_f0.png");
+        Animation idleRight =
+                AnimationBuilder.buildAnimation(
+                        "objects/treasurechest/chest_full_open_anim_f0.png");
+        Animation idleLeft =
+                AnimationBuilder.buildAnimation(
+                        "objects/treasurechest/chest_full_open_anim_f0.png");
         new AnimationComponent(this, idleLeft, idleRight);
     }
-
 
     /** gives the Monster a new Position */
     public void setupPositionComponent() {
         pos = new PositionComponent(this);
     }
 
-    public void setupInteractionComponent(){
-        new InteractionComponent(this, defaultInteractionRadius, false, this::setupMonsterComponents);
+    public void setupInteractionComponent() {
+        new InteractionComponent(
+                this, defaultInteractionRadius, false, this::setupMonsterComponents);
     }
 
-    private void setupMonsterComponents(Entity entity){
+    private void setupMonsterComponents(Entity entity) {
         setupVelocityComponent();
         setupHealthComponent();
         setupHitboxComponent();
         setupXPComponent();
         setupAIComponent();
-
     }
 
     private void setupVelocityComponent() {
-        Animation moveRight = AnimationBuilder.buildAnimation("objects/treasurechest/chest_full_open_anim_f0.png");
-        Animation moveLeft = AnimationBuilder.buildAnimation("objects/treasurechest/chest_full_open_anim_f0.png");
+        Animation moveRight =
+                AnimationBuilder.buildAnimation(
+                        "objects/treasurechest/chest_full_open_anim_f0.png");
+        Animation moveLeft =
+                AnimationBuilder.buildAnimation(
+                        "objects/treasurechest/chest_full_open_anim_f0.png");
         new VelocityComponent(this, 0.2f, 0.2f, moveLeft, moveRight);
     }
 
@@ -77,12 +82,11 @@ public class MonsterChest extends Entity {
         ItemDataGenerator itemDataGenerator = new ItemDataGenerator();
 
         List<ItemData> itemData =
-            IntStream.range(0, random.nextInt(1, 3))
-                .mapToObj(i -> itemDataGenerator.generateItemData())
-                .toList();
+                IntStream.range(0, random.nextInt(1, 3))
+                        .mapToObj(i -> itemDataGenerator.generateItemData())
+                        .toList();
 
-
-        hc.setOnDeath(entity -> new Chest(itemData,pos.getPosition()));
+        hc.setOnDeath(entity -> new Chest(itemData, pos.getPosition()));
     }
 
     /** gives the Monster exp which it drops when it dies */
@@ -102,15 +106,14 @@ public class MonsterChest extends Entity {
         // ai.setIdleAI(idleAI);
 
         ai.setFightAI(
-            new MeleeAI(
-                0.8f,
-                new Skill(
-                    new MeleeSkill(
-                        "knight/melee",
-                        new Damage(5, DamageType.PHYSICAL, null),
-                        new Point(1, 1),
-                        SkillTools::getHeroPosition),
-                    3)));
+                new MeleeAI(
+                        0.8f,
+                        new Skill(
+                                new MeleeSkill(
+                                        "knight/melee",
+                                        new Damage(5, DamageType.PHYSICAL, null),
+                                        new Point(1, 1),
+                                        SkillTools::getHeroPosition),
+                                3)));
     }
-
 }

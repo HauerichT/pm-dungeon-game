@@ -66,7 +66,8 @@ public class SerializableDungeon {
         // Loads the saved entities with their components
         for (int i = 0; i < data.getEntities().size(); i++) {
             System.out.println(data.getEntities().get(i).getClass().getName());
-            if (data.getEntities().get(i).getClass().getName().contains("monster") && !data.getEntities().get(i).getClass().getName().contains("MonsterChest")) {
+            if (data.getEntities().get(i).getClass().getName().contains("monster")
+                    && !data.getEntities().get(i).getClass().getName().contains("MonsterChest")) {
                 Monster e = (Monster) data.getEntities().get(i);
                 e.setNewComponentMap();
                 e.setupPositionComponent();
@@ -165,7 +166,7 @@ public class SerializableDungeon {
                 e.setupAIComponent();
                 e.setupAnimationComponent();
                 Game.addEntity(e);
-            } else if(data.getEntities().get(i).getClass().getName().contains("MonsterChest")){
+            } else if (data.getEntities().get(i).getClass().getName().contains("MonsterChest")) {
                 MonsterChest e = (MonsterChest) data.getEntities().get(i);
                 e.setNewComponentMap();
                 e.setupAnimationComponent();

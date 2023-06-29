@@ -12,7 +12,6 @@ import ecs.entities.CharacterClasses.Rogue;
 import ecs.entities.CharacterClasses.Warrior;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
-import ecs.entities.Monster;
 import ecs.entities.monster.MonsterChest;
 import ecs.systems.ECS_System;
 import java.io.File;
@@ -198,8 +197,12 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                                     Game.lvUP(0);
                                     Game.systems.forEach(ECS_System::toggleRun);
                                 } else {
-                                    Logger noCharChoosed = Logger.getLogger(this.getClass().getName());
-                                    noCharChoosed.info("\u001B[33m" + "Pls choose a Charakter first" + "\u001B[31m");
+                                    Logger noCharChoosed =
+                                            Logger.getLogger(this.getClass().getName());
+                                    noCharChoosed.info(
+                                            "\u001B[33m"
+                                                    + "Pls choose a Charakter first"
+                                                    + "\u001B[31m");
                                 }
 
                                 Set<Entity> allEntities = Game.getEntities();
@@ -211,7 +214,6 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                                 Game.addEntity(monsterChest);
                                 hideMenu();
                                 Game.lvUP(0);
-
                             }
                         },
                         startButton.build());
