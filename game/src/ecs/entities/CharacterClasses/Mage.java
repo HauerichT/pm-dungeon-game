@@ -29,13 +29,11 @@ public class Mage extends Hero {
                 "character/Mage/runRight",
                 "character/Mage/idleLeft",
                 "character/Mage/idleRight");
-
         setupSkillComponent();
-        pc = new PlayableComponent(this);
-        pc.setSkillSlot4(firstSkill);
     }
 
-    private void setupSkillComponent() {
+    /** Set up the skill component */
+    public void setupSkillComponent() {
         skillComponent = new SkillComponent(this);
 
         firstSkill =
@@ -53,6 +51,9 @@ public class Mage extends Hero {
                                 new Damage(3, DamageType.MAGIC, this)),
                         10);
         skillComponent.addSkill(secondSkill);
+
+        pc = new PlayableComponent(this);
+        pc.setSkillSlot4(firstSkill);
     }
 
     /**

@@ -60,8 +60,7 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
         mageButton.setCheckedImage(
                 "hud/CharakterklassenHud/wizzardButton/wizzard_f_run_anim_f1.png");
         mageButton.setUpImage("hud/CharakterklassenHud/wizzardButton/wizzard_f_run_anim_f0.png");
-        mageButton.setDownImage(
-                "hud/CharakterklassenHud/wizzardButton/wizzard_f_run_anim_f2.png");
+        mageButton.setDownImage("hud/CharakterklassenHud/wizzardButton/wizzard_f_run_anim_f2.png");
 
         newMageButton =
                 new ScreenButton(
@@ -176,18 +175,31 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                         new TextButtonListener() {
                             @Override
                             public void clicked(InputEvent event, float x, float y) {
-                                if (charakter == 1) {
+                                if (newWarriorButton.isChecked()) {
                                     // Instanz von warrior
                                     Hero warrior = new Warrior();
                                     Game.setHero(warrior);
-                                } else if (charakter == 2) {
+                                    hideMenu();
+                                    Game.lvUP(0);
+                                    PauseMenu<Actor> pauseMenu = new PauseMenu<>();
+                                    Game.systems.forEach(ECS_System::toggleRun);
+                                } else if (newMageButton.isChecked()) {
                                     // Instanz von mage
                                     Hero mage = new Mage();
                                     Game.setHero(mage);
-                                } else if (charakter == 3) {
+                                    hideMenu();
+                                    Game.lvUP(0);
+                                    Game.systems.forEach(ECS_System::toggleRun);
+                                } else if (newRogueButton.isChecked()) {
                                     // Instanz von rogue
                                     Hero rogue = new Rogue();
                                     Game.setHero(rogue);
+                                    hideMenu();
+                                    Game.lvUP(0);
+                                    Game.systems.forEach(ECS_System::toggleRun);
+                                } else {
+                                    Logger noCharChoosed = Logger.getLogger(this.getClass().getName());
+                                    noCharChoosed.info("\u001B[33m" + "Pls choose a Charakter first" + "\u001B[31m");
                                 }
 
                                 Set<Entity> allEntities = Game.getEntities();
@@ -199,7 +211,7 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                                 Game.addEntity(monsterChest);
                                 hideMenu();
                                 Game.lvUP(0);
-                                Game.systems.forEach(ECS_System::toggleRun);
+
                             }
                         },
                         startButton.build());
@@ -231,7 +243,6 @@ public class ChooseCharakter<T extends Actor> extends ScreenController<T> {
                                 data.loadGame();
                                 Game.setHPandMPbarHero();
                                 Game.systems.forEach(ECS_System::toggleRun);
-
                             }
                         },
                         loadButton.build());

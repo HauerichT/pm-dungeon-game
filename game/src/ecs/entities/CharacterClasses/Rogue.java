@@ -33,12 +33,10 @@ public class Rogue extends Hero {
                 "character/Rogue/idleLeft",
                 "character/Rogue/idleRight");
         setupSkillComponent();
-        pc = new PlayableComponent(this);
-        pc.setSkillSlot1(firstSkill);
-        pc.setSkillSlot2(secondSkill);
     }
 
-    private void setupSkillComponent() {
+    /** Set up the skill component */
+    public void setupSkillComponent() {
         skillComponent = new SkillComponent(this);
 
         firstSkill =
@@ -55,11 +53,15 @@ public class Rogue extends Hero {
                         new BoomerangSkill(
                                 SkillTools::getCursorPositionAsPoint,
                                 new Damage(2, DamageType.PHYSICAL, this)),
-                        1);
+                        2.5f);
         skillComponent.addSkill(secondSkill);
 
         thirdSkill = new Skill(new SpeedSkill(4), 20);
         skillComponent.addSkill(thirdSkill);
+
+        pc = new PlayableComponent(this);
+        pc.setSkillSlot1(firstSkill);
+        pc.setSkillSlot2(secondSkill);
     }
 
     /**

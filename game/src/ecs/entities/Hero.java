@@ -34,8 +34,6 @@ public abstract class Hero extends Entity implements ILevelUp {
     private transient HealthComponent hc;
 
     /**
-     * Konstruktor
-     *
      * @param health of the Hero
      * @param mana of the Hero
      * @param xSpeed of the Hero
@@ -64,8 +62,8 @@ public abstract class Hero extends Entity implements ILevelUp {
         this.startMana = mana;
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
-        psc = new PositionComponent(this);
-        pc = new PlayableComponent(this);
+        setupPositionComponent();
+        setupPlayableComponent();
         setupInventoryComponent();
         setupHealthComponent();
         setupXPComponent();
@@ -74,23 +72,37 @@ public abstract class Hero extends Entity implements ILevelUp {
         setupHitBoxComponent();
     }
 
-    private void setupInventoryComponent() {
+    /** Set up the inventory component */
+    public void setupInventoryComponent() {
         inventory = new InventoryComponent(this, 5);
     }
 
-    private void setupVelocityComponent() {
+    /** Set up the position component */
+    public void setupPositionComponent() {
+        this.psc = new PositionComponent(this);
+    }
+
+    /** Set up the playable component */
+    public void setupPlayableComponent() {
+        this.pc = new PlayableComponent(this);
+    }
+
+    /** Set up the velocity component */
+    public void setupVelocityComponent() {
         Animation moveRight = AnimationBuilder.buildAnimation(pathToRunRight);
         Animation moveLeft = AnimationBuilder.buildAnimation(pathToRunLeft);
         new VelocityComponent(this, xSpeed, ySpeed, moveLeft, moveRight);
     }
 
-    private void setupAnimationComponent() {
+    /** Set up the animation component */
+    public void setupAnimationComponent() {
         Animation idleRight = AnimationBuilder.buildAnimation(pathToIdleRight);
         Animation idleLeft = AnimationBuilder.buildAnimation(pathToIdleLeft);
         new AnimationComponent(this, idleLeft, idleRight);
     }
 
-    private void setupHealthComponent() {
+    /** Set up the health component */
+    public void setupHealthComponent() {
         Logger healtLog = Logger.getLogger(Game.getHero().getClass().getName());
 
         hc = new HealthComponent(this);
@@ -109,7 +121,8 @@ public abstract class Hero extends Entity implements ILevelUp {
         healtLog.info("\u001B[33m" + "Health = " + health + "\u001B[31m");
     }
 
-    private void setupHitBoxComponent() {
+    /** Set up the hitbox component */
+    public void setupHitBoxComponent() {
         new HitboxComponent(
                 this,
                 (you, other, direction) -> {
@@ -120,10 +133,23 @@ public abstract class Hero extends Entity implements ILevelUp {
                 (you, other, direction) -> setupVelocityComponent());
     }
 
-    private void setupXPComponent() {
+    /** Set up the xp component */
+    public void setupXPComponent() {
         heroXP = new XPComponent(this, this);
         heroXP.setCurrentLevel(0);
         heroXP.setCurrentXP(0);
+    }
+
+    /**
+     * Set up the playable component
+     *
+     * @param currentLevel the current level of the hero
+     * @param currentXP the amount of xp the hero have
+     */
+    public void setupXPComponent(int currentLevel, long currentXP) {
+        heroXP = new XPComponent(this, this);
+        heroXP.setCurrentLevel(currentLevel);
+        heroXP.setCurrentXP(currentXP);
     }
 
     /**
@@ -151,7 +177,7 @@ public abstract class Hero extends Entity implements ILevelUp {
     }
 
     /**
-     * @return the actuel mana of the Hero
+     * @return the current mana of the Hero
      */
     public static float getMana() {
         return mana;

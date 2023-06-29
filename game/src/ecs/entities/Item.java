@@ -9,9 +9,20 @@ import java.util.List;
 
 public abstract class Item extends Entity {
 
+    private final String pathToTexture;
+    private final String name;
+    private final String description;
+
     public Item(String pathToTexture, String name, String description) {
         super();
+        this.pathToTexture = pathToTexture;
+        this.name = name;
+        this.description = description;
+        setupItemData();
+    }
 
+    /** Set up the item data */
+    public void setupItemData() {
         ItemData item =
                 new ItemData(
                         ItemType.Active,

@@ -31,7 +31,6 @@ import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
 import graphic.hud.ScreenInventory;
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
@@ -103,7 +102,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private static ScreenInventory<Actor> inv;
 
     private static boolean HpAndMp = false;
-
 
 
     /** Counter to save current level */
@@ -207,14 +205,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             charakterChooseBool = false;
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.X) && !new File("saveGame.ser").exists()) {
-            serializableDungeon.saveGame();
-            gameLogger.info("Spielstand gespeichert! Spiel wird verlassen...");
-            Gdx.app.exit();
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.X) && new File("saveGame.ser").exists()) {
-            gameLogger.info("Spielstand bereits gespeichert!");
-        }
-
         if (ghost != null) {
             counterGhost++;
             if (counterGhost == 200) {
@@ -222,7 +212,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
                 counterGhost = 0;
             }
         }
-        if (bMonster != null && bMonsterMeeleAI == false) {
+        if (bMonster != null && !bMonsterMeeleAI) {
             HealthComponent h =
                     (HealthComponent) bMonster.getComponent(HealthComponent.class).orElseThrow();
             if (h.getCurrentHealthpoints() <= h.getMaximalHealthpoints() / 2) {
@@ -243,7 +233,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         getHero().ifPresent(this::placeOnLevelStart);
 
         if (Game.getLevelCounter() == 5) {
-            bMonster = new BossMonster();
+            if (Game.getLevelCounter() == 6) {
+                    bMonster = new BossMonster();
+            }
         }
     }
 
@@ -438,9 +430,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public static int getLevelCounter() {
         return levelCounter;
     }
-    /**
-     * set current level
-     */
+    /** set current level */
     public static void setLevelCounter(int levelCounter) {
         Game.levelCounter = levelCounter;
     }

@@ -1,10 +1,14 @@
 package saveandload;
 
 import ecs.components.PositionComponent;
+import ecs.components.xp.XPComponent;
 import ecs.entities.*;
 import ecs.entities.CharacterClasses.Mage;
 import ecs.entities.CharacterClasses.Rogue;
 import ecs.entities.CharacterClasses.Warrior;
+import ecs.entities.trap.SpawnTrap;
+import ecs.entities.trap.SpikeTrap;
+import ecs.entities.trap.TpTrap;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,12 +18,19 @@ import starter.Game;
 /** SerializableDungeon is a class which allows to save and load a game */
 public class SerializableDungeon {
     private SerializableDungeonData data = new SerializableDungeonData();
-    private Logger serLogger = Logger.getLogger(this.getClass().getName());
+    private final Logger serLogger = Logger.getLogger(this.getClass().getName());
 
     /** Saves the current game */
     public void saveGame() {
         // Saves current level count
         data.setLevel(Game.getLevelCounter());
+        Game.getHero()
+                .flatMap(hero -> hero.getComponent(XPComponent.class))
+                .ifPresent(
+                        xp -> {
+                            data.setHeroXPLevel((int) ((XPComponent) xp).getCurrentLevel());
+                            data.setHeroXP(((XPComponent) xp).getCurrentXP());
+                        });
 
         // Saves current entities
         List<Entity> entities = new ArrayList<>(Game.getEntities());
@@ -39,7 +50,6 @@ public class SerializableDungeon {
 
     /** Loads the entities of the last saved game in new game */
     public void loadGame() {
-
         FileInputStream fis;
         ObjectInputStream in;
         try {
@@ -49,12 +59,14 @@ public class SerializableDungeon {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+
         Game.setLevelCounter(data.getLevel());
+
+        // Loads the saved entities with their components
         for (int i = 0; i < data.getEntities().size(); i++) {
-            System.out.println(data.getEntities().get(i));
+            System.out.println(data.getEntities().get(i).getClass().getName());
             if (data.getEntities().get(i).getClass().getName().contains("monster")) {
                 Monster e = (Monster) data.getEntities().get(i);
-
                 e.setNewComponentMap();
                 e.setupPositionComponent();
                 e.setupHitboxComponent();
@@ -64,24 +76,94 @@ public class SerializableDungeon {
                 e.setupHealthComponent();
                 e.setupAIComponent();
                 Game.addEntity(e);
-            } else if (data.getEntities().get(i).getClass().getName().contains("item")) {
+            } else if (data.getEntities().get(i).getClass().getName().contains("items")) {
                 Item e = (Item) data.getEntities().get(i);
                 e.setNewComponentMap();
+                e.setupItemData();
                 new PositionComponent(e);
                 Game.addEntity(e);
-            } else if (data.getEntities().get(i).getClass().getName().contains("trap")) {
-                Trap e = (Trap) data.getEntities().get(i);
-
+            } else if (data.getEntities().get(i).getClass().getName().contains("TpTrap")) {
+                TpTrap e = (TpTrap) data.getEntities().get(i);
                 e.setNewComponentMap();
-
                 new PositionComponent(e);
+                e.setupAnimationComponent(false);
+                e.setupHitboxComponent();
+                Game.addEntity(e);
+            } else if (data.getEntities().get(i).getClass().getName().contains("SpikeTrap")) {
+                SpikeTrap e = (SpikeTrap) data.getEntities().get(i);
+                e.setNewComponentMap();
+                new PositionComponent(e);
+                e.setupAnimationComponent(0);
+                e.setupHitboxComponent();
+                Game.addEntity(e);
+            } else if (data.getEntities().get(i).getClass().getName().contains("SpawnTrap")) {
+                SpawnTrap e = (SpawnTrap) data.getEntities().get(i);
+                e.setNewComponentMap();
+                new PositionComponent(e);
+                e.setupAnimationComponent(0);
+                e.setupHitboxComponent();
                 Game.addEntity(e);
             } else if (data.getEntities().get(i).getClass().getName().contains("Mage")) {
-                Game.setHero(new Mage());
+                Mage e = (Mage) data.getEntities().get(i);
+                e.setNewComponentMap();
+                e.setupPositionComponent();
+                e.setupPlayableComponent();
+                e.setupInventoryComponent();
+                e.setupVelocityComponent();
+                e.setupAnimationComponent();
+                e.setupHealthComponent();
+                e.setupHitBoxComponent();
+                e.setupXPComponent(data.getHeroXPLevel(), data.getHeroXP());
+                e.onLevelUp(data.getHeroXPLevel());
+                e.setupSkillComponent();
+                Game.addEntity(e);
+                Game.setHero(e);
             } else if (data.getEntities().get(i).getClass().getName().contains("Rogue")) {
-                Game.setHero(new Rogue());
+                Rogue e = (Rogue) data.getEntities().get(i);
+                e.setNewComponentMap();
+                e.setupPositionComponent();
+                e.setupPlayableComponent();
+                e.setupInventoryComponent();
+                e.setupVelocityComponent();
+                e.setupAnimationComponent();
+                e.setupHealthComponent();
+                e.setupHitBoxComponent();
+                e.setupXPComponent(data.getHeroXPLevel(), data.getHeroXP());
+                e.onLevelUp(data.getHeroXPLevel());
+                e.setupSkillComponent();
+                Game.addEntity(e);
+                Game.setHero(e);
             } else if (data.getEntities().get(i).getClass().getName().contains("Warrior")) {
-                Game.setHero(new Warrior());
+                Warrior e = (Warrior) data.getEntities().get(i);
+                e.setNewComponentMap();
+                e.setupPositionComponent();
+                e.setupPlayableComponent();
+                e.setupInventoryComponent();
+                e.setupVelocityComponent();
+                e.setupAnimationComponent();
+                e.setupHealthComponent();
+                e.setupHitBoxComponent();
+                e.setupXPComponent(data.getHeroXPLevel(), data.getHeroXP());
+                e.onLevelUp(data.getHeroXPLevel());
+                e.setupSkillComponent();
+                Game.addEntity(e);
+                Game.setHero(e);
+            } else if (data.getEntities().get(i).getClass().getName().contains("Gravestone")) {
+                Gravestone e = (Gravestone) data.getEntities().get(i);
+                e.setNewComponentMap();
+                new PositionComponent(e);
+                e.setupRandomEntityGenerator();
+                e.setupHitboxComponent();
+                e.setupAnimationComponent(false);
+                Game.addEntity(e);
+            } else if (data.getEntities().get(i).getClass().getName().contains("Ghost")) {
+                Ghost e = (Ghost) data.getEntities().get(i);
+                e.setNewComponentMap();
+                new PositionComponent(e);
+                e.setupVelocityComponent();
+                e.setupAIComponent();
+                e.setupAnimationComponent();
+                Game.addEntity(e);
             }
         }
         new File("saveGame.ser").delete();
