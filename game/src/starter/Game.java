@@ -214,7 +214,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         randomEntityGenerator.spwanRandomItems();
         randomEntityGenerator.spawnGhostAndGravestone();
         getHero().ifPresent(this::placeOnLevelStart);
-        if (Game.getLevelCounter() == 5) {
+        if (Game.getLevelCounter() == 6) {
             bMonster = new BossMonster();
         }
     }

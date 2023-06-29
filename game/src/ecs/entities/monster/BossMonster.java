@@ -29,7 +29,7 @@ public class BossMonster extends Monster {
                 0.02f,
                 0.02f,
                 10,
-                20,
+                10,
                 200);
         setupRangeAIComponent();
     }
