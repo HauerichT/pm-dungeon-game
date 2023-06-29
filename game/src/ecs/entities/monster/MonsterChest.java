@@ -39,7 +39,7 @@ public class MonsterChest extends Entity {
         setupInteractionComponent();
     }
 
-    private void setupAnimationComponent() {
+    public void setupAnimationComponent() {
         Animation idleRight = AnimationBuilder.buildAnimation("objects/treasurechest/chest_full_open_anim_f0.png");
         Animation idleLeft = AnimationBuilder.buildAnimation("objects/treasurechest/chest_full_open_anim_f0.png");
         new AnimationComponent(this, idleLeft, idleRight);
@@ -51,7 +51,7 @@ public class MonsterChest extends Entity {
         pos = new PositionComponent(this);
     }
 
-    private void setupInteractionComponent(){
+    public void setupInteractionComponent(){
         new InteractionComponent(this, defaultInteractionRadius, false, this::setupMonsterComponents);
     }
 
