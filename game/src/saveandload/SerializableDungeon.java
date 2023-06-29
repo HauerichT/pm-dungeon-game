@@ -6,6 +6,7 @@ import ecs.entities.*;
 import ecs.entities.CharacterClasses.Mage;
 import ecs.entities.CharacterClasses.Rogue;
 import ecs.entities.CharacterClasses.Warrior;
+import ecs.entities.monster.MonsterChest;
 import ecs.entities.trap.SpawnTrap;
 import ecs.entities.trap.SpikeTrap;
 import ecs.entities.trap.TpTrap;
@@ -65,7 +66,8 @@ public class SerializableDungeon {
         // Loads the saved entities with their components
         for (int i = 0; i < data.getEntities().size(); i++) {
             System.out.println(data.getEntities().get(i).getClass().getName());
-            if (data.getEntities().get(i).getClass().getName().contains("monster")) {
+            if (data.getEntities().get(i).getClass().getName().contains("monster")
+                    && !data.getEntities().get(i).getClass().getName().contains("MonsterChest")) {
                 Monster e = (Monster) data.getEntities().get(i);
                 e.setNewComponentMap();
                 e.setupPositionComponent();
@@ -163,6 +165,13 @@ public class SerializableDungeon {
                 e.setupVelocityComponent();
                 e.setupAIComponent();
                 e.setupAnimationComponent();
+                Game.addEntity(e);
+            } else if (data.getEntities().get(i).getClass().getName().contains("MonsterChest")) {
+                MonsterChest e = (MonsterChest) data.getEntities().get(i);
+                e.setNewComponentMap();
+                e.setupAnimationComponent();
+                e.setupPositionComponent();
+                e.setupInteractionComponent();
                 Game.addEntity(e);
             }
         }

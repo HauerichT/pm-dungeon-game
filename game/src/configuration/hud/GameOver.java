@@ -10,9 +10,8 @@ import controller.ScreenController;
 import ecs.entities.CharacterClasses.Mage;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
-import java.util.Set;
-
 import ecs.systems.ECS_System;
+import java.util.Set;
 import starter.Game;
 import tools.Point;
 

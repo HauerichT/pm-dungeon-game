@@ -15,26 +15,27 @@ public class ItemDataGenerator {
                             new Animation(List.of("character/bag/bag.png"), 1),
                             new Animation(List.of("character/bag/bag.png"), 1),
                             "Bag",
-                        "Erweitert das Inventar"),
+                            "Erweitert das Inventar"),
                     new ItemData(
                             ItemType.Basic,
                             new Animation(List.of("character/healpotion/healpotion.png"), 1),
                             new Animation(List.of("character/healpotion/healpotion.png"), 1),
                             "Heal Potion",
-                        "Heilt den Helden"),
+                            "Heilt den Helden"),
                     new ItemData(
                             ItemType.Basic,
                             new Animation(List.of("character/bag/bag.png"), 1),
                             new Animation(List.of("character/bag/bag.png"), 1),
                             "Sword",
-                        "Starkes Schwert"),
+                            "Starkes Schwert"),
                     new ItemData(
                             ItemType.Basic,
-                            new Animation(List.of("character/strengthpotion/strengthpotion.png"), 1),
-                            new Animation(List.of("character/strengthpotion/strengthpotion.png"), 1),
+                            new Animation(
+                                    List.of("character/strengthpotion/strengthpotion.png"), 1),
+                            new Animation(
+                                    List.of("character/strengthpotion/strengthpotion.png"), 1),
                             "Strength Potion",
-                        "Erhöht die Stärke des Helden")
-    );
+                            "Erhöht die Stärke des Helden"));
 
     private Random rand = new Random();
 

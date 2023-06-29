@@ -40,9 +40,9 @@ public class WorldItemBuilder {
         new ItemComponent(droppedItem, itemData);
         HitboxComponent component = new HitboxComponent(droppedItem);
         component.setiCollideEnter(
-            (a, b, direction) -> {
-                itemData.triggerCollect(a, b);
-            });
+                (a, b, direction) -> {
+                    itemData.triggerCollect(a, b);
+                });
         return droppedItem;
     }
 }

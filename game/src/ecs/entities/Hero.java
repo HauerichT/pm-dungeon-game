@@ -17,7 +17,6 @@ import starter.Game;
  */
 public abstract class Hero extends Entity implements ILevelUp {
 
-
     private static int health;
     private static float mana;
     private static float startMana;
@@ -109,8 +108,6 @@ public abstract class Hero extends Entity implements ILevelUp {
 
         hc.setOnDeath(entity -> Game.setGameOver());
 
-
-
         int health = 20;
         hc.setMaximalHealthpoints(health);
         hc.setCurrentHealthpoints(health);
@@ -186,7 +183,4 @@ public abstract class Hero extends Entity implements ILevelUp {
     public static int getHealth() {
         return health;
     }
-
-
-
 }
